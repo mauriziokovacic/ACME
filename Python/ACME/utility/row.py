@@ -1,4 +1,5 @@
-from . import size
+from .size import *
+from .ndim import *
 
 def row(A):
     """

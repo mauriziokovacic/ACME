@@ -1,5 +1,5 @@
-from . import size
-from . import ndim
+from .size import *
+from .ndim import *
 
 def depth(A):
     """

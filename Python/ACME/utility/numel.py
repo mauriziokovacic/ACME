@@ -1,4 +1,5 @@
-from . import size
+from .isscalar import *
+from .size     import *
 from functools import reduce
 
 def numel(A):
@@ -15,4 +16,7 @@ def numel(A):
         the number of elements in the given tensor
     """
 
-    return reduce((lambda a, b : a*b), size(A))
+    s = size(A)
+    if isscalar(s):
+        return s
+    return reduce((lambda a, b : a*b), s)

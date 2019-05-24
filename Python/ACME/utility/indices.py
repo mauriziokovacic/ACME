@@ -1,4 +1,4 @@
-from . import linspace
+from .linspace import *
 
 def indices(min,max,dtype=torch.long,device='cuda:0'):
     """
@@ -23,5 +23,6 @@ def indices(min,max,dtype=torch.long,device='cuda:0'):
     Tensor
         a tensor with values between min and max
     """
-
-    return linspace(min,max,abs(min-max)+1,dtype=dtype,device=device)
+    min = round(min)
+    max = round(max)
+    return linspace(min,max,abs(max-min)+1,dtype=dtype,device=device)

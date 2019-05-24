@@ -1,4 +1,8 @@
 import torch
+from .numel   import *
+from .ndim    import *
+from .indices import *
+from .flatten import *
 
 def find(cond,linear=True):
     """
@@ -17,13 +21,13 @@ def find(cond,linear=True):
         a list of indices or a two-dimensional tensor containing the subscripts
     """
 
-    if linear:
+    if linear or ndim(cond.squeeze())==1:
         i = indices(0,numel(cond)-1)
-        cond = torch.flatten(cond)
+        cond = flatten(cond)
         return i[cond]
-    else:
-        i = torch.meshgrid(*tuple(indices(0,d-1) for d in cond.shape))
-        i = tuple(torch.flatten(np.transpose(x)) for x in i)
-        cond = torch.flatten(cond)
-        i = tuple(j[cond] for j in i)
+    i = tuple(indices(0,d-1).squeeze() for d in cond.shape)
+    i = torch.meshgrid(*i)
+    i = tuple(flatten(torch.t(x)) for x in i)
+    cond = flatten(cond)
+    i = tuple(j[cond] for j in i)
     return i

@@ -1,4 +1,4 @@
-from . import strcmp
+from .strcmp import *
 
 def strcmpi(str_a,str_b):
     """

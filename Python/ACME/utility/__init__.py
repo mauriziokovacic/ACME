@@ -2,6 +2,7 @@ from .accumarray     import *
 from .bi2de          import *
 from .bi2hex         import *
 from .circshift      import *
+from .clamp          import *
 from .col            import *
 from .ConstantTensor import *
 from .de2bi          import *
@@ -10,6 +11,7 @@ from .debug_message  import *
 from .depth          import *
 from .FalseTensor    import *
 from .find           import *
+from .flatten        import *
 from .flipfb         import *
 from .fliplr         import *
 from .flipud         import *
@@ -20,13 +22,19 @@ from .indices        import *
 from .interleave     import *
 from .IntTensor      import *
 from .isbool         import *
+from .iscomplex      import *
 from .isempty        import *
+from .isfinite       import *
 from .isfloat        import *
+from .isinf          import *
 from .isint          import *
 from .islist         import *
+from .isnan          import *
 from .isnone         import *
 from .isnumpy        import *
+from .isscalar       import *
 from .isstring       import *
+from .istensor       import *
 from .istorch        import *
 from .istuple        import *
 from .lexsort        import *
@@ -38,6 +46,7 @@ from .numel          import *
 from .repelem        import *
 from .repmat         import *
 from .row            import *
+from .setdiff        import *
 from .size           import *
 from .static_vars    import *
 from .strcmp         import *
@@ -50,3 +59,7 @@ from .tensor2string  import *
 from .TrueTensor     import *
 from .unique         import *
 from .uniquetol      import *
+
+
+
+

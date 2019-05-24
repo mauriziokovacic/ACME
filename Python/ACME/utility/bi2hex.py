@@ -1,5 +1,5 @@
-from . import bi2de
-from . import de2hex
+from .bi2de import *
+from .de2hex import *
 
 def bi2hex(obj):
     """

@@ -1,4 +1,4 @@
-from . import size
+from .size import *
 
 def ndim(A):
     """

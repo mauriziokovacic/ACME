@@ -1,4 +1,4 @@
-from . import numel
+from .numel import *
 
 def isempty(A):
     """

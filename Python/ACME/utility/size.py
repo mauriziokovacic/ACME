@@ -1,3 +1,7 @@
+from .isscalar import *
+from .islist   import *
+from .istuple  import *
+
 def size(A):
     """
     Returns the size of each dimension of the input Tensor
@@ -15,4 +19,8 @@ def size(A):
 
     if A is None:
         return 0
+    if isscalar(A):
+        return 1
+    if islist(A) or istuple(A):
+        return len(A)
     return A.shape

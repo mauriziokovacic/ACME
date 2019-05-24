@@ -1,5 +1,5 @@
 import torch
-from . import indices
+from .indices import *
 
 def lexsort(A,dim=1):
     """

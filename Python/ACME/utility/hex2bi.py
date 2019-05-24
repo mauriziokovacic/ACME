@@ -1,4 +1,4 @@
-from . import de2bi
+from .de2bi import *
 
 def hex2bi(obj):
     """
