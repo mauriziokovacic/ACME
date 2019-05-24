@@ -1,18 +1,18 @@
 import numpy
 
-def isnumpy(A):
+def isnumpy(*obj):
     """
     Returns whether or not the input is a numpy array
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is a numpy array, False otherwise
+        True if the inputs are Numpy arrays, False otherwise
     """
 
-    return isinstance(obj,numpy.ndarray)
+    return all([isinstance(o,numpy.ndarray) for o in obj])

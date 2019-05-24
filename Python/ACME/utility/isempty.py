@@ -1,20 +1,18 @@
 from .numel import *
 
-def isempty(A):
+def isempty(*obj):
     """
     Returns whether or not the input Tensor has no elements
 
     Parameters
     ----------
-    A : Tensor
-        a tensor
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the tensor is empty, False otherwise
+        True if the inputs are empty, False otherwise
     """
 
-    if isnone(A):
-        return True
-    return numel(A)==0
+    return all([numel(o)==0 for o in obj])

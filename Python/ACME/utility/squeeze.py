@@ -3,28 +3,28 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
-def flatten(tensor):
+def squeeze(tensor):
     """
-    Flattens a given tensor
+    Removes all the dimensions with value 1 of the input tensor
 
     Parameters
     ----------
     tensor : Tensor
-        an input tensor
+        the input tensor
 
     Returns
     -------
     Tensor
-        the flatten version of the input
+        the squeezed input
 
     Raises
     ------
     AssertError
-        if tensor is not a Numpy or PyTorch tensor
+        if tensor does not belongs to Numpy or PyTorch
     """
 
     if isnumpy(tensor):
-        return numpy.ravel(tensor)
+        return numpy.squeeze(tensor)
     if istorch(tensor):
-        return torch.flatten(tensor)
+        return tensor.squeeze()
     assert False, 'Unknown data type'

@@ -1,4 +1,5 @@
 from .accumarray     import *
+from .assertion      import *
 from .bi2de          import *
 from .bi2hex         import *
 from .circshift      import *
@@ -24,22 +25,28 @@ from .IntTensor      import *
 from .isbool         import *
 from .iscomplex      import *
 from .isempty        import *
+from .isfat          import *
 from .isfinite       import *
 from .isfloat        import *
 from .isinf          import *
 from .isint          import *
 from .islist         import *
+from .ismatrix       import *
 from .isnan          import *
 from .isnone         import *
 from .isnumpy        import *
 from .isscalar       import *
+from .isskinny       import *
+from .issquare       import *
 from .isstring       import *
 from .istensor       import *
 from .istorch        import *
 from .istuple        import *
+from .isvector       import *
 from .lexsort        import *
 from .linspace       import *
 from .LongTensor     import *
+from .matmul         import *
 from .ndim           import *
 from .nop            import *
 from .numel          import *
@@ -48,6 +55,7 @@ from .repmat         import *
 from .row            import *
 from .setdiff        import *
 from .size           import *
+from .squeeze        import *
 from .static_vars    import *
 from .strcmp         import *
 from .strcmpi        import *
@@ -56,10 +64,13 @@ from .strrep         import *
 from .sub2ind        import *
 from .swap           import *
 from .tensor2string  import *
+from .to_column      import *
+from .to_fat         import *
+from .to_row         import *
+from .to_skinny      import *
+from .to_sym_square  import *
+from .transpose      import *
 from .TrueTensor     import *
 from .unique         import *
 from .uniquetol      import *
-
-
-
-
+from .unsqueeze      import *

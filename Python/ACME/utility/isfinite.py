@@ -1,19 +1,19 @@
 from .isnan import *
 from .isinf import *
 
-def isfinite(a):
+def isfinite(*obj):
     """
     Returns whether or not the input is finite
 
     Parameters
     ----------
-    a : int or float or tensor
-        an input
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is finite, False otherwise
+        True if the inputs are finite, False otherwise
     """
 
-    return (not isnan(a)) and (not isinf(a))
+    return (not isnan(*obj)) and (not isinf(*obj))

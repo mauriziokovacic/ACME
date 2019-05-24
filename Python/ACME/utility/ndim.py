@@ -1,3 +1,4 @@
+from .isscalar import *
 from .size import *
 
 def ndim(A):
@@ -15,6 +16,7 @@ def ndim(A):
         The number of dimensions of the input tensor
     """
 
-    if A is None:
-        return 0
-    return len(size(A))
+    s = size(A)
+    if isscalar(s):
+        return s
+    return len(s)

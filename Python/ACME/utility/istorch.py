@@ -1,18 +1,18 @@
 import torch
 
-def istorch(A):
+def istorch(*obj):
     """
     Returns whether or not the input is a PyTorch tensor
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is a PyTorch Tensor, False otherwise
+        True if the inputs are PyTorch Tensors, False otherwise
     """
 
-    return isinstance(obj,torch.Tensor)
+    return all([isinstance(o,torch.Tensor) for o in obj])

@@ -1,21 +1,20 @@
 from .istensor import *
 from .flatten  import *
 
-def isnan(a):
+def isnan(*obj):
     """
     Returns whether or not the input is nan
 
     Parameters
     ----------
-    a : int or float or tensor
-        an input
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is nan, False otherwise
+        True if the inputs are nan, False otherwise
     """
 
-    if istensor(a):
-        a = flatten(a)
-    return any(a!=a)
+    out = [flatten(o) if istensor(o) else o for o in obj]
+    return any([any(o!=o) for o in out])

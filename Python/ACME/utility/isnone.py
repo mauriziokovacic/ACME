@@ -1,16 +1,16 @@
-def isnone(obj):
+def isnone(*obj):
     """
     Returns whether or not the input is None
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is None, False otherwise
+        True if the inputs are None, False otherwise
     """
 
-    return obj is None
+    return all([o is None for o in obj])

@@ -16,6 +16,6 @@ def isinf(a):
     bool
         True if the input is nan, False otherwise
     """
-    if istensor(a):
-        a = flatten(a)
-    return any(a==math.inf)
+
+    out = [flatten(o) if istensor(o) else o for o in obj]
+    return any([any(o==math.inf) for o in out])

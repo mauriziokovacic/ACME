@@ -1,19 +1,19 @@
 from .isnumpy import *
 from .istorch import *
 
-def istensor(A):
+def istensor(*obj):
     """
-    Returns whether or not the input is a Numpy or PyTorch tensor
+    Returns whether or not the inputs are Numpy or PyTorch tensors
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is a Numpy or PyTorch Tensor, False otherwise
+        True if the inputs are Numpy or PyTorch Tensors, False otherwise
     """
 
-    return isnumpy(A) or istorch(A)
+    return isnumpy(*obj) or istorch(*obj)

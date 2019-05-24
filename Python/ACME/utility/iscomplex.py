@@ -1,16 +1,16 @@
-def iscomplex(obj):
+def iscomplex(*obj):
     """
     Returns whether or not the input is a complex
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is complex, False otherwise
+        True if the inputs are complex, False otherwise
     """
 
-    return isinstance(obj,complex)
+    return all([isinstance(o,complex) for o in obj])

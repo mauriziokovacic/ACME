@@ -1,16 +1,16 @@
-def istuple(obj):
+def istuple(*obj):
     """
     Returns whether or not the input is a tuple
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is tuple, False otherwise
+        True if the inputs are tuple, False otherwise
     """
 
-    return isinstance(obj,tuple)
+    return all([isinstance(o,tuple) for o in obj])

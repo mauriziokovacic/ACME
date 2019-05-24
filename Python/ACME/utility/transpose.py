@@ -3,28 +3,28 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
-def flatten(tensor):
+def transpose(tensor):
     """
-    Flattens a given tensor
+    Transposes the input tensor
 
     Parameters
     ----------
     tensor : Tensor
-        an input tensor
+        a nxm tensor
 
     Returns
     -------
     Tensor
-        the flatten version of the input
+        a mxn tensor
 
     Raises
     ------
     AssertError
-        if tensor is not a Numpy or PyTorch tensor
+        if tensor does not belongs to Numpy or PyTorch
     """
 
     if isnumpy(tensor):
-        return numpy.ravel(tensor)
+        return numpy.transpose(tensor)
     if istorch(tensor):
-        return torch.flatten(tensor)
+        return torch.t(tensor)
     assert False, 'Unknown data type'

@@ -1,16 +1,16 @@
-def isfloat(obj):
+def isfloat(*obj):
     """
     Returns whether or not the input is a float
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is float, False otherwise
+        True if the inputs are float, False otherwise
     """
 
-    return isinstance(obj,float)
+    return all([isinstance(o,float) for o in obj])

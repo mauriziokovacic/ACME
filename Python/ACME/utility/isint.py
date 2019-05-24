@@ -1,16 +1,16 @@
-def isint(obj):
+def isint(*obj):
     """
     Returns whether or not the input is an int
 
     Parameters
     ----------
-    obj : object
-        any object
+    *obj : object...
+        a sequence of objects
 
     Returns
     -------
     bool
-        True if the input is int, False otherwise
+        True if the inputs are int, False otherwise
     """
 
-    return isinstance(obj,int)
+    return all([isinstance(o,int) for o in obj])
