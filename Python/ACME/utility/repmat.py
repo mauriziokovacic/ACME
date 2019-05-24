@@ -1,4 +1,7 @@
+import numpy
 import torch
+from .isnumpy import *
+from .istorch import *
 
 def repmat(tensor,*size):
     """
@@ -18,6 +21,15 @@ def repmat(tensor,*size):
     -------
     Tensor
         a tensor equivalent to concatenating the input along some dimension
+
+    Raises
+    ------
+    AssertError
+        if the input is not a Numpy or PyTorch tensor
     """
 
-    return tensor.repeat(*size)
+    if isnumpy(tensor):
+        return numpy.tile(tensor,size)
+    if istorch(tensor):
+        return tensor.repeat(*size)
+    assert False, 'Unknown data type'

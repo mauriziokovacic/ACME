@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+from .numpy2torch import *
 
 def uniquetol(A,tol=10e-4,ByRows=False):
     """
@@ -47,6 +48,6 @@ def uniquetol(A,tol=10e-4,ByRows=False):
         if tf[x]:
             j += 1
         ic[i[x]] = j
-    return torch.from_numpy(C ).to(dtype=A.dtype,   device=A.device),\
-           torch.from_numpy(ia).to(dtype=torch.long,device=A.device),\
-           torch.from_numpy(ic).to(dtype=torch.long,device=A.device)
+    return numpy2torch(C, dtype=A.dtype,   device=A.device),\
+           numpy2torch(ia,dtype=torch.long,device=A.device),\
+           numpy2torch(ic,dtype=torch.long,device=A.device)
