@@ -4,7 +4,7 @@ from .squeeze import *
 
 def reindex(I):
     """
-    Retargets the input n indices in the range [0-(n-1)]
+    Remaps the input n indices in the range [0-(n-1)]
 
     Parameters
     ----------
@@ -17,7 +17,7 @@ def reindex(I):
         the retargeted indices tensor, the unique input indices, the retargeted unique indices
     """
 
-    i    = unique(I)
+    i    = unique(I)[0]
     j    = squeeze(indices(0,numel(i),device=I.device))
     x    = torch.zeros(i.max()+1,dtype=torch.long,device=I.device)
     x[i] = j
