@@ -11,6 +11,7 @@ PI_2  = PI/2
 PI_3  = PI/3
 PI_4  = PI/4
 PI_6  = PI/6
+PI_8  = PI/8
 e     = numpy.math.e
 inf   = math.inf
 nan   = math.nan
