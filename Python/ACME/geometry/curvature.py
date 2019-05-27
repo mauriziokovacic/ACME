@@ -4,6 +4,8 @@ from math.norm          import *
 from math.angle         import *
 from .area              import *
 
+
+
 def mean_curvature_normal(P,T):
     A = torch.reciprocal(torch.mul(barycentric_area(P,T),2))
     L = cotangent_Laplacian(P,T)
