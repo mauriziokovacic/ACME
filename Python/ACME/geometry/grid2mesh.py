@@ -3,7 +3,7 @@ from utility.ismatrix import *
 from utility.row      import *
 from utility.col      import *
 from utility.indices  import *
-from utility.su2ind   import *
+from utility.sub2ind  import *
 
 def grid2mesh(X,Y,Z=None,device='cuda:0'):
     """

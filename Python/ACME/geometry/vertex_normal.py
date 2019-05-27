@@ -2,7 +2,7 @@ import torch
 from utility.accumarray import *
 from utility.strcmpi    import *
 from math.cross         import *
-from math.norm          import *
+from math.normvec       import *
 from .triangle_angle    import *
 
 def vertex_normal(P,T,type=None):

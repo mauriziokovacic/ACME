@@ -3,8 +3,8 @@ from utility.row        import *
 from utility.accumarray import *
 from utility.repmat     import *
 from utility.to_column  import *
-from math.cross import *
-from math.norm  import *
+from math.cross         import *
+from math.norm          import *
 
 def triangle_area(P,T):
     """
