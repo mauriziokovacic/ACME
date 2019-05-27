@@ -55,6 +55,7 @@ from .numpy2torch   import *
 from .reindex       import *
 from .repelem       import *
 from .repmat        import *
+from .reshape       import *
 from .row           import *
 from .setdiff       import *
 from .size          import *
@@ -65,6 +66,7 @@ from .strcmpi       import *
 from .string2tensor import *
 from .strrep        import *
 from .sub2ind       import *
+from .sum           import *
 from .swap          import *
 from .tensor2string import *
 from .to_column     import *

@@ -17,17 +17,17 @@ def find(cond,linear=True):
 
     Returns
     -------
-    Tensor
+    LongTensor or (
         a list of indices or a two-dimensional tensor containing the subscripts
     """
 
     if linear or ndim(cond.squeeze())==1:
-        i = indices(0,numel(cond)-1)
-        cond = flatten(cond)
-        return i[cond]
-    i = tuple(indices(0,d-1).squeeze() for d in cond.shape)
+        i = indices(0,numel(cond)-1,device=cond.device)
+        c = flatten(cond)
+        return i[c]
+    i = tuple(indices(0,d-1,device=cond.device).squeeze() for d in cond.shape)
     i = torch.meshgrid(*i)
-    i = tuple(flatten(torch.t(x)) for x in i)
-    cond = flatten(cond)
-    i = tuple(j[cond] for j in i)
+    i = tuple(flatten(torch.t(x.to(device=cond.device)) for x in i)
+    c = flatten(cond)
+    i = tuple(j[c] for j in i)
     return i

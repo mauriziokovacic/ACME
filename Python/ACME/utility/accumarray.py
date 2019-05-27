@@ -1,5 +1,8 @@
 import torch
 import torch_scatter
+from .numel          import *
+from .isscalar       import *
+from .ConstantTensor import *
 
 def accumarray(I,V,size=None,dim=0):
     """
@@ -22,4 +25,7 @@ def accumarray(I,V,size=None,dim=0):
 
     if size is None:
         size = torch.max(I).item()+1
-    return torch_scatter.scatter_add(V,I,dim=dim,dim_size=size)
+    value = V
+    if isscalar(value):
+        value = ConstantTensor(value,numel(value),dtype=value.dtype,device=value.device)
+    return torch_scatter.scatter_add(value,I,dim=dim,dim_size=size)
