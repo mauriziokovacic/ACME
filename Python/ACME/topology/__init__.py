@@ -1,3 +1,4 @@
+from .boundary    import *
 from .ind2poly    import *
 from .ispoly      import *
 from .poly2edge   import *
@@ -9,3 +10,4 @@ from .polyflip    import *
 from .polyshift   import *
 from .polysides   import *
 from .subdivision import *
+from .submesh     import *
