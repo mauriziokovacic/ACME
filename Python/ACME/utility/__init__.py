@@ -77,6 +77,7 @@ from .to_sym_square import *
 from .torch2numpy   import *
 from .transpose     import *
 from .TrueTensor    import *
+from .Uint8Tensor   import *
 from .unique        import *
 from .uniquetol     import *
 from .unsqueeze     import *
