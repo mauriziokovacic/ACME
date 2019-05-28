@@ -16,6 +16,6 @@ def color2int(C):
     """
 
     c = C
-    if C.dtype != torch.uint8:
+    if (C.dtype != torch.uint8) or (torch.max(c)[0]<=1):
         c = torch.clamp(torch.round(torch.mul(C,255)),min=0,max=255).to(dtype=torch.uint8)
     return c
