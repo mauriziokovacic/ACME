@@ -1,0 +1,5 @@
+/**
+ * @brief $brief$
+ * @param $name$    $descr$
+ * @return $out$
+ */

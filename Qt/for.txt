@@ -1,0 +1,3 @@
+for( $size_type$ $var$ = 0; $var$ < $size$; ++$var$ ) {
+    $$
+}

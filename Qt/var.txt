@@ -1,0 +1,16 @@
+    $type$ m_$name$;
+    
+    //////////////////////////////////////////////////////////////////////////////
+    // $name:u$
+    //////////////////////////////////////////////////////////////////////////////
+    inline $type$ $name$() const {
+        return this->m_$name$;
+    }
+    
+    inline $type$& $name$() {
+        return this->m_$name$;
+    }
+    
+    inline void set_$name$( const $type$& $name$ ) {
+        this->m_$name$ = $name$;
+    }

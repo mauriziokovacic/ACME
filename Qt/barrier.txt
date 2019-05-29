@@ -1,0 +1,8 @@
+#ifndef $name:u$_HPP
+#define $name:u$_HPP
+
+#pragma once
+
+$$
+
+#endif // $name:u$_HPP
