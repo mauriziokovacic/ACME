@@ -126,6 +126,34 @@ def edge2quad(E):
 
 
 
+def poly2tri(P):
+    """
+    Converts a given polygon tensor into triangles, using a naive approach
+
+    A polygon will be split by connecting two consecutive nodes with the first one
+
+    Parameters
+    ----------
+    P : LongTensor
+        the topology tensor
+
+    Returns
+    -------
+    (LongTensor,LongTensor)
+        the triangle tensor and the index of the polygon generating it
+    """
+
+    i = torch.zeros(row(P)-2,1,dtype=P.dtype,device=P.device)
+    j = indices(1,row(P)-2,device=P.device)
+    k = j+1
+    t = torch.cat((i,j,k),dim=1)
+    T = tuple(P[t])
+    I = repmat(indices(0,col(P),device=P.device)),(len(T),1))
+    T = torch.cat(T,dim=1)
+    return T,I
+
+
+
 def quad2tri(T):
     """
     Subdivides the input quad tensor into triangles
@@ -142,5 +170,7 @@ def quad2tri(T):
     """
 
     I = poly2ind(T)
-    return torch.cat((torch.cat((I[0],I[1],I[2]),dim=0).unsqueeze(1),torch.cat((I[2],I[3],I[0]),dim=0).unsqueeze(1)),dim=1)
+    return torch.cat((torch.cat((I[0],I[1],I[2]),dim=0).unsqueeze(1),
+                      torch.cat((I[0],I[2],I[3]),dim=0).unsqueeze(1)),dim=1)
+
 
