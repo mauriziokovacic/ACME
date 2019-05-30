@@ -11,6 +11,7 @@ from .de2bi          import *
 from .de2hex         import *
 from .debug_message  import *
 from .depth          import *
+from .duplicated     import *
 from .FalseTensor    import *
 from .find           import *
 from .flatten        import *
@@ -52,6 +53,7 @@ from .ndim           import *
 from .nop            import *
 from .numel          import *
 from .numpy2torch    import *
+from .prod           import *
 from .reindex        import *
 from .repelem        import *
 from .repmat         import *
