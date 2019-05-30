@@ -1,6 +1,6 @@
 from .isscalar import *
 from .size     import *
-from functools import reduce
+from .prod     import *
 
 def numel(A):
     """
@@ -19,4 +19,4 @@ def numel(A):
     s = size(A)
     if isscalar(s):
         return s
-    return reduce((lambda a, b : a*b), s)
+    return prod(s)
