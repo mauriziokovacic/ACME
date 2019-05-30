@@ -1,6 +1,7 @@
 import torch
 from utility.row    import *
 from utility.repmat import *
+from utility.unique import *
 
 def poly2poly(T,n):
     """
@@ -174,3 +175,20 @@ def quad2tri(T):
                       torch.cat((I[0],I[2],I[3]),dim=0).unsqueeze(1)),dim=1)
 
 
+
+def poly2node(T):
+    """
+    Returns the unique nodes of the input topology
+
+    Parameters
+    ----------
+    T : LongTensor
+        the topology tensor
+
+    Returns
+    -------
+    LongTensor
+        the unique nodes indices
+    """
+
+    return unique(T.flatten())[0]
