@@ -11,3 +11,4 @@ from .polyshift   import *
 from .polysides   import *
 from .subdivision import *
 from .submesh     import *
+from .valence     import *
