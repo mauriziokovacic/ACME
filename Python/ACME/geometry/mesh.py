@@ -1,15 +1,16 @@
 import torch
-from utility.row         import *
-from utility.col         import *
-from utility.isempty     import *
-from utility.unique      import *
-from utility.accumarray  import *
-from utility.FalseTensor import *
-from utility.TrueTensor  import *
-from topology.ispoly     import *
-from topology.poly2edge  import *
-from topology.poly2ind   import *
-from .genus              import *
+from torch_geometric.data import data
+from utility.row          import *
+from utility.col          import *
+from utility.isempty      import *
+from utility.unique       import *
+from utility.accumarray   import *
+from utility.FalseTensor  import *
+from utility.TrueTensor   import *
+from topology.ispoly      import *
+from topology.poly2edge   import *
+from topology.poly2ind    import *
+from .genus               import *
 
 
 
@@ -76,6 +77,8 @@ class Mesh(object):
         Returns the genus of the mesh
     update_ext()
         Updates the external flags for vertices, edges, faces and volumes
+    to_data()
+        Returns a torch_geometric Data object
     __compute_edge()
         Computes the mesh edges
     __compute_external_vertex()
@@ -333,6 +336,25 @@ class Mesh(object):
         self.__compute_external_vertex()
         self.__compute_external_edge()
         self.__compute_external_hedra()
+
+
+
+    def to_data(self):
+        """
+        Returns a torch_geometric Data object
+
+        Returns
+        -------
+        Data
+            a torch_geometric Data object
+        """
+
+        return Data(
+                    pos  = self.Vertex.clone(),
+                    norm = self.Normal.clone(),
+                    face = self.Face.clone(),
+                    edge_index = self.Edge.clone(),
+               )
 
 
 
