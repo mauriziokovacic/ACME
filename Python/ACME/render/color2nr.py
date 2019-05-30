@@ -12,7 +12,7 @@ def color2nr(T,C,texture_size=2,dtype=torch.float32):
     ----------
     T : LongTensor
         the topology tensor
-    C : Tensor or Uit8Tensor
+    C : Tensor or Uint8Tensor
         the RGB color tensor
     texture_size : int (optional)
         the Neural Renderer texture size (default is 2)
