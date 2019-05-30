@@ -1,2 +1,2 @@
-from .trainer                import *
-from .training_state_manager import *
+from .trainer           import *
+from .training_observer import *
