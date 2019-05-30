@@ -20,6 +20,11 @@ def poly2edge(T):
     -------
     (LongTensor,LongTensor)
         the edge tensor and the respective polygon indices
+
+    Raises
+    ------
+    AssertionError
+        if the topology tensor is not at least (2,n)
     """
 
     assert row(T)>1, "Topology matrix should be at least of size 2xt"
