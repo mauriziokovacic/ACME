@@ -6,6 +6,7 @@ from .bounding_box            import *
 from .cube                    import *
 from .curvature               import *
 from .cylinder                import *
+from .data2mesh               import *
 from .degree                  import *
 from .disk                    import *
 from .divergence              import *
@@ -21,6 +22,7 @@ from .icosahedron             import *
 from .klein_figure8           import *
 from .laplacian               import *
 from .mesh                    import *
+from .mesh2data               import *
 from .mesh2soup               import *
 from .mobius_strip            import *
 from .normalize_scale         import *
@@ -36,7 +38,6 @@ from .specular_direction      import *
 from .sphere                  import *
 from .subdivide               import *
 from .tetrahedron             import *
-from .to_data                 import *
 from .torus                   import *
 from .triangle                import *
 from .triangle_angle          import *
