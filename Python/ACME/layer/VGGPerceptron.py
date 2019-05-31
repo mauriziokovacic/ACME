@@ -12,7 +12,7 @@ class VGGPerceptron(torch.nn.Module):
         self.__create_model(cfg,in_channels,image_size,batch_norm)
 
     def __create_model(self,cfg,in_channels,image_size,batch_norm):
-        layers,pool = __create_layers(cfg,in_channels=in_channels,batch_norm=batch_norm)
+        layers,pool = self.__create_layers(cfg,in_channels=in_channels,batch_norm=batch_norm)
         self.model = torch.nn.Sequential(
             *layers,
             torch.nn.AdaptiveAvgPool2d((image_size//(2**pool),)*2),
