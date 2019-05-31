@@ -5,10 +5,12 @@ from .poly2edge   import *
 from .poly2ind    import *
 from .poly2lin    import *
 from .poly2poly   import *
+from .poly2unique import *
 from .poly2wedge  import *
 from .polyflip    import *
 from .polyshift   import *
 from .polysides   import *
+from .polysort    import *
 from .subdivision import *
 from .submesh     import *
 from .valence     import *
