@@ -18,7 +18,7 @@ class VGGPerceptron(torch.nn.Module):
             torch.nn.AdaptiveAvgPool2d((image_size//(2**pool),)*2),
         )
 
-    def __create_layers(cfg, in_channels=3,batch_norm=False):
+    def __create_layers(self,cfg, in_channels=3,batch_norm=False):
         layers = []
         pool   = 0
         for v in cfg:
