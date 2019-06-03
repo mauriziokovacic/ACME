@@ -24,7 +24,7 @@ class Reshape(Module):
         """
 
         super(Reshape,self).__init__()
-        self.dim = dim
+        self.dim = (-1,)+dim
 
 
 
