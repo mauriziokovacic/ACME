@@ -61,7 +61,7 @@ class Batch_Sum(torch.nn.Module):
         Returns
         -------
         Tensor
-            the summed batch tensor
+            the sum of the batch tensor
         """
 
         return torch.sum(input,0)
@@ -99,3 +99,38 @@ class Batch_Mean(torch.nn.Module):
         """
 
         return torch.mean(input,0)
+
+
+
+class Batch_Reshape(torch.nn.Module):
+    """
+    A layer performing the reshape of the input batch
+
+    Methods
+    -------
+    forward(input)
+        reshapes the input batch
+    """
+
+    def __init__(self,dim):
+        super(Batch_Reshape,self).__init__()
+        self.dim = dim
+
+
+
+    def forward(self,input):
+        """
+        Reshapes the input batch
+
+        Parameters
+        ----------
+        input : Tensor
+            the layer input batch
+
+        Returns
+        -------
+        Tensor
+            the reshaped batch
+        """
+
+        return torch.reshape(input,self.dim)
