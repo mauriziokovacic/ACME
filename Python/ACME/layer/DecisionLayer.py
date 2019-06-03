@@ -1,6 +1,7 @@
 import torch
-from utility.prod import *
-
+from utility.prod    import *
+from utility.islist  import *
+from utility.istuple import *
 
 
 class DecisionLayer(torch.nn.Module):
@@ -16,7 +17,7 @@ class DecisionLayer(torch.nn.Module):
     -------
     __create_model(input_size,output_size,bottleneck)
         creates the decision architecture
-    forward(*inputs)
+    forward(input)
         returns the decision tensor
     """
 
@@ -56,7 +57,6 @@ class DecisionLayer(torch.nn.Module):
         """
 
         self.model = torch.nn.Sequential(
-            Concatenate(dim=0),
             torch.nn.Linear(input_size, bottleneck),
             torch.nn.ReLU(True),
             torch.nn.Dropout(),
@@ -68,14 +68,14 @@ class DecisionLayer(torch.nn.Module):
 
 
 
-    def forward(self,*inputs):
+    def forward(self,input):
         """
         Returns the decision tensor
 
         Parameters
         ----------
-        *inputs : Tensor...
-            a sequence of input tensors
+        input : Tensor
+            the input tensor
 
         Returns
         -------
@@ -83,7 +83,7 @@ class DecisionLayer(torch.nn.Module):
             the decision tensor
         """
 
-        return self.model(*inputs)
+        return self.model(inputs)
 
 
 
@@ -109,6 +109,7 @@ class ClassifierLayer(DecisionLayer):
             self.model,
             torch.nn.Softmax(),
         )
+
 
 
 class TensorDecisionLayer(DecisionLayer):
