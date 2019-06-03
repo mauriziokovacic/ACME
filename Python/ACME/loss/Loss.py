@@ -1,6 +1,6 @@
 import torch
 
-class BaseLoss(object):
+class Loss(object):
     """
     A class representing the base for any loss function.
 
@@ -87,9 +87,14 @@ class BaseLoss(object):
             the given input to the net
         output : Data
             the produced output of the net
+
+        Raises
+        ------
+        NotImplementedError
+            if derived class does not implement this method
         """
 
-        return None
+        raise NotImplementedError
 
 
 

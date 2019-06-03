@@ -1,2 +1,3 @@
-from .BaseLoss   import *
+from .Loss       import *
+from .LossList   import *
 from .GlobalLoss import *
