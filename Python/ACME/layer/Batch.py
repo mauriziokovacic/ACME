@@ -98,4 +98,4 @@ class Batch_Mean(torch.nn.Module):
             the mean of the batch tensor
         """
 
-        return torch.mean(input,0):
+        return torch.mean(input,0)
