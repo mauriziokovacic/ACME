@@ -1,7 +1,5 @@
 import torch
-from utility.prod    import *
-from utility.islist  import *
-from utility.istuple import *
+
 
 
 class DecisionLayer(torch.nn.Module):
@@ -108,29 +106,4 @@ class ClassifierLayer(DecisionLayer):
         self.model = torch.nn.Sequential(
             self.model,
             torch.nn.Softmax(),
-        )
-
-
-
-class TensorDecisionLayer(DecisionLayer):
-    """
-    A fully connected layer performing a decision
-    """
-
-    def __init__(self,input_size,output_size,bottleneck=4096):
-        """
-        Parameters
-        ----------
-        input_size : int
-            the input size
-        output_size : list
-            the output shape
-        bottleneck : int (optional)
-            the size of the initial layer output (default is 4096)
-        """
-
-        super(TensorDecisionLayer,self).__init__(input_size,prod(*output_size),bottleneck=bottleneck)
-        self.model = torch.nn.Sequential(
-            self.model,
-            Reshape(output_size),
         )
