@@ -1,6 +1,0 @@
-switch( $control$ ) {
-case $value$: {
-    $$
-} break;
-default: break;
-}
