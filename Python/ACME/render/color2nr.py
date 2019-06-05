@@ -11,7 +11,7 @@ def color2nr(T,C,texture_size=2,dtype=torch.float32):
     Parameters
     ----------
     T : LongTensor
-        the topology tensor
+        the triangle topology tensor
     C : Tensor or Uint8Tensor
         the RGB color tensor
     texture_size : int (optional)
