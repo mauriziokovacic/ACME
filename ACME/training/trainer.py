@@ -110,6 +110,7 @@ class Trainer(object):
         outputFcn = self.outputFcn
         if outputFcn is None:
             outputFcn = nop
+        self.model.train()
         self.model.zero_grad()
         for self.epoch in range(e,epochs):
             if verbose:
