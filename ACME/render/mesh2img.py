@@ -42,7 +42,7 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop,culling=None):
         the Neural Renderer image in RGBDA format, if postFcn is nop
     """
 
-    t,i = poly2tri(t)
+    t,i = poly2tri(T)
     if C is None:
         c = torch.ones(1,3,dtype=torch.float,device=renderer.device)
     else:
