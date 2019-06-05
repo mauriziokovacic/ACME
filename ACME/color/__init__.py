@@ -1,3 +1,4 @@
-from .color2float import *
-from .color2int   import *
-from .colors      import *
+from .color2float   import *
+from .color2int     import *
+from .colors        import *
+from .fetch_texture import *
