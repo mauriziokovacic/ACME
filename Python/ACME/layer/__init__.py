@@ -2,6 +2,7 @@ from .Batch         import *
 from .Bypass        import *
 from .Concatenate   import *
 from .ConstantLayer import *
+from .Conv2D        import *
 from .DecisionLayer import *
 from .Extract_Attr  import *
 from .Flatten       import *
