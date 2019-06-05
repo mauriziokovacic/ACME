@@ -21,6 +21,6 @@ def ConstantTensor(value,*size,dtype=torch.float,device='cuda:0'):
         a tensor made out of occurrencies of the input value
     """
 
-    return torch.mul(torch.ones(*size,dtype=dtype,device=device),value)
+    return torch.empty(*size,dtype=dtype,device=device).fill_(value)
 
 
