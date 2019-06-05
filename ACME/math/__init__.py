@@ -7,6 +7,7 @@ from .affine2translation import *
 from .angle              import *
 from .axang2rotm         import *
 from .axis               import *
+from .barrier_function   import *
 from .cart2pol           import *
 from .cart2sph           import *
 from .constant           import *
