@@ -146,10 +146,10 @@ def poly2tri(P):
 
     i = torch.zeros(row(P)-2,1,dtype=P.dtype,device=P.device)
     j = indices(1,row(P)-2,device=P.device)
-    k = j+1
+    k = (j+1)%row(P)
     t = torch.cat((i,j,k),dim=1)
     T = tuple(P[t])
-    I = repmat(indices(0,col(P),device=P.device)),(len(T),1))
+    I = repmat(indices(0,col(P)-1,device=P.device),(len(T),1))
     T = torch.cat(T,dim=1)
     return T,I
 
