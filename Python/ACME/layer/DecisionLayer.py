@@ -19,50 +19,41 @@ class DecisionLayer(torch.nn.Module):
         returns the decision tensor
     """
 
-    def __init__(self,input_size,output_size,bottleneck=4096):
+    def __init__(self,input_size,*cfg):
         """
         Parameters
         ----------
         input_size : int
             the input size
-        output_size : int
-            the output size
-        bottleneck : int (optional)
-            the size of the initial layer output (default is 4096)
+        cfg : tuple or list
+            the output size of each fully connected layer
         """
 
         super(DecisionLayer,self).__init__()
-        self.__create_model(input_size,output_size,bottleneck)
+        self.__create_model(input_size,*cfg)
 
 
 
-    def __create_model(self,input_size,output_size,bottleneck):
+    def __create_layers(self,input_size,*cfg):
         """
-        Creates the decision architecture
+        Creates the inner fully connected layers
 
         Parameters
         ----------
         input_size : int
-            the input size
-        output_size : int
-            the output size
-        bottleneck : int
-            the size of the initial layer output
-
-        Returns
-        -------
-        None
+            the number of input connections
+        cfg : list
+            the inner architecture configuration
         """
 
-        self.model = torch.nn.Sequential(
-            torch.nn.Linear(input_size, bottleneck),
-            torch.nn.ReLU(True),
-            torch.nn.Dropout(),
-            torch.nn.Linear(bottleneck,bottleneck//2),
-            torch.nn.ReLU(True),
-            torch.nn.Dropout(),
-            torch.nn.Linear(bottleneck//2,output_size),
-        )
+        layers = []
+        for v in cfg[:-1]:
+            layers += [torch.nn.Linear(input_size, v),
+                       torch.nn.ReLU(inplace=True),
+                       torch.nn.Dropout()]
+            input_size = v
+        layers += [torch.nn.Linear(input_size,cfg[-1])]
+        self.model = torch.nn.Sequential(layers)
 
 
 
@@ -85,25 +76,43 @@ class DecisionLayer(torch.nn.Module):
 
 
 
-class ClassifierLayer(DecisionLayer):
+def classifier_layer(input_size,*cfg):
     """
-    A fully connected layer performing a classification
+    Returns a standard classifier with the input architecture
+
+    Parameters
+    ----------
+    input_size : int
+        the input size
+    cfg : tuple or list
+        the output size of each fully connected layer
+
+    Returns
+    -------
+    torch.nn.Module
+        a standard classifier
     """
 
-    def __init__(self,input_size,n_classes,bottleneck=4096):
-        """
-        Parameters
-        ----------
-        input_size : int
-            the input size
-        n_classes : int
-            the number of classes in the classification
-        bottleneck : int (optional)
-            the size of the initial layer output (default is 4096)
-        """
+    return torch.nn.Sequential(
+        DecisionLayer(input_size,*cfg),
+        torch.nn.Softmax(),
+    )
 
-        super(ClassifierLayer,self).__init__(input_size,n_classes,bottleneck=bottleneck)
-        self.model = torch.nn.Sequential(
-            self.model,
-            torch.nn.Softmax(),
-        )
+
+
+def VGG_classifier(input_size):
+    """
+    Returns the VGG classifier architecture
+
+    Parameters
+    ----------
+    input_size : int
+        the input size
+
+    Returns
+    -------
+    torch.nn.Module
+        the VGG classifier architecture
+    """
+
+    return classifier_layer(input_size,[4096,4096,1000])
