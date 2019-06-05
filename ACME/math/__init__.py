@@ -17,6 +17,7 @@ from .deg2rad            import *
 from .diag               import *
 from .dot                import *
 from .eye                import *
+from .fibonacci          import *
 from .floor              import *
 from .linint             import *
 from .norm               import *
