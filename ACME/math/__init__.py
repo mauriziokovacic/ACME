@@ -17,6 +17,7 @@ from .deg2rad            import *
 from .diag               import *
 from .dot                import *
 from .eye                import *
+from .floor              import *
 from .linint             import *
 from .norm               import *
 from .normalize          import *
@@ -30,6 +31,7 @@ from .rot_y              import *
 from .rot_z              import *
 from .rot2               import *
 from .rotm2affine        import *
+from .sawtooth           import *
 from .sca3               import *
 from .signed_angle       import *
 from .sin                import *
