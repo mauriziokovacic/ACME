@@ -3,6 +3,8 @@ from utility.col       import *
 from utility.numel     import *
 from utility.to_column import *
 
+
+
 def fetch_texture1D(texture,t,mode='bilinear'):
     """
     Fetches an input texture using the given UVs in range [0,1]
