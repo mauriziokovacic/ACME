@@ -336,6 +336,11 @@ def palette(name,device='cuda:0'):
     -------
     Tensor
         the color tensor
+
+    Raises
+    ------
+    AssertionError
+        if the name is unknown
     """
 
     color = {
