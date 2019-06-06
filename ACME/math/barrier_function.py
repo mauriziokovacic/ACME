@@ -14,7 +14,7 @@ def barrier_function(x,t):
     Returns
     -------
     Tensor
-        the barrier vlaue
+        the barrier value
     """
 
     def g(x):
