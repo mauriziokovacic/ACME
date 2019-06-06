@@ -5,11 +5,14 @@ from utility.repmat           import *
 from utility.nop              import *
 from utility.isvector         import *
 from math.dot                 import *
+from math.normalize           import *
 from math.normvec             import *
 from geometry.triangle_normal import *
 from topology.ispoly          import *
 from topology.poly2poly       import *
-from.color2nr                 import *
+from color.fetch_texture      import *
+from color.palette            import *
+from .color2nr                import *
 
 
 
@@ -59,10 +62,10 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop,culling=None):
                 assert False, 'Unknown culling type'
         t = t[tf]
         i = i[tf]
+    if ndim(c)==1:
+        c = fetch_texture1D(palette('parula',device=renderer.device),normalize(c))
     if col(T)==row(C):
         c = c[i]
-    if ndim(c)==1:
-        pass
 
     c = color2nr(t,c,texture_size=2,dtype=torch.float32,device=renderer.device)
     t = IntTensor(torch.t(t),device=renderer.device)
