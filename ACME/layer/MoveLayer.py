@@ -24,6 +24,7 @@ class MoveLayer(torch.nn.Module):
             the device to move the input to
         """
 
+        super(MoveLayer,self).__init__()
         self.device = device
 
 
