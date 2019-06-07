@@ -45,5 +45,6 @@ from .triangle_cotangent      import *
 from .triangle_fan            import *
 from .triangle_normal         import *
 from .triangle_ratio          import *
+from .unsubdivide             import *
 from .vertex_normal           import *
 from .vertex2face             import *
