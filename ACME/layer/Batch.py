@@ -106,6 +106,11 @@ class Batch_Reshape(torch.nn.Module):
     """
     A layer performing the reshape of the input batch
 
+    Attributes
+    ----------
+    dim : tuple or list
+        the new shape of the tensor
+
     Methods
     -------
     forward(input)
@@ -113,6 +118,13 @@ class Batch_Reshape(torch.nn.Module):
     """
 
     def __init__(self,dim):
+        """
+        Parameters
+        ----------
+        dim : tuple or list
+            the new shape of the tensor
+        """
+
         super(Batch_Reshape,self).__init__()
         self.dim = dim
 

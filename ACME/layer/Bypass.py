@@ -13,6 +13,8 @@ class Bypass(Module):
     def __init__(self):
         super(Bypass,self).__init__(self)
 
+
+
     def forward(self,input):
         """
         Performs no operation over the input

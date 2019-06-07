@@ -26,6 +26,8 @@ class Extract_Attr(torch.nn.Module):
 
         self.attr = attr
 
+
+
     def forward(self, input):
         """
         Returns the extracted attribute
