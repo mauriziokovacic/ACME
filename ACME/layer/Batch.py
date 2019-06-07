@@ -146,3 +146,51 @@ class Batch_Reshape(torch.nn.Module):
         """
 
         return torch.reshape(input,self.dim)
+
+
+
+class Batch_Permute(torch.nn.Module):
+    """
+    A layer performing the permutation of the input batch
+
+    Attributes
+    ----------
+    dim : tuple or list
+        the new shape of the tensor
+
+    Methods
+    -------
+    forward(input)
+        permutes the input batch
+    """
+
+    def __init__(self,*dim):
+        """
+        Parameters
+        ----------
+        dim : tuple or list
+            the new dimension order of the tensor
+        """
+
+        super(Permute_Channel,self).__init__()
+        self.dim = dim
+
+
+
+    def forward(self,input):
+        """
+        Permutes the input batch
+
+        Parameters
+        ----------
+        input : Tensor
+            the layer input batch
+
+        Returns
+        -------
+        Tensor
+            the permuted batch
+        """
+
+        return input.permute(self.dim)
+
