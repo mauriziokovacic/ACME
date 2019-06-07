@@ -23,16 +23,18 @@ def unsubdivide(P,T,iter=1):
 
     Returns
     -------
-    (Tensor,LongTensor)
-        the new points set and the new topology
+    (Tensor,LongTensor,LongTensor)
+        the new points set, the new topology, and the indices of the original points
     """
 
+    i = T.clone()
     for n in range(0,iter):
-        i = torch.t(torch.reshape(T[0],col(T)//4,4))
+        i = torch.t(torch.reshape(i[0],col(i)//4,4))
         if(istri(T)):
             i = i[0:3]
-        p = P[unique(i)]
-        t = reindex(i)
-        if (row(t)==1):
-            t = torch.t(t)
-    return p,t
+        if (row(i)==1):
+            i = torch.t(i)
+    p = P[unique(i)]
+    t = reindex(i)
+    i = unique(i)
+    return p,t,i
