@@ -1,4 +1,7 @@
 import torch
+from utility.row         import *
+from utility.col         import *
+from utility.numel       import *
 from utility.strcmpi     import *
 from utility.to_column   import *
 from .triangle_cotangent import *
@@ -34,9 +37,9 @@ def Adjacency(T,P=None,type='std',dtype=torch.float):
     """
 
     if P is None:
-       n = torch.max(T)[0]+1
+        n = torch.max(T)[0]+1
     else:
-       n = row(P)
+        n = row(P)
 
     A = torch.zeros(n,n,dtype=dtype,device=T.device)
 
@@ -59,6 +62,20 @@ def Adjacency(T,P=None,type='std',dtype=torch.float):
             i = i.to(dtype=torch.long)
             j = j.to(dtype=torch.long)
             A[i,j] += w
+        return A
+
+    if type.lower()=='face':
+        n   = col(T)
+        E,t = poly2edge(T)
+        I   = unique(torch.sort(torch.t(E),1)[0],ByRows=True)[2]
+        E   = indices(0,col(E)-1,device=T.device)
+        A   = torch.zeros(numel(E),n,dtype=torch.float,device=T.device)
+        print(I.shape)
+        for i,j in torch.cat((E[I],t),dim=1):
+            A[i,j] = 1
+        A   = torch.mm(torch.t(A),A)
+        for i in range(0,row(A)):
+            A[i,i] = 0
         return A
 
     assert False, 'Unknown output type'
