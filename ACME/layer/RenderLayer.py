@@ -42,7 +42,7 @@ class RenderLayer(torch.nn.Module):
         super(RenderLayer,self).__init__()
         self.renderer = renderer
         self.postFcn  = postFcn
-        self.keep     = keep_values
+        self.keep     = keep_output
         self.attr     = attr
 
 
@@ -83,7 +83,7 @@ class RenderLayer(torch.nn.Module):
 
         P   = input.pos
         T   = input.face
-        out = mesh2img(self.renderer,T,P,self.colorFcn(input),postFcn=self.postFcn)
+        out = mesh2img(self.renderer,T,P,self.__colorFcn(input),postFcn=self.postFcn)
         if self.keep:
             setattr(input,self.attr,out)
         return out
@@ -194,7 +194,7 @@ class PositionRenderLayer(RenderLayer):
             the keyword arguments of RenderLayer
         """
 
-        super(NormalRenderLayer,self).__init__(renderer,**kwargs)
+        super(PositionRenderLayer,self).__init__(renderer,**kwargs)
 
 
 
@@ -282,8 +282,8 @@ class MVSRenderLayer(torch.nn.Module):
             an image tensor
         """
 
-        self.layer.renderer.eye             =  self.camera
-        self.layer.renderer.light_direction = -self.camera
+        self.layer.renderer.eye             =  camera
+        self.layer.renderer.light_direction = -camera
         return self.layer(input)
 
 
