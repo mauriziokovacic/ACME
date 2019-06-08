@@ -30,7 +30,7 @@ class DecisionLayer(torch.nn.Module):
         """
 
         super(DecisionLayer,self).__init__()
-        self.__create_model(input_size,*cfg)
+        self.__create_layers(input_size,*cfg)
 
 
 
@@ -72,7 +72,7 @@ class DecisionLayer(torch.nn.Module):
             the decision tensor
         """
 
-        return self.model(inputs)
+        return self.model(input)
 
 
 
