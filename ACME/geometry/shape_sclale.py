@@ -1,4 +1,4 @@
-from math.norm     import *
+from ACME.math.norm     import *
 from .bounding_box import *
 
 def shape_scale(P,dim=0):

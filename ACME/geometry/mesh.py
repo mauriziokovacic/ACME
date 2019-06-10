@@ -1,16 +1,16 @@
 import torch
-from torch_geometric.data import data
-from utility.row          import *
-from utility.col          import *
-from utility.isempty      import *
-from utility.unique       import *
-from utility.accumarray   import *
-from utility.FalseTensor  import *
-from utility.TrueTensor   import *
-from topology.ispoly      import *
-from topology.poly2edge   import *
-from topology.poly2ind    import *
-from .genus               import *
+from torch_geometric.data     import data
+from ACME.utility.row         import *
+from ACME.utility.col         import *
+from ACME.utility.isempty     import *
+from ACME.utility.unique      import *
+from ACME.utility.accumarray  import *
+from ACME.utility.FalseTensor import *
+from ACME.utility.TrueTensor  import *
+from ACME.topology.ispoly     import *
+from ACME.topology.poly2edge  import *
+from ACME.topology.poly2ind   import *
+from .genus                   import *
 
 
 

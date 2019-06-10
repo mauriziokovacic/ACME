@@ -1,10 +1,10 @@
 import torch
-from utility.row     import *
-from utility.col     import *
-from utility.strcmpi import *
-from math.eye        import *
-from .adjacency      import *
-from .degree         import *
+from ACME.utility.row     import *
+from ACME.utility.col     import *
+from ACME.utility.strcmpi import *
+from ACME.math.eye        import *
+from .adjacency           import *
+from .degree              import *
 
 
 

@@ -1,6 +1,6 @@
-from torch_geometric.data import data
-from topology.poly2poly   import *
-from .vertex_normal       import *
+from torch_geometric.data    import data
+from ACME.topology.poly2poly import *
+from .vertex_normal          import *
 
 def data2mesh(data):
     """

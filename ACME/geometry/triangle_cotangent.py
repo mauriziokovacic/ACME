@@ -1,4 +1,4 @@
-from math.cot import *
+from ACME.math.cot import *
 
 def triangle_cotangent(P,T):
     """

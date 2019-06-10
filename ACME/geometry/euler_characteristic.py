@@ -1,5 +1,5 @@
-from utility.row import *
-from utility.col import *
+from ACME.utility.row import *
+from ACME.utility.col import *
 
 def euler_characteristic(P,E,F,V=None):
     """

@@ -1,9 +1,9 @@
 import torch
-from utility.ismatrix import *
-from utility.row      import *
-from utility.col      import *
-from utility.indices  import *
-from utility.sub2ind  import *
+from ACME.utility.ismatrix import *
+from ACME.utility.row      import *
+from ACME.utility.col      import *
+from ACME.utility.indices  import *
+from ACME.utility.sub2ind  import *
 
 def grid2mesh(X,Y,Z=None,device='cuda:0'):
     """

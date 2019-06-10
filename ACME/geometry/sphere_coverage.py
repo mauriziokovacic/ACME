@@ -1,8 +1,8 @@
 import torch
-from utility.indices import *
-from math.constant   import *
-from math.cos        import *
-from math.sin        import *
+from ACME.utility.indices import *
+from ACME.math.constant   import *
+from ACME.math.cos        import *
+from ACME.math.sin        import *
 
 
 def sphere_coverage(nsamples,dtype=torch.float,device='cuda:0'):

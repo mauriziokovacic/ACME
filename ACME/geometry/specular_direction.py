@@ -1,5 +1,5 @@
 import torch
-from math.dot import *
+from ACME.math.dot import *
 
 def specular_direction(dN,dI,dim=1):
     """

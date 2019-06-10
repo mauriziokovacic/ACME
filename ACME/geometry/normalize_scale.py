@@ -1,5 +1,5 @@
 import torch
-from math.norm import *
+from ACME.math.norm import *
 
 def normalize_scale(P):
     """

@@ -1,9 +1,9 @@
 import torch
-from utility.row         import *
-from utility.repmat      import *
-from utility.LongTensor  import *
-from utility.FloatTensor import *
-from .equilater_polygon  import *
+from ACME.utility.row         import *
+from ACME.utility.repmat      import *
+from ACME.utility.LongTensor  import *
+from ACME.utility.FloatTensor import *
+from .equilater_polygon       import *
 
 def TriangleFan(n,device='cuda:0'):
     """

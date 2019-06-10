@@ -1,10 +1,10 @@
 import torch
-from utility.linspace   import *
-from math.cos           import *
-from math.sin           import *
-from topology.poly2poly import *
-from .vertex_normal     import *
-from .grid2mesh         import *
+from ACME.utility.linspace   import *
+from ACME.math.cos           import *
+from ACME.math.sin           import *
+from ACME.topology.poly2poly import *
+from .vertex_normal          import *
+from .grid2mesh              import *
 
 
 

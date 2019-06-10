@@ -1,9 +1,9 @@
 import torch
-from utility.LongTensor  import *
-from utility.FloatTensor import *
-from math.constant       import *
-from topology.polyflip   import *
-from .vertex_normal      import *
+from ACME.utility.LongTensor  import *
+from ACME.utility.FloatTensor import *
+from ACME.math.constant       import *
+from ACME.topology.polyflip   import *
+from .vertex_normal           import *
 
 def Tetrahedron(device='cuda:0'):
     """

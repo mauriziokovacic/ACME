@@ -1,9 +1,9 @@
 import torch
-from utility.row         import *
-from utility.accumarray  import *
-from math.dot            import *
-from topology.poly2ind   import *
-from .triangle_cotangent import *
+from ACME.utility.row        import *
+from ACME.utility.accumarray import *
+from ACME.math.dot           import *
+from ACME.topology.poly2ind  import *
+from .triangle_cotangent     import *
 
 def divergence(P,T,dF):
     """

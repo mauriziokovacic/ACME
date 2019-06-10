@@ -1,8 +1,8 @@
 import torch
-from utility.LongTensor  import *
-from utility.FloatTensor import *
-from math.normvec        import *
-from topology.polyflip   import *
+from ACME.utility.LongTensor  import *
+from ACME.utility.FloatTensor import *
+from ACME.math.normvec        import *
+from ACME.topology.polyflip   import *
 
 
 

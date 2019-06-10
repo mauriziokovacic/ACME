@@ -1,8 +1,8 @@
 import torch
-from utility.linspace    import *
-from utility.repmat      import *
-from utility.FloatTensor import *
-from .grid2mesh          import *
+from ACME.utility.linspace    import *
+from ACME.utility.repmat      import *
+from ACME.utility.FloatTensor import *
+from .grid2mesh               import *
 
 def Plane(tile=(2,2),device='cuda:0'):
     """

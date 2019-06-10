@@ -1,7 +1,7 @@
 import torch
-from topology.ispoly      import *
-from topology.subdivision import *
-from .soup2mesh           import *
+from ACME.topology.ispoly      import *
+from ACME.topology.subdivision import *
+from .soup2mesh                import *
 
 def subdivide(P,T,iter=1):
     """

@@ -1,7 +1,7 @@
 import torch
-from utility.linspace import *
-from math.cos         import *
-from math.sin         import *
+from ACME.utility.linspace import *
+from ACME.math.cos         import *
+from ACME.math.sin         import *
 
 def equilateral_polygon(n,device='cuda:0'):
     """

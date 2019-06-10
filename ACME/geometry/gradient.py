@@ -1,8 +1,8 @@
 import torch
-from math.cross      import *
-from math.normvec    import *
-from topology.ispoly import *
-from .area           import *
+from ACME.math.cross      import *
+from ACME.math.normvec    import *
+from ACME.topology.ispoly import *
+from .area                import *
 
 def gradient(P,T,F):
     """
