@@ -1,6 +1,6 @@
-from utility.strcmpi       import *
-from utility.debug_message import *
-from .fileparts            import *
+from ACME.utility.strcmpi       import *
+from ACME.utility.debug_message import *
+from .fileparts                 import *
 
 
 def _open_file(filename,defaultExt,permission,fileDataFcn,verbose=False):

@@ -1,8 +1,8 @@
 import torch
-from utility.row           import *
-from utility.tensor2string import *
-from color.color2int       import *
-from .io                   import *
+from ACME.utility.row           import *
+from ACME.utility.tensor2string import *
+from ACME.color.color2int       import *
+from .io                        import *
 
 def export_PLY(filename,Point=None,Normal=None,UV=None,Face=None,Color=None,verbose=False):
     """

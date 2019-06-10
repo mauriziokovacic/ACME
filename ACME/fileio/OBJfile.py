@@ -1,10 +1,10 @@
 import torch
-from utility.row           import *
-from utility.repelem       import *
-from utility.debug_message import *
-from utility.tensor2string import *
-from utility.string2tensor import *
-from .io                   import *
+from ACME.utility.row           import *
+from ACME.utility.repelem       import *
+from ACME.utility.debug_message import *
+from ACME.utility.tensor2string import *
+from ACME.utility.string2tensor import *
+from .io                        import *
 
 
 def export_OBJ(filename,Point=None,Normal=None,UV=None,Face=None,verbose=False):
