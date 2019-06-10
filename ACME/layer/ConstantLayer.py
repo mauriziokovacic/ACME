@@ -1,5 +1,5 @@
 import torch
-from utility.ConstantTensor import *
+from ACME.utility.ConstantTensor import *
 
 
 class ConstantLayer(torch.nn.Module):

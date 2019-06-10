@@ -1,6 +1,6 @@
 import torch
-from utility.nop     import *
-from render.mesh2img import *
+from ACME.utility.nop     import *
+from ACME.render.mesh2img import *
 
 class RenderLayer(torch.nn.Module):
     """
