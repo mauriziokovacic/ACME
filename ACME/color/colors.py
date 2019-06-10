@@ -1,5 +1,5 @@
 import torch
-from utility.Uint8Tensor import *
+from ACME.utility.Uint8Tensor import *
 from .color2double       import *
 
 def black():

@@ -1,4 +1,4 @@
-from utility.FloatTensor import *
+from ACME.utility.FloatTensor import *
 
 
 def _black():

@@ -1,7 +1,7 @@
 import torch
-from utility.col       import *
-from utility.numel     import *
-from utility.to_column import *
+from ACME.utility.col       import *
+from ACME.utility.numel     import *
+from ACME.utility.to_column import *
 
 
 
