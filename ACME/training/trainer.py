@@ -1,7 +1,7 @@
 import os
 import time
 import torch
-from utility.nop import *
+from ACME.utility.nop import *
 
 class Trainer(object):
     """
