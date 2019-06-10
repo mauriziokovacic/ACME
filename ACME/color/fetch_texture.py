@@ -16,7 +16,7 @@ def fetch_texture1D(texture,t,mode='bilinear'):
     t : Tensor
         the input parameter tensor with shape (N,)
     mode : str (optional)
-        interpolation method. Only 'bilinear' or 'nearest' are accepted
+        interpolation method. Only 'bilinear' or 'nearest' are accepted. Only 'bilinear' retains the gradient.
 
     Returns
     -------
@@ -46,7 +46,7 @@ def fetch_texture2D(texture,uv,mode='bilinear'):
     uv : Tensor
         the input UV tensor with shape (N,2,)
     mode : str (optional)
-        interpolation method. Only 'bilinear' or 'nearest' are accepted
+        interpolation method. Only 'bilinear' or 'nearest' are accepted. Only 'bilinear' retains the gradient.
 
     Returns
     -------
@@ -72,7 +72,7 @@ def fetch_texture3D(texture,uv,mode='bilinear'):
     uv : Tensor
         the input UV tensor with shape (N,3,)
     mode : str (optional)
-        interpolation method. Only 'bilinear' or 'nearest' are accepted
+        interpolation method. Only 'bilinear' or 'nearest' are accepted. Only 'bilinear' retains the gradient.
 
     Returns
     -------
