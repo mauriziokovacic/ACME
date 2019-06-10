@@ -1,5 +1,5 @@
 import torch
-from color.color2float import *
+from ACME.color.color2float import *
 
 def color2normal(C):
     """

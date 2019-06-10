@@ -1,6 +1,6 @@
 import torch
-from utility.row   import *
-from math.constant import *
+from ACME.utility.row   import *
+from ACME.math.constant import *
 
 def sph2color(S,rmax=None):
     """
