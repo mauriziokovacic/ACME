@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 import torch
 from .isnumpy     import *
 from .istorch     import *
@@ -29,7 +29,7 @@ def repelem(tensor,*size):
         out = torch2numpy(out)
     if isnumpy(out):
         for d in range(0,len(size)):
-            out = np.repeat(out,size[d],axis=d)
+            out = numpy.repeat(out,size[d],axis=d)
     if istorch(tensor):
         return numpy2torch(out,dtype=tensor.dtype,device=tensor.device)
     if isnumpy(tensor):

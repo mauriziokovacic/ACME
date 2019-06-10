@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 import torch
 from .numpy2torch import *
 
@@ -30,19 +30,19 @@ def uniquetol(A,tol=10e-4,ByRows=False):
         c  = []
         for i in range(col(A)-1,-1,-1):
             c = c+[C[:,i]]
-        i  = np.lexsort(c,axis=0)
-        d  = np.reshape(np.append(np.ones((1,col(C)))+tol,np.abs(np.diff(C[i],axis=0))),(-1,col(A)))
-        tf = np.sum(d>tol,1)>0
+        i  = numpy.lexsort(c,axis=0)
+        d  = numpy.reshape(numpy.append(numpy.ones((1,col(C)))+tol,numpy.abs(numpy.diff(C[i],axis=0))),(-1,col(A)))
+        tf = numpy.sum(d>tol,1)>0
         n  = row(A)
     else:
-        C  = np.ravel(C)
-        i  = np.argsort(C)
-        d  = np.append(1+tol,np.diff(C[i]))
-        tf = d>(tol*np.max(np.abs(C)))
-        n  = np.size(A)
+        C  = numpy.ravel(C)
+        i  = numpy.argsort(C)
+        d  = numpy.append(1+tol,numpy.diff(C[i]))
+        tf = d>(tol*numpy.max(numpy.abs(C)))
+        n  = numpy.size(A)
     ia = i[tf]
     C  = C[ia]
-    ic = np.zeros(n,dtype=int)
+    ic = numpy.zeros(n,dtype=int)
     j = -1
     for x in range(0,n):
         if tf[x]:
