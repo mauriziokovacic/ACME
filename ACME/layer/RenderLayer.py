@@ -19,7 +19,7 @@ class RenderLayer(torch.nn.Module):
 
     Methods
     -------
-    __colorFcn(input)
+    __colorFcn__(input)
         creates colors from the input data
     forward(input)
         returns the rendered input
@@ -47,7 +47,7 @@ class RenderLayer(torch.nn.Module):
 
 
 
-    def __colorFcn(self,input):
+    def __colorFcn__(self,input):
         """
         Creates colors from the input data
 
@@ -83,7 +83,7 @@ class RenderLayer(torch.nn.Module):
 
         P   = input.pos
         T   = input.face
-        out = mesh2img(self.renderer,T,P,self.__colorFcn(input),postFcn=self.postFcn)
+        out = mesh2img(self.renderer,T,P,self.__colorFcn__(input),postFcn=self.postFcn)
         if self.keep:
             setattr(input,self.attr,out)
         return out
@@ -109,7 +109,7 @@ class NormalRenderLayer(RenderLayer):
 
     Methods
     -------
-    __colorFcn(input)
+    __colorFcn__(input)
         creates colors from the input data
     forward(input)
         returns the rendered input
@@ -132,7 +132,7 @@ class NormalRenderLayer(RenderLayer):
 
 
 
-    def __colorFcn(self,input):
+    def __colorFcn__(self,input):
         """
         Creates colors from the normals of the input data
 
@@ -177,7 +177,7 @@ class PositionRenderLayer(RenderLayer):
 
     Methods
     -------
-    __colorFcn(input)
+    __colorFcn__(input)
         creates colors from the input data
     forward(input)
         returns the rendered input
@@ -198,7 +198,7 @@ class PositionRenderLayer(RenderLayer):
 
 
 
-    def __colorFcn(self,input):
+    def __colorFcn__(self,input):
         """
         Creates colors from the positions of the input data
 
