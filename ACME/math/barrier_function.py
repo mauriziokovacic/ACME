@@ -23,5 +23,5 @@ def barrier_function(x,t):
     out       = torch.zeros_like(x,dtype=torch.float,device=x.device)
     i         = (x>0)and(x<t)
     out[i]    = torch.reciprocal(g(x[i])) - 1
-    out[x<=0] = inf
+    out[x<=0] = Inf
     return out
