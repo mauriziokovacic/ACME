@@ -1,6 +1,6 @@
 import torch
-from utility.numel      import *
-from utility.LongTensor import *
+from ACME.utility.numel      import *
+from ACME.utility.LongTensor import *
 
 def diag(tensor,rows=None,cols=None):
     """

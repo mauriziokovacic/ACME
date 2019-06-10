@@ -1,6 +1,6 @@
 import torch
-from utility.row            import *
-from utility.ConstantTensor import *
+from ACME.utility.row            import *
+from ACME.utility.ConstantTensor import *
 
 def cart2affine(P,w=1):
     """

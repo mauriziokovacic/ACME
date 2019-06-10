@@ -1,6 +1,6 @@
-from utility.FloatTensor import *
-from .axang2rotm         import *
-from .rotm2affine        import *
+from ACME.utility.FloatTensor import *
+from .axang2rotm              import *
+from .rotm2affine             import *
 
 def rot_y(theta,affine=False,device='cuda:0'):
     """

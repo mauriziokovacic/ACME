@@ -1,8 +1,8 @@
 import math
 import numpy
 import torch
-from utility.isnumpy import *
-from utility.istorch import *
+from ACME.utility.isnumpy import *
+from ACME.utility.istorch import *
 
 def floor(a):
     """

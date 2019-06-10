@@ -1,7 +1,7 @@
 import torch
-from utility.col import *
-from .cos import *
-from .sin import *
+from ACME.utility.col import *
+from .cos             import *
+from .sin             import *
 
 def pol2cart(P):
     """

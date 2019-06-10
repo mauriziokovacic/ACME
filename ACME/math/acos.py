@@ -1,6 +1,8 @@
 import math
+import numpy
 import torch
-from utility import *
+from ACME.utility.isnumpy import *
+from ACME.utility.istorch import *
 
 def acos(theta):
     """
@@ -17,6 +19,8 @@ def acos(theta):
         the angle of the input
     """
 
+    if isnumpy(theta):
+        return numpy.acos(theta)
     if istorch(theta):
         return torch.acos(theta)
     return math.acos(theta)

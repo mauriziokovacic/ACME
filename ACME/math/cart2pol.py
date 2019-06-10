@@ -1,6 +1,6 @@
 import torch
-from utility.col import *
-from .norm import *
+from ACME.utility.col import *
+from .norm            import *
 
 def cart2pol(P):
     """

@@ -1,6 +1,8 @@
 import math
+import numpy
 import torch
-from utility import *
+from ACME.utility.isnumpy import *
+from ACME.utility.istorch import *
 
 def sin(theta):
     """
@@ -17,6 +19,8 @@ def sin(theta):
         the sine of the input
     """
 
+    if isnumpy(theta):
+        return numpy.sin(theta)
     if istorch(theta):
         return torch.sin(theta)
     return math.sin(theta)

@@ -1,5 +1,5 @@
-from utility.col     import *
-from utility.flatten import *
+from ACME.utility.col     import *
+from ACME.utility.flatten import *
 
 def affine2linear(M):
     """

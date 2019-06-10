@@ -1,6 +1,8 @@
 import math
+import numpy
 import torch
-from utility import *
+from ACME.utility.isnumpy import *
+from ACME.utility.istorch import *
 
 def cos(theta):
     """
@@ -17,6 +19,8 @@ def cos(theta):
         the cosine of the input
     """
 
+    if isnumpy(theta):
+        return numpy.cos(theta)
     if istorch(theta):
         return torch.cos(theta)
     return math.cos(theta)
