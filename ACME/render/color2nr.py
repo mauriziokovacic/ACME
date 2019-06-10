@@ -1,8 +1,8 @@
 import torch
-from utility.row       import *
-from utility.col       import *
-from utility.repmat    import *
-from color.color2float import *
+from ACME.utility.row       import *
+from ACME.utility.col       import *
+from ACME.utility.repmat    import *
+from ACME.color.color2float import *
 
 def color2nr(T,C,texture_size=2,dtype=torch.float32):
     """

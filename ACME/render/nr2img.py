@@ -1,4 +1,4 @@
-from utility.torch2numpy import *
+from ACME.utility.torch2numpy import *
 
 def nr2img(I):
     """
