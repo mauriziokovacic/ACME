@@ -36,6 +36,7 @@ from .shape_sclale            import *
 from .soup2mesh               import *
 from .specular_direction      import *
 from .sphere                  import *
+from .sphere_coverage         import *
 from .subdivide               import *
 from .tetrahedron             import *
 from .torus                   import *
