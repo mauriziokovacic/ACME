@@ -1,5 +1,5 @@
 import torch
-from utility.to_row import *
+from ACME.utility.to_row import *
 
 def ind2poly(*I):
     """

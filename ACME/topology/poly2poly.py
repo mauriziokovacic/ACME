@@ -1,7 +1,7 @@
 import torch
-from utility.row    import *
-from utility.repmat import *
-from utility.unique import *
+from ACME.utility.row    import *
+from ACME.utility.repmat import *
+from ACME.utility.unique import *
 
 def poly2poly(T,n):
     """

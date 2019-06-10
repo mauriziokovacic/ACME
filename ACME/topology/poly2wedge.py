@@ -1,6 +1,6 @@
-from utility.row        import *
-from utility.indices    import *
-from utility.circrepeat import *
+from ACME.utility.row        import *
+from ACME.utility.indices    import *
+from ACME.utility.circrepeat import *
 
 def poly2wedge(T):
     """

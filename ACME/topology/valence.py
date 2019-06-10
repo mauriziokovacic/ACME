@@ -1,7 +1,7 @@
 import torch
-from utility.unique     import *
-from utility.accumarray import *
-from .poly2edge         import *
+from ACME.utility.unique     import *
+from ACME.utility.accumarray import *
+from .poly2edge              import *
 
 def valence(T,n=None):
     """

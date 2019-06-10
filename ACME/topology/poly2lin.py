@@ -1,8 +1,8 @@
-from utility.row     import *
-from utility.col     import *
-from utility.flatten import *
-from utility.indices import *
-from utility.repmat  import *
+from ACME.utility.row     import *
+from ACME.utility.col     import *
+from ACME.utility.flatten import *
+from ACME.utility.indices import *
+from ACME.utility.repmat  import *
 
 def poly2lin(T):
     """

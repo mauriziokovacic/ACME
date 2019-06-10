@@ -1,6 +1,6 @@
 import torch
-from utility.unique import *
-from .polysort      import *
+from ACME.utility.unique import *
+from .polysort           import *
 
 def poly2unique(T,winding=False):
     """
