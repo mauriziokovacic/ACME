@@ -30,11 +30,11 @@ class DecisionLayer(torch.nn.Module):
         """
 
         super(DecisionLayer,self).__init__()
-        self.__create_layers(input_size,*cfg)
+        self.__create_layers(input_size,cfg)
 
 
 
-    def __create_layers(self,input_size,*cfg):
+    def __create_layers(self,input_size,cfg):
         """
         Creates the inner fully connected layers
 

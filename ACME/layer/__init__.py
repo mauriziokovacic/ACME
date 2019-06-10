@@ -6,6 +6,7 @@ from .Conv2D        import *
 from .DecisionLayer import *
 from .Extract_Attr  import *
 from .Flatten       import *
+from .MLPLayer      import *
 from .MoveLayer     import *
 from .RenderLayer   import *
 from .Reshape       import *
