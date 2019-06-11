@@ -153,11 +153,16 @@ class Trainer(object):
         if not self.isready():
             print('Trainer is not ready.')
             return
-        if self.inputFcn is not None:
-            input = self.inputFcn(input)
-        output = self.model(input)
-        if self.outputFcn is not None:
-            output = self.outputFcn(output)
+
+        inputFcn  = self.inputFcn
+        if inputFcn is None:
+            inputFcn = nop
+        outputFcn = self.outputFcn
+        if outputFcn is None:
+            outputFcn = nop
+
+        self.model.eval()
+        output = outputFcn(self.model(inputFcn(input)))
         return output
 
 
