@@ -96,4 +96,4 @@ def distance(A,B,p=2,dim=1):
         a tensor containing the norm of the input tensors
     """
 
-    return pnorm(A-B,p,dim)
+    return pnorm(A-B,p=p,dim=dim)
