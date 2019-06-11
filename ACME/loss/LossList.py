@@ -48,6 +48,8 @@ class LossList(Loss):
             a sequence of losses to be evaluated
         name : str (optional)
             the name of the loss (default is 'List')
+        compact : bool (optional)
+            if True returns a single entry dict, else lists every contained loss
         **kwargs : keyword arguments...
             any keyword argument from Loss class
         """
