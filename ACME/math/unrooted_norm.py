@@ -53,3 +53,26 @@ def sqnorm(tensor,dim=1):
     """
 
     return unrooted_norm(tensor,p=2,dim=dim)
+
+
+
+def sqdistance(A,B,dim=1):
+    """
+    Computes the squared distance between the given tensors
+
+    Parameters
+    ----------
+    A : Tensor
+        first tensor
+    B : Tensor
+        second tensor
+    dim : int (optional)
+        dimension along the norm is computed (default is 1)
+
+    Returns
+    -------
+    Tensor
+        a tensor containing the norm of the input tensors
+    """
+
+    return sqnorm(A-B,dim=dim)
