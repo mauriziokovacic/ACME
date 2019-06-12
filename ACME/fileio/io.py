@@ -1,3 +1,4 @@
+import warnings
 from ACME.utility.strcmpi       import *
 from ACME.utility.debug_message import *
 from .fileparts                 import *
@@ -40,7 +41,7 @@ def _open_file(filename,defaultExt,permission,fileDataFcn,verbose=False):
             fileID = open(path+'/'+filename+ext,mode=permission)
         except:
             debug_message('FAILED.',verbose)
-            warn('File "{}/{}{}"  does not exist.')
+            warnings.warn('File "{}/{}{}"  does not exist.'.format(path,filename,ext),RuntimeWarning)
             return
     debug_message('DONE.',verbose)
     debug_message('Starting routine...',verbose)
