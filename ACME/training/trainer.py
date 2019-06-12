@@ -1,6 +1,7 @@
 import os
 import time
 import torch
+import warnings
 from ACME.utility.nop import *
 
 class Trainer(object):
@@ -66,6 +67,7 @@ class Trainer(object):
         Returns
         -------
         bool
+            the trainer state
         """
 
         return (self.model is not None) and\
@@ -95,7 +97,7 @@ class Trainer(object):
         """
 
         if not self.isready():
-            print('Trainer is not ready.')
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
             return
         n = len(dataset)
         if path is None:
@@ -151,7 +153,7 @@ class Trainer(object):
         """
 
         if not self.isready():
-            print('Trainer is not ready.')
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
             return
 
         inputFcn  = self.inputFcn
@@ -178,11 +180,11 @@ class Trainer(object):
         """
 
         if not self.isready():
-            print('Trainer is not ready.')
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
-        path = path + '/' + self.name + '.tar'
+            path = path + '/' + self.name + '.tar'
         torch.save({
                     'model_state_dict': self.model.state_dict(),
                     'optimizer_state_dict': self.optimizer.state_dict(),
@@ -203,11 +205,11 @@ class Trainer(object):
         """
 
         if not self.isready():
-            print('Trainer is not ready.')
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
-        path = path + '/' + self.name + '.tar'
+            path = path + '/' + self.name + '.tar'
         if not os.path.isfile(path):
             print('File ' + path + ' does not exists.')
             return
@@ -231,11 +233,11 @@ class Trainer(object):
         """
 
         if not self.isready():
-            print('Trainer is not ready.')
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
-        path = path + '/' + self.name + '.pth'
+            path = path + '/' + self.name + '.pth'
         torch.save(self.model,path)
 
 
@@ -251,11 +253,11 @@ class Trainer(object):
         """
 
         if not self.isready():
-            print('Trainer is not ready.')
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
-        path = path + '/' + self.name + '.pth'
+            path = path + '/' + self.name + '.pth'
         if not os.path.isfile(path):
             print('File ' + path + ' does not exists.')
             return
