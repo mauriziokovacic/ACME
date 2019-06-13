@@ -2,10 +2,12 @@ import torch
 from ACME.utility.row        import *
 from ACME.utility.col        import *
 from ACME.utility.numel      import *
+from ACME.utility.indices    import *
 from ACME.utility.strcmpi    import *
-from ACME.utility.to_column  import *
-from ACME.topology.poly2ind  import *
-from ACME.topology.poly2poly import *
+from ACME.utility.to_row     import *
+from ACME.utility.unique     import *
+from ACME.topology.adjacency import *
+from ACME.topology.poly2edge import *
 from .triangle_cotangent     import *
 
 
@@ -46,23 +48,14 @@ def Adjacency(T,P=None,type='std',dtype=torch.float):
     if strcmpi(type,'std'):
         E = poly2edge(T)[0]
         E = torch.cat((E,flipud(E)),dim=1)
-        for i,j in torch.t(E):
-            A[i,j] = 1
-        return A
+        return adjacency(E,torch.ones(col(E),dtype=dtype,device=T.device),size=(n,n))
 
     if strcmpi(type,'cot'):
         assert P is not None, 'Point tensor should not be None'
         assert istri(T), 'Cotangent adjacency defined only for triangular meshes'
-        I,J,K = tri2ind(T)
-        CTi,CTj,CTk = triangle_cotangent(P,T)
-        W = torch.cat((to_column(torch.cat((I,J,K,J,K,I))).to(dtype=dtype),\
-                       to_column(torch.cat((J,K,I,I,J,K))).to(dtype=dtype),\
-                       to_column(torch.mul(torch.cat((CTk,CTi,CTj,CTk,CTi,CTj),dim=0),0.5))),dim=1)
-        for i,j,w in W:
-            i = i.to(dtype=torch.long)
-            j = j.to(dtype=torch.long)
-            A[i,j] += w
-        return A
+        E = poly2edge(T)[0]
+        W = 0.5*poly2edge(torch.cat(tuple(to_row(w) for w in triangle_cotangent(P,T)),dim=0))[0]
+        return adjacency(E,W,size=(n,n))
 
     if type.lower()=='face':
         n   = col(T)
