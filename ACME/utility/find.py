@@ -17,7 +17,7 @@ def find(cond,linear=True):
 
     Returns
     -------
-    LongTensor or (
+    LongTensor or (LongTensor,LongTensor)
         a list of indices or a two-dimensional tensor containing the subscripts
     """
 
@@ -31,3 +31,5 @@ def find(cond,linear=True):
     c = flatten(cond)
     i = tuple(j[c] for j in i)
     return i
+
+    #return torch.nonzero(cond.flatten()).flatten() if linear else torch.nonzero(cond)
