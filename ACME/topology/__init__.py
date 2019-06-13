@@ -1,4 +1,6 @@
+from .adjacency   import *
 from .boundary    import *
+from .digraph     import *
 from .ind2poly    import *
 from .ispoly      import *
 from .poly2edge   import *
