@@ -1,9 +1,7 @@
 import torch
 from ACME.utility.row     import *
 from ACME.utility.col     import *
-from ACME.utility.ndim    import *
 from ACME.utility.reshape import *
-from ACME.utility.flatten import *
 
 def linear2affine(M):
     """
@@ -23,7 +21,7 @@ def linear2affine(M):
     """
 
     return reshape(
-                torc.cat((M,
+                torch.cat((M,
                           torch.zeros(row(M),2 if col(M)==6 else 3,dtype=M.dtype,device=M.device),
                           torch.ones( row(M),1,dtype=M.dtype,device=M.device)),dim=1),
                 (row(M),3 if col(M)==6 else 4,-1))
