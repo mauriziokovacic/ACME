@@ -7,14 +7,18 @@ from ACME.math.sin            import *
 from ACME.math.normvec        import *
 from .grid2mesh               import *
 
-def Sphere(n=20,device='cuda:0'):
+
+
+def Sphere(n=20,m=None,device='cuda:0'):
     """
     Creates a unit sphere quad mesh
 
     Parameters
     ----------
     n : int (optional)
-        the resolution of the sphere (default is 20)
+        the resolution of the sphere along azimuth (default is 20)
+    m : int (optional)
+        the resolution of the sphere along elevation. If None it will be automatically computed (default is None)
     device : str or torch.device (optional)
         the device the tensors will be stored to (default is 'cuda:0')
 
@@ -24,8 +28,10 @@ def Sphere(n=20,device='cuda:0'):
         the point set tensor, the topology tensor, the vertex normals
     """
 
+    if m is None:
+        m = n
     theta        = FloatTensor(list(range(-n,n,2)),device='cpu').unsqueeze(0)/n*PI
-    phi          = FloatTensor(list(range(-n,n,2)),device='cpu').unsqueeze(1)/n*PI_2
+    phi          = FloatTensor(list(range(-m,m,2)),device='cpu').unsqueeze(1)/m*PI_2
     cosphi       = cos(phi)
     cosphi[ 0]   = 0
     cosphi[-1]   = 0
