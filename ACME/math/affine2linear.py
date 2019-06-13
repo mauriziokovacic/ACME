@@ -1,4 +1,7 @@
+from ACME.utility.row     import *
 from ACME.utility.col     import *
+from ACME.utility.ndim    import *
+from ACME.utility.reshape import *
 from ACME.utility.flatten import *
 
 def affine2linear(M):
@@ -8,12 +11,12 @@ def affine2linear(M):
     Parameters
     ----------
     M : Tensor
-        a (4,4) or (3,3) tensor
+        a (M,4,4,) or (M,3,3,) tensor
 
     Returns
     -------
     Tensor
-        a (1,12) or (1,6) tensor
+        the (M,12) or (M,6) tensor
     """
 
-    return flatten(M)[:-col(M)]
+    return flatten(M)[:-col(M)] if ndim(M)==2 else reshape(M,(row(M),-1))
