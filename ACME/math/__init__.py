@@ -22,6 +22,7 @@ from .dot                import *
 from .eye                import *
 from .fibonacci          import *
 from .floor              import *
+from .linear2affine      import *
 from .linint             import *
 from .norm               import *
 from .normalize          import *
