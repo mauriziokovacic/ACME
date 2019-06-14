@@ -4,7 +4,6 @@ from ACME.utility.col       import *
 from ACME.utility.repmat    import *
 from ACME.utility.circshift import *
 from ACME.utility.indices   import *
-from ACME.utility.find      import *
 from .ind2poly              import *
 
 def poly2edge(T):
@@ -69,23 +68,3 @@ def quad2edge(T):
         the edge tensor and the respective quad indices
     """
     return poly2edge(T)
-
-
-
-def adj2edge(A):
-    """
-    Extracts the edges from an adjacency matrix.
-
-    Parameters
-    ----------
-    A : Tensor
-        the adjacency matrix
-
-    Returns
-    -------
-    LongTensor
-        the edge tensor
-    """
-
-    i,j = find(A>0,linear=False)
-    return ind2edge(i,j)
