@@ -16,7 +16,7 @@ from .color2nr                     import *
 
 
 
-def mesh2img(renderer,T,P,C=None,postFcn=nop,culling=None):
+def mesh2img(renderer,T,P,C=None,postFcn=nop):
     """
     Renders an input mesh with the given renderer.
 
@@ -36,8 +36,6 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop,culling=None):
         the RGB color tensor. If None the mesh will be colored white (default is None)
     postFcn : callable (optional)
         a function to be applied to the Neural Renderer output (defalut is nop)
-    culling : str (optional)
-        culling type, being either 'back' or 'front'. If None it won't be applied (default is None)
 
     Returns
     -------
@@ -50,7 +48,7 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop,culling=None):
         c = torch.ones(1,3,dtype=torch.float,device=renderer.device)
     else:
         c = C
-    if culling is not None:
+    if renderer.culling is not None:
         n = triangle_normal(P,t)
         d = dot(normr(-renderer.eye),n)
         if strcmpi(culling,'back'):
@@ -234,7 +232,7 @@ def alpha_channel(I):
 
 
 
-def mesh2rgb(renderer,T,P,C=None,culling=None):
+def mesh2rgb(renderer,T,P,C=None):
     """
     Renders the RGB channels of an input mesh with the given renderer
 
@@ -248,19 +246,17 @@ def mesh2rgb(renderer,T,P,C=None,culling=None):
         the points set tensor
     C : Tensor or Uint8Tensor (optional)
         the RGB color tensor. If None the mesh will be colored white (default is None)
-    culling : str (optional)
-        culling type, being either 'back' or 'front'. If None it won't be applied (default is None)
 
     Returns
     -------
     Tensor
         the Neural Renderer image in RGB format
     """
-    return mesh2img(renderer,T,P,C=C,postFcn=rgb_channel,culling=culling)
+    return mesh2img(renderer,T,P,C=C,postFcn=rgb_channel)
 
 
 
-def mesh2depth(renderer,T,P,C=None,culling=None):
+def mesh2depth(renderer,T,P,C=None):
     """
     Renders the depth channel of an input mesh with the given renderer
 
@@ -274,19 +270,17 @@ def mesh2depth(renderer,T,P,C=None,culling=None):
         the points set tensor
     C : Tensor or Uint8Tensor (optional)
         the RGB color tensor. If None the mesh will be colored white (default is None)
-    culling : str (optional)
-        culling type, being either 'back' or 'front'. If None it won't be applied (default is None)
 
     Returns
     -------
     Tensor
         the Neural Renderer image in D format
     """
-    return mesh2img(renderer,T,P,C=C,postFcn=depth_channel,culling=culling)
+    return mesh2img(renderer,T,P,C=C,postFcn=depth_channel)
 
 
 
-def mesh2rgbd(renderer,T,P,C=None,culling=None):
+def mesh2rgbd(renderer,T,P,C=None):
     """
     Renders the RGBD channels of an input mesh with the given renderer
 
@@ -300,15 +294,13 @@ def mesh2rgbd(renderer,T,P,C=None,culling=None):
         the points set tensor
     C : Tensor or Uint8Tensor (optional)
         the RGB color tensor. If None the mesh will be colored white (default is None)
-    culling : str (optional)
-        culling type, being either 'back' or 'front'. If None it won't be applied (default is None)
 
     Returns
     -------
     Tensor
         the Neural Renderer image in RGBD format
     """
-    return mesh2img(renderer,T,P,C=C,postFcn=rgbd_channel,culling=culling)
+    return mesh2img(renderer,T,P,C=C,postFcn=rgbd_channel)
 
 
 

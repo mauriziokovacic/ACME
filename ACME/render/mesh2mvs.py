@@ -188,7 +188,7 @@ def camera_n(n,camera_distance=1,to_spherical=False,device='cuda:0'):
     return P,T
 
 
-def mesh2mvs(renderer,T,P,C=None,Cam=None,postFcn=nop,culling=None,pivoting=False):
+def mesh2mvs(renderer,T,P,C=None,Cam=None,postFcn=nop,pivoting=False):
     """
     Renders a multi view stack of images of the input mesh with the given renderer
 
@@ -206,8 +206,6 @@ def mesh2mvs(renderer,T,P,C=None,Cam=None,postFcn=nop,culling=None,pivoting=Fals
         the view points to render the mesh from. If None, 18 distribuited points will be choosen (default is None)
     postFcn : callable (optional)
         a function to be applied to the Neural Renderer output (defalut is nop)
-    culling : str (optional)
-        culling type, being either 'back' or 'front'. If None it won't be applied (default is None)
     pivoting : bool (optional)
         if True rotates the mesh instead of moving the camera, False otherwise (default is False)
 
@@ -223,8 +221,8 @@ def mesh2mvs(renderer,T,P,C=None,Cam=None,postFcn=nop,culling=None,pivoting=Fals
         def viewFcn(c):
             renderer.eye             = c
             renderer.light_direction = -c
-            return mesh2img(renderer,T,P,C=C,postFcn=postFcn,culling=culling)
+            return mesh2img(renderer,T,P,C=C,postFcn=postFcn)
     else:
         def viewFcn(c):
-            return mesh2img(renderer,T,torch.mm(P,sph2rotm(c)),C=C,postFcn=postFcn,culling=culling)
+            return mesh2img(renderer,T,torch.mm(P,sph2rotm(c)),C=C,postFcn=postFcn)
     return torch.cat(tuple(viewFcn(c).unsqueeze(0) for c in Cam),dim=0)

@@ -20,9 +20,15 @@ class Renderer(nr.Renderer):
         enables the renderer lighting
     disable_lighting()
         disables the renderer lighting
+    disable_culling()
+        disables face culling
+    enable_back_culling()
+        enables back face culling
+    enable_front_culling()
+        enables front face culling
     """
 
-    def __init__(self,device='cuda:0',lighting=False,**kwargs):
+    def __init__(self,device='cuda:0',culling=None,lighting=False,**kwargs):
         """
         Parameters
         ----------
@@ -38,6 +44,7 @@ class Renderer(nr.Renderer):
         self.eye             = unitvec(3,0,device=device)
         self.light_direction = -self.eye
         self.device          = device
+        self.culling         = culling
         self.toggle_lighting(lighting)
 
 
@@ -72,3 +79,27 @@ class Renderer(nr.Renderer):
 
         self.toggle_lighting(False)
 
+
+
+    def disable_culling(self):
+        """Disables face culling"""
+
+        self.culling = None
+
+
+
+    def enable_back_culling(self):
+        """
+        Enables back face culling
+        """
+
+        self.culling = 'back'
+
+
+
+    def enable_front_culling(self):
+        """
+        Enables front face culling
+        """
+
+        self.culling = 'front'
