@@ -26,19 +26,20 @@ def Sphere(tile=(20,20),device='cuda:0'):
         the point set tensor, the topology tensor, the vertex normals
     """
 
-    n            = tile[0]
-    m            = tile[1]
-    theta        = FloatTensor(list(range(-n,n,2)),device='cpu').unsqueeze(0)/n*PI
-    phi          = FloatTensor(list(range(-m,m,2)),device='cpu').unsqueeze(1)/m*PI_2
-    cosphi       = cos(phi)
-    cosphi[ 0]   = 0
-    cosphi[-1]   = 0
-    sintheta     = sin(theta)
-    sintheta[ 0] = 0
-    sintheta[-1] = 0
-    x            = torch.mm(cosphi,cos(theta))
-    y            = torch.mm(cosphi,sintheta)
-    z            = torch.mm(sin(phi),torch.ones(1,n,dtype=torch.float))
-    T,P          = grid2mesh(x,y,z,device=device)
-    N            = normr(P.clone())
+    n              = tile[0]+1
+    m              = tile[1]+1
+    theta          = torch.t(linspace(-1,1,n,device=device))*PI
+    phi            = linspace(-1,1,m,device=device)*PI_2
+    cosphi         = cos(phi)
+    cosphi[ 0]     = 0
+    cosphi[-1]     = 0
+    sintheta       = sin(theta)
+    sintheta[:, 0] = 0
+    sintheta[:,-1] = 0
+    x              = torch.mm(cosphi,cos(theta))
+    y              = torch.mm(cosphi,sintheta)
+    z              = torch.mm(sin(phi),torch.ones(1,n,dtype=torch.float,device=device))
+    T,P            = grid2mesh(x,y,z,device=device)
+    P              = normr(P)
+    N              = P.clone()
     return P,T,N
