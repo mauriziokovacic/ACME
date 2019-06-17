@@ -66,7 +66,7 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop):
         c = c[i]
 
     c = color2nr(t,c,texture_size=2,dtype=torch.float32,device=renderer.device)
-    t = IntTensor(torch.t(t),device=renderer.device)
+    t = torch.t(t).to(dtype=torch.int,device=renderer.device)
     p = P[None,:,:]
     t = t[None,:,:]
     I = renderer(p,t,c)
