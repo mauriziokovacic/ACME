@@ -18,15 +18,15 @@ class MLPLayer(torch.nn.Module):
     """
 
     def __init__(self,
-             *data_size,
+             dim,
              cfg=[32,32],
              in_channels=3,
             ):
         """
         Parameters
         ----------
-        *data_size : tuple
-            the data size in each dimension
+        dim : int
+            the data dimensions
         cfg : list (optional)
             a list containing the inner architecture configuration
         in_channels : int (optional)
@@ -36,11 +36,11 @@ class MLPLayer(torch.nn.Module):
         """
 
         super(MLPLayer,self).__init__()
-        self.model = self.__create_model(cfg,in_channels,*data_size)
+        self.model = self.__create_model(cfg,in_channels,dim)
 
 
 
-    def __create_model(self,cfg,in_channels,data_size):
+    def __create_model(self,cfg,in_channels,dim):
         """
         Creates the inner architecture of this layer
 
@@ -50,8 +50,8 @@ class MLPLayer(torch.nn.Module):
             the inner architecture configuration
         in_channels : int
             the number of input channels
-        data_size : tuple
-            the data size in each dimension
+        dim : int
+            the data dimensions
 
         Returns
         -------
@@ -61,12 +61,15 @@ class MLPLayer(torch.nn.Module):
 
         layers = []
         for v in cfg:
-                layers += [eval('torch.nn.Conv'+str(len(data_size))+'d(in_channels, v, kernel_size=1, padding=1)')]
-                layers += [eval('torch.nn.BatchNorm'+str(len(data_size))+'d(v)')]
-                layers += [torch.nn.ReLU(inplace=True)]
+                layers += [eval('torch.nn.Conv'+str(dim)+'d(in_channels, v, kernel_size=1, padding=1, bias=False)')]
+                layers += [eval('torch.nn.BatchNorm'+str(dim)+'d(v)')]
+                layers += [self.__activation__]
                 in_channels = v
         return torch.nn.Sequential(*layers)
 
+
+    def __activation__(self):
+        return torch.nn.ReLU(inplace=True)
 
 
     def forward(self,input):
@@ -85,3 +88,12 @@ class MLPLayer(torch.nn.Module):
         """
 
         return self.model(input)
+
+
+
+class MLPLeak(MLPLayer):
+    def __init__(self,*args,**kwargs):
+        super(MLPLeak,self).__init__(*args,**kwargs)
+
+    def __activation__(self):
+        return torch.nn.LeakyReLU(negative_slope=0.2,inplace=True)
