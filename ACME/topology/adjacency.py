@@ -70,8 +70,7 @@ def adj2edge(A):
         the edge tensor
     """
 
-    i,j = find(A>0,linear=False)
-    return ind2edge(i,j)
+    return torch.t(find(A>0,linear=False))
 
 
 
