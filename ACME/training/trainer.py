@@ -47,9 +47,10 @@ class Trainer(object):
         loads the trained model from the given path
     """
 
-    def __init__(self,model=None,optimizer=None,loss=None,name='Model',device='cuda:0', inputFcn=None, outputFcn=None, stateFcn=None):
+    def __init__(self,model=None,optimizer=None,scheduler=None,loss=None,name='Model',device='cuda:0', inputFcn=None, outputFcn=None, stateFcn=None):
         self.model     = model
         self.optimizer = optimizer
+        self.scheduler = scheduler
         self.loss      = loss
         self.device    = device
         self.epoch     = 0
@@ -72,6 +73,7 @@ class Trainer(object):
 
         return (self.model is not None) and\
                (self.optimizer is not None) and\
+               (self.scheduler is not None) and\
                (self.loss is not None)
 
 
@@ -125,6 +127,10 @@ class Trainer(object):
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
+                if isinstance(self.scheduler,'torch.optim.lr_scheduler.ReduceLROnPlateau'):
+                    self.scheduler.step(loss)
+                else:
+                    self.scheduler.step()
                 if self.stateFcn is not None:
                     self.stateFcn(input,output,self.loss.to_dict(),epoch=(e,self.epoch,epochs),iteration=(i,n),t = time.time()-t)
                 i += 1
@@ -188,6 +194,7 @@ class Trainer(object):
         torch.save({
                     'model_state_dict': self.model.state_dict(),
                     'optimizer_state_dict': self.optimizer.state_dict(),
+                    'scheduler_state_dict': self.scheduler.state_dict(),
                     'loss': self.loss.value.item(),
                     'epoch': self.epoch,
                     }, path)
@@ -216,6 +223,7 @@ class Trainer(object):
         checkpoint = torch.load(path)
         self.model.load_state_dict(checkpoint['model_state_dict'])#,map_location=self.device)
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
         self.loss.value = checkpoint['loss']
         self.epoch      = checkpoint['epoch']
         self.model.train()
