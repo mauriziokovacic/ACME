@@ -40,5 +40,5 @@ def Sphere(tile=(20,20),device='cuda:0'):
     y            = torch.mm(cosphi,sintheta)
     z            = torch.mm(sin(phi),torch.ones(1,n,dtype=torch.float))
     T,P          = grid2mesh(x,y,z,device=device)
-    N            = normr(P)
+    N            = normr(P.clone())
     return P,T,N
