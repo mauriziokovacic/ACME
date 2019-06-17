@@ -21,4 +21,4 @@ def find(cond,linear=True):
         a list of indices or a (ndim(cond),true values,) tensor containing the subscripts
     """
 
-    return torch.nonzero(cond.flatten()).flatten() if linear else torch.t(torch.nonzero(cond))
+    return torch.nonzero(cond.flatten()).flatten() if linear else torch.nonzero(cond)
