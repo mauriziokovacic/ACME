@@ -269,7 +269,8 @@ class Trainer(object):
         if not os.path.isfile(path):
             print('File ' + path + ' does not exists.')
             return
-        self.model = torch.load(path)
+        self.model.load_state_dict(torch.load(path,map_location=self.device))
+        self.model.to(device=self.device)
         self.model.eval()
 
 
