@@ -1,8 +1,6 @@
 import torch
 from ACME.utility.row      import *
 from ACME.utility.col      import *
-from ACME.utility.numel    import *
-from ACME.utility.issquare import *
 from ACME.utility.find     import *
 from .adjacency            import *
 
@@ -14,10 +12,8 @@ class Digraph(object):
 
     Attributes
     ----------
-    __adj : Tensor
+    __adj__ : Tensor
         the adjacency matrix
-    label : list
-        a list of node names
 
     Methods
     -------
@@ -37,12 +33,33 @@ class Digraph(object):
         returns True if node i is a branch node, False otherwise
     isjoint(i)
         returns True if node i is a joint node, False otherwise
+    size()
+        returns the number of nodes in the graph
+    isempty()
+        returns True if the graph is empty
+    from_adj(A)
+        creates the grpah from the given adjacency matrix
+    from_edges(E,W,size)
+        creates the graph from the given edge tensor
     edges()
         returns the edge tensor
+    matrix()
+        returns the adjacency matrix
+    add_nodes(n)
+        adds n new nodes to the graph
+    add_edges(E,W)
+        adds the given edges to the graph
     """
 
-    def __init__(E,W=None,size=None,label=None):
+    def __init__(self):
+        self.__adj__ = None
+
+
+
+    def from_edges(self,E,W=None,size=None):
         """
+        Creates the graph from the given edge tensor
+
         Parameters
         ----------
         E : LongTensor
@@ -51,19 +68,36 @@ class Digraph(object):
             the edge weights tensor. If None, all edges have weight 1 (default is 1)
         size : int (optional)
             the number of graph nodes. If None it will be automatically computed (default is None)
-        label : list (optional)
-            the nodes names. If None they will be automatically set (default is None)
+
+        Returns
+        -------
+        Digraph
+            the graph
         """
 
-        if issquare(E):
-            self.__adj = E
-        else:
-            if W is None:
-                W = torch.ones(col(E),dtype=torch.long,device=I.device)
-            self.__adj = adjacency(E,W,size)
-        if label is None:
-            label = ['node{}'.format(i) for i in row(self.__adj)]
-        self.label = label
+        if W is None:
+            W = torch.ones(col(E),dtype=torch.float,device=I.device)
+        return self.from_adj(adjacency(E,W,size=size))
+
+
+
+    def from_adj(self,A):
+        """
+        Creates the graph from the given adjacency matrix
+
+        Parameters
+        ----------
+        A : Tensor
+            the adjacency matrix
+
+        Returns
+        -------
+        Digraph
+            the graph
+        """
+
+        self.__adj__ = A
+        return self
 
 
 
@@ -82,7 +116,7 @@ class Digraph(object):
             the successors indices
         """
 
-        return find(self.__adj[i,:]>0)
+        return find(self.__adj__[i,:]>0)
 
 
 
@@ -101,7 +135,7 @@ class Digraph(object):
             the predecessors indices
         """
 
-        return find(self.__adj[:,i]>0)
+        return find(self.__adj__[:,i]>0)
 
 
 
@@ -115,7 +149,7 @@ class Digraph(object):
             the roots indices
         """
 
-        return find(torch.sum(self.__adj,0)==0)
+        return find(torch.sum(self.__adj__,0)==0)
 
 
 
@@ -129,7 +163,7 @@ class Digraph(object):
             the leaves indices
         """
 
-        return find(torch.sum(self.__adj,1)==0)
+        return find(torch.sum(self.__adj__,1)==0)
 
 
 
@@ -148,7 +182,7 @@ class Digraph(object):
             True if node i is a root, False otherwise
         """
 
-        return torch.sum(self.__adj[:,i],0)==0
+        return torch.sum(self.__adj__[:,i],0)==0
 
 
 
@@ -167,7 +201,7 @@ class Digraph(object):
             True if node i is a leaf, False otherwise
         """
 
-        return torch.sum(self.__adj[i,:],1)==0
+        return torch.sum(self.__adj__[i,:],1)==0
 
 
 
@@ -189,7 +223,7 @@ class Digraph(object):
             True if node i is a branch node, False otherwise
         """
 
-        return torch.sum(self.__adj[i,:],1)>1 or torch.sum(self.__adj[:,i],0)>1
+        return torch.sum(self.__adj__[i,:],1)>1 or torch.sum(self.__adj__[:,i],0)>1
 
 
 
@@ -210,7 +244,35 @@ class Digraph(object):
             True if node i is a joint node, False otherwise
         """
 
-        return torch.sum(self.__adj[i,:],1)==1 * torch.sum(self.__adj[:,i],0)==1
+        return torch.sum(self.__adj__[i,:],1)==1 * torch.sum(self.__adj__[:,i],0)==1
+
+
+
+    def isempty(self):
+        """
+        Returns True if the graph has no nodes, False otherwise
+
+        Returns
+        -------
+        bool
+            True if graph is empty, False otherwise
+        """
+
+        return self.size() == 0
+
+
+
+    def size(self):
+        """
+        Returns the number of nodes in the graph
+
+        Returns
+        -------
+        int
+            the number of graph nodes
+        """
+
+        return row(self.__adj__)
 
 
 
@@ -224,9 +286,87 @@ class Digraph(object):
             the edge tensor
         """
 
-        return torch.t(torch.nonzero(self.__adj))
+        return adj2edge(self.__adj__)
+
+
+
+    def matrix(self):
+        """
+        Returns the adjacency matrix
+
+        Returns
+        -------
+        LongTensor
+            the edge tensor
+        """
+
+        return self.__adj__.clone()
+
+
+
+    def add_nodes(self,n=1):
+        """
+        Adds n new nodes to the graph
+
+        Parameters
+        ----------
+        n : int (optional)
+            the number of new nodes
+
+        Returns
+        -------
+        Digraph
+            the graph
+        """
+
+        self.__adj__ = torch.cat((self.__adj__,torch.zeros(self.size(),n,  dtype=self.__adj__.dtype,device=self.__adj__.device)),dim=1)
+        self.__adj__ = torch.cat((self.__adj__,torch.zeros(n,self.size()+n,dtype=self.__adj__.dtype,device=self.__adj__.device)),dim=0)
+        return self
+
+
+
+    def add_edge(self,E,W=None):
+        """
+        Adds the given edges to the graph
+
+        Parameters
+        ----------
+        E : LongTensor
+            the (2,N,) edge tensor
+        W : Tensor (optional)
+            the weight tensor. If None the weights are considered to be 1 (default is None)
+
+        Returns
+        -------
+        Digraph
+            the graph
+        """
+
+        if W is None:
+            W = torch.ones(col(E),dtype=torch.float,device=I.device)
+        for i,j,w in zip(*tuple(E),W):
+            self.__adj__[i,j] = w
+        return self
+
+
+
+    def to(self,*args,**kwargs):
+        """
+        Calls the to method of all the contained tensors in the graph
+
+        Returns
+        -------
+        Digraph
+            the graph
+        """
+
+        if not self.isempty():
+            self.__adj__.to(*args,**kwargs)
+        return self
 
 
 
     def __repr__(self):
-        return self.__adj.__repr__()
+        return str(self.__adj__)
+
+
