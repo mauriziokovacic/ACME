@@ -1,46 +1,5 @@
 import torch
-from ACME.utility.row     import *
-from ACME.utility.col     import *
-from ACME.utility.strcmpi import *
-from ACME.math.eye        import *
-from .adjacency           import *
-from .degree              import *
-
-
-
-def Laplacian(A,type='std'):
-    """
-    Returns the laplacian (standard,symmetric or random walk) matrix from a given adjacency matrix
-
-    Parameters
-    ----------
-    A : Tensor
-        an adjacency matrix
-    type : str (optional)
-        the laplacian matrix type. It can either be 'std','sym' or 'walk' (default is 'std')
-
-    Returns
-    -------
-    Tensor
-        the laplacian matrix
-
-    Raises
-    ------
-    AssertionError
-        if type is not supported
-    """
-
-    D = Degree(A)
-    if strcmpi(type,'std'):
-        return D-A
-    I  = eye(row(D),col(D),device=A.device)
-    iD = torch.diag(torch.reciprocal(torch.diag(D)))
-    if strcmpi(type,'sym'):
-        iD = torch.sqrt(iD)
-        return I-torch.mm(iD,torch.mm(A,iD))
-    if strmpi(type,'walk'):
-        return torch.mm(iD,A)
-    assert False, 'Unknown type'
+from ACME.topology.laplacian import *
 
 
 
@@ -61,7 +20,7 @@ def combinatorial_Laplacian(P,T):
         the laplacian matrix
     """
 
-    return Laplacian(Adjacency(T,P=P,type='std'),type='std')
+    return laplacian(Adjacency(T,P=P,type='std'))
 
 
 
@@ -82,4 +41,4 @@ def cotangent_Laplacian(P,T):
         the laplacian matrix
     """
 
-    return Laplacian(Adjacency(T,P=P,type='cot'),type='std')
+    return laplacian(Adjacency(T,P=P,type='cot'))
