@@ -3,23 +3,72 @@ from ACME.utility.accumarray import *
 from ACME.math.norm          import *
 from ACME.math.angle         import *
 from .area                   import *
+from .laplacian              import *
 
 
 
 def mean_curvature_normal(P,T):
+    """
+    Returns the mean curvature normals of the given input mesh
+
+    Parameters
+    ----------
+    P : Tensor
+        the points set tensor
+    T : LongTensor
+        the topology tensor
+
+    Returns
+    -------
+    Tensor
+        the mean curvature normals tensor
+    """
+
     A = torch.reciprocal(torch.mul(barycentric_area(P,T),2))
     L = cotangent_Laplacian(P,T)
     return A * torch.mm(L,P)
 
 
 
-def mean_curvature(P,T,dense=True):
+def mean_curvature(P,T):
+    """
+    Returns the mean curvature of the given input mesh
+
+    Parameters
+    ----------
+    P : Tensor
+        the points set tensor
+    T : LongTensor
+        the topology tensor
+
+    Returns
+    -------
+    Tensor
+        the mean curvature tensor
+    """
+
     Hn = mean_curvature_normal(P,T)
     return torch.mul(norm(Hn),0.5)
 
 
 
 def gaussian_curvature(P,T):
+    """
+    Returns the gaussian curvature of the given input mesh
+
+    Parameters
+    ----------
+    P : Tensor
+        the points set tensor
+    T : LongTensor
+        the topology tensor
+
+    Returns
+    -------
+    Tensor
+        the gaussian curvature tensor
+    """
+
     Pi,Pj,Pk = P[T]
     Eij   = normr(Pj-Pi)
     Ejk   = normr(Pk-Pj)
@@ -31,6 +80,22 @@ def gaussian_curvature(P,T):
 
 
 def max_curvature(P,T):
+    """
+    Returns the max curvature of the given input mesh
+
+    Parameters
+    ----------
+    P : Tensor
+        the points set tensor
+    T : LongTensor
+        the topology tensor
+
+    Returns
+    -------
+    Tensor
+        the max curvature tensor
+    """
+
     H = mean_curvature(P,T)
     K = gaussian_curvature(P,T)
     H2K = torch.pow(H,2)-K
@@ -39,6 +104,22 @@ def max_curvature(P,T):
 
 
 def min_curvature(P,T):
+    """
+    Returns the min curvature of the given input mesh
+
+    Parameters
+    ----------
+    P : Tensor
+        the points set tensor
+    T : LongTensor
+        the topology tensor
+
+    Returns
+    -------
+    Tensor
+        the min curvature tensor
+    """
+
     H   = mean_curvature(P,T)
     K   = gaussian_curvature(P,T)
     H2K = torch.pow(H,2)-K
