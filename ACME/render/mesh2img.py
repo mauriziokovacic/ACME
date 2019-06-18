@@ -66,10 +66,8 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop):
         c = c[i]
 
     c = color2nr(t,c,texture_size=2,dtype=torch.float32,device=renderer.device)
-    t = torch.t(t).to(dtype=torch.int,device=renderer.device)
-    p = P[None,:,:]
-    t = t[None,:,:]
-    I = renderer(p,t,c)
+    t = torch.t(t).to(dtype=torch.int,device=renderer.device).unsqueeze(0)
+    I = renderer(P.unsqueeze(0),t,c)
     I = postFcn(torch.cat((I[0],
                            normalize(I[1].unsqueeze(1),min=renderer.near,max=renderer.far),
                            I[2].unsqueeze(1)), dim=1).to(device=renderer.device))
