@@ -1,7 +1,3 @@
-from torch_geometric.data    import data
-from ACME.topology.poly2poly import *
-from .vertex_normal          import *
-
 def data2mesh(data):
     """
     Extracts from a given torch_geometric Data object the mesh elements
