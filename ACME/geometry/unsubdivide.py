@@ -34,7 +34,7 @@ def unsubdivide(P,T,iter=1):
             i = i[0:3]
         if (row(i)==1):
             i = torch.t(i)
-    p = P[unique(i)]
+    p = P[unique(i)[0]]
     t = reindex(i)
-    i = unique(i)
+    i = unique(i)[0]
     return p,t,i
