@@ -22,11 +22,11 @@ def Mobius_Strip(tile=(50,10),device='cuda:0'):
         the point set tensor, the topology tensor
     """
 
-    u   = linspace(0,PI2,tile[0]+1,device='cpu')
-    v   = linspace(-0.5,0.5,tile[1]+1,device='cpu')
+    u   = linspace(0,PI2,tile[0]+1,device=device)
+    v   = linspace(-0.5,0.5,tile[1]+1,device=device)
     u,v = torch.meshgrid(u,v)
     x   = (1+v*cos(u/2))*cos(u)
     y   = (1+v*cos(u/2))*sin(u)
     z   = v*sin(u/2)
-    T,P = grid2mesh(x,y,z,device=device)
+    T,P = grid2mesh(x,y,z)
     return P,T

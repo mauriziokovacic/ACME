@@ -3,9 +3,8 @@ from ACME.utility.ismatrix import *
 from ACME.utility.row      import *
 from ACME.utility.col      import *
 from ACME.utility.indices  import *
-from ACME.utility.sub2ind  import *
 
-def grid2mesh(X,Y,Z=None,device='cuda:0'):
+def grid2mesh(X,Y,Z=None):
     """
     Creates a 2D or 3D quad mesh from a given set of coordinates in matrix form
 
@@ -17,8 +16,6 @@ def grid2mesh(X,Y,Z=None,device='cuda:0'):
         a (n,m) tensor representing the y coordinate
     Z : Tensor (optional)
         a (n,m) tensor representing the z coordinate (default is None)
-    device : str or torch.device
-        the device the tensors will be stored to (default is 'cuda:0')
 
     Returns
     -------
@@ -36,18 +33,15 @@ def grid2mesh(X,Y,Z=None,device='cuda:0'):
     assert ismatrix(Y), "Y tensor must be a matrix."
     assert row(Y)>=2 and col(Y)>=2, "Y tensor must be at least 2x2."
     assert X.shape==Y.shape, "Tensors must have same shape. Got X={} and Y={}".format(X.shape,Y.shape)
-    n = row(X)
-    m = col(X)
-    P = torch.cat((torch.reshape(X,(n*m,1)),torch.reshape(Y,(n*m,1))),dim=1)
+    m = row(X)
+    n = col(X)
+    P = torch.cat((torch.t(X).flatten().unsqueeze(1),torch.t(Y).flatten().unsqueeze(1)),dim=1)
     if Z is not None:
         assert ismatrix(Z), "Z tensor must be a matrix."
         assert row(Z)>=2 and col(Z)>=2, "Z tensor must be at least 2x2."
         assert X.shape==Z.shape, "Tensors must have same shape. Got X={} and Z={}".format(X.shape,Z.shape)
-        P = torch.cat((P,torch.reshape(Z,(n*m,1))),dim=1)
-    s = X.shape
-    T = torch.t(torch.cat((sub2ind(s,indices(0,m-1,device=device),indices(0,n-1,device=device)),\
-                           sub2ind(s,indices(1,m  ,device=device),indices(0,n-1,device=device)),\
-                           sub2ind(s,indices(1,m  ,device=device),indices(1,n  ,device=device)),\
-                           sub2ind(s,indices(0,m-1,device=device),indices(1,n  ,device=device))),dim=1))
-    P = P.to(device=device)
+        P = torch.cat((P,torch.t(Z).flatten().unsqueeze(1)),dim=1)
+    q = indices(1,m*n-m-1,device=X.device)
+    q = q[(q%m)!=0].unsqueeze(1)
+    T = torch.t(torch.cat((q,q+m,q+m+1,q+1),dim=1))-1
     return T,P

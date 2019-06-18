@@ -26,9 +26,9 @@ def Cylinder(tile=(16,8),radius=1,device='cuda:0'):
         the point set tensor, the topology tensor, the vertex normals
     """
 
-    x,y,z = torch.meshgrid(torch.mul(cos(linspace(0,PI2,tile[0]+1,device='cpu')),radius),\
-                           torch.mul(sin(linspace(0,PI2,tile[0]+1,device='cpu')),radius),\
+    x,y,z = torch.meshgrid(torch.mul(cos(linspace(0,PI2,tile[0]+1,device=device)),radius),
+                           torch.mul(sin(linspace(0,PI2,tile[0]+1,device=device)),radius),
                            linspace(-1,1,tile[1]+1,device='cpu'))
-    T,P   = grid2mesh(x,y,z,device=device)
+    T,P   = grid2mesh(x,y,z)
     N     = torch.cat((normr(P[:,0:2]),torch.zeros(row(P),1,dtype=torch.float,device=device)),dim=1)
     return P,T,N
