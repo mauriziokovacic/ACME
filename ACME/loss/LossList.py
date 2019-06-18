@@ -1,4 +1,5 @@
 import torch
+from functools import reduce
 from .Loss import *
 
 class LossList(Loss):
@@ -84,9 +85,7 @@ class LossList(Loss):
         """
 
         assert not self.empty(), "LossList cannot be evaluated while empty."
-        self.value = torch.zeros(1,dtype=torch.float,device=self.device)
-        for i in range(0,len(self.loss)):
-            self.value += self.loss[i].eval(input,output)
+        self.value = reduce((lambda a,b: a.eval(input,output)+b.eval(input,output),self.loss)
         return self.value
 
 
