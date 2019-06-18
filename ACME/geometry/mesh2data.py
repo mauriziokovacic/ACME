@@ -21,11 +21,7 @@ def mesh2data(P,T,N=None):
         a torch_geometric Data object
     """
 
-    data      = Data(
-                    pos=P.clone(),
-                    face=T.clone(),
-                    norm=N.clone() if N is not None else vertex_normal(P,T),
-                    edge_index=poly2edge(T))
-    data.face = T.clone()
-    data.norm = N.clone() if N is not None else vertex_normal(P,T)
-    return data
+    return Data(pos       = P.clone(),
+                face      = T.clone(),
+                norm      = N.clone() if N is not None else vertex_normal(P,T),
+                edge_index= poly2edge(T)[0])
