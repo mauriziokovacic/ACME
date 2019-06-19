@@ -61,6 +61,7 @@ from .reshape        import *
 from .row            import *
 from .setdiff        import *
 from .size           import *
+from .SparseTensor   import *
 from .squeeze        import *
 from .static_vars    import *
 from .strcmp         import *
