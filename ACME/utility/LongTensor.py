@@ -13,7 +13,7 @@ def LongTensor(values,device='cuda:0'):
 
     Returns
     -------
-    Tensor
+    LongTensor
         a long integer precision tensor
     """
 
