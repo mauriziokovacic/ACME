@@ -24,7 +24,7 @@ def SparseTensor(size=None,indices=None,values=None):
         if indices and values are not both valid or None
     """
 
-    assert !((indices is None)!=(values is None)), 'Indices and values must be either both valid or None.'
+    assert not ((indices is None)!=(values is None)), 'Indices and values must be either both valid or None.'
 
     if size is None:
         if indices is None:
