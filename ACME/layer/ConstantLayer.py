@@ -59,7 +59,7 @@ class ConstantLayer(torch.nn.Module):
 
 
 
-class ZerosLayer(ConstantModule):
+class ZerosLayer(ConstantLayer):
     """
     Returns a null tensor
     """
@@ -78,7 +78,7 @@ class ZerosLayer(ConstantModule):
 
 
 
-class OnesLayer(ConstantModule):
+class OnesLayer(ConstantLayer):
     """
     Returns a tensor of ones
     """
