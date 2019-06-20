@@ -10,7 +10,7 @@ from .data2mesh               import *
 from .disk                    import *
 from .divergence              import *
 from .edge_length             import *
-from .equilater_polygon       import *
+from .equilateral_polygon     import *
 from .euler_characteristic    import *
 from .face2vertex             import *
 from .genus                   import *
@@ -31,7 +31,7 @@ from .plane                   import *
 from .point_plane_distance    import *
 from .project_point_on_plane  import *
 from .quad                    import *
-from .shape_sclale            import *
+from .shape_scale             import *
 from .soup2mesh               import *
 from .specular_direction      import *
 from .sphere                  import *
