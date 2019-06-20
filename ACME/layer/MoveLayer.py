@@ -1,4 +1,4 @@
-from torch.nn import Module
+import torch
 
 class MoveLayer(torch.nn.Module):
     """
