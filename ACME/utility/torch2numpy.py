@@ -26,5 +26,5 @@ def torch2numpy(tensor):
     if isnumpy(tensor):
         return tensor
     if istorch(tensor):
-        return tensor.cpu().numpy()
+        return tensor.cpu().detach().numpy()
     assert False, 'Unknown data type'
