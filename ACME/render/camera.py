@@ -1,21 +1,47 @@
 import torch
-from ACME.utility.row          import *
-from ACME.utility.nop          import *
-from ACME.utility.indices      import *
-from ACME.math.constant        import *
-from ACME.math.cos             import *
-from ACME.math.sin             import *
-from ACME.math.normvec         import *
-from ACME.math.cart2sph        import *
-from ACME.math.sph2rotm        import *
-from ACME.topology.ind2poly    import *
-from ACME.topology.poly2poly   import *
-from ACME.topology.poly2unique import *
-from ACME.geometry.octahedron  import *
-from ACME.geometry.icosahedron import *
-from ACME.geometry.shape_scale import *
-from ACME.geometry.sphere      import *
-from ACME.geometry.soup2mesh   import *
+from ACME.utility.row                  import *
+from ACME.utility.nop                  import *
+from ACME.utility.indices              import *
+from ACME.math.constant                import *
+from ACME.math.cos                     import *
+from ACME.math.sin                     import *
+from ACME.math.normvec                 import *
+from ACME.math.cart2sph                import *
+from ACME.math.sph2cart                import *
+from ACME.math.sph2rotm                import *
+from ACME.topology.ind2poly            import *
+from ACME.topology.poly2poly           import *
+from ACME.topology.poly2unique         import *
+from ACME.geometry.equilateral_polygon import *
+from ACME.geometry.octahedron          import *
+from ACME.geometry.icosahedron         import *
+from ACME.geometry.shape_scale         import *
+from ACME.geometry.sphere              import *
+from ACME.geometry.soup2mesh           import *
+
+
+
+def bokeh_camera(P,n=4,aperture=PI_16):
+    """
+    Creates a set of n positions around the given one
+
+    Parameters
+    ----------
+    P : Tensor
+        a (1,3,) tensor
+    n : int (optional)
+        the number of positions to generate (default is 4)
+    aperture : float (optional)
+        the aperture angle in radians (default is PI/16)
+
+    Returns
+    -------
+    Tensor
+        a (N+1,3,) tensor
+    """
+
+    Q = torch.cat((torch.zeros_like(P),aperture*equilateral_polygon(n,device=P.device)),dim=0)
+    return sph2cart(cart2sph(P)+Q[:,(2,0,1)])
 
 
 
