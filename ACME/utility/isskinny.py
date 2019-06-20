@@ -19,4 +19,4 @@ def isskinny(*tensors):
         True if all the tensors are skinny, False otherwise
     """
 
-    return all([ismatrix(t) and (row(t)>col(t)) fro t in tensors])
+    return all([ismatrix(t) and (row(t)>col(t)) from t in tensors])
