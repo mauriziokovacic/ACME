@@ -7,7 +7,6 @@ from .cube                    import *
 from .curvature               import *
 from .cylinder                import *
 from .data2mesh               import *
-from .degree                  import *
 from .disk                    import *
 from .divergence              import *
 from .edge_length             import *
