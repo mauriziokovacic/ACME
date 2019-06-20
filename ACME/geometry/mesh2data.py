@@ -2,7 +2,7 @@ from torch_geometric.data    import data
 from ACME.topology.poly2poly import *
 from .vertex_normal          import *
 
-def mesh2data(P,T,N=None):
+def mesh2data(P,T,N=None,E=None):
     """
     Converts a given mesh into a torch_geometric Data object
 
@@ -14,6 +14,8 @@ def mesh2data(P,T,N=None):
         the topology tensor
     N : Tensor (optional)
         the vertex normals. If None they will be automatically computed (default is None)
+    E : LongTensor
+        the edge tensor. If None it will be automatically computed (default is None)
 
     Returns
     -------
@@ -24,4 +26,4 @@ def mesh2data(P,T,N=None):
     return Data(pos       = P.clone(),
                 face      = T.clone(),
                 norm      = N.clone() if N is not None else vertex_normal(P,T),
-                edge_index= poly2edge(T)[0])
+                edge_index= poly2edge(T)[0] if E is None else E)

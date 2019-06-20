@@ -1,5 +1,4 @@
 import torch
-from torch_geometric.data     import data
 from ACME.utility.row         import *
 from ACME.utility.col         import *
 from ACME.utility.isempty     import *
@@ -11,6 +10,7 @@ from ACME.topology.ispoly     import *
 from ACME.topology.poly2edge  import *
 from ACME.topology.poly2ind   import *
 from .genus                   import *
+from .mesh2data               import *
 
 
 
@@ -349,12 +349,7 @@ class Mesh(object):
             a torch_geometric Data object
         """
 
-        return Data(
-                    pos  = self.Vertex.clone(),
-                    norm = self.Normal.clone(),
-                    face = self.Face.clone(),
-                    edge_index = self.Edge.clone(),
-               )
+        return mesh2data(self.Vertex,self.Face,self.Normal,self.Edge)
 
 
 
