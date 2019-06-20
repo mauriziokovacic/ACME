@@ -20,4 +20,4 @@ def label2index(value,label,device='cuda:0'):
     """
 
     d = dict(zip(label,list(range(0,len(label)))))
-    return LongTensor([d[x] for x in *value],device=device)
+    return LongTensor([d[x] for x in value],device=device)
