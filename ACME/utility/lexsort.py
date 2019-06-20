@@ -3,7 +3,7 @@ from .indices import *
 
 def lexsort(A,dim=1):
     """
-    Lexicograph sort of elements in a given Tensor
+    Lexicographic sort of elements in a given Tensor
 
     Parameters
     ----------
