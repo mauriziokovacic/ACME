@@ -10,12 +10,12 @@ def pol2cart(P):
     Parameters
     ----------
     P : Tensor
-        the input nx2 or nx3 polar coordinates tensor
+        the input (N,2,) or (N,3,) polar coordinates tensor
 
     Returns
     -------
     Tensor
-        a nx2 or nx3 tensor containing [x,y[,z]]
+        a (N,2,) or (N,3,) tensor containing [x,y[,z]]
     """
 
     theta,r = torch.t(P)[0:2]

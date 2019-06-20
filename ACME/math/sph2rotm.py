@@ -23,7 +23,7 @@ def sph2rotm(S,scaling=False):
     Returns
     -------
     Tensor
-        a (3,3) rotation matrix
+        a (3,3,) rotation matrix
     """
 
     return torch.mm(eye(3)*(S[0] if scaling else 1),

@@ -10,12 +10,12 @@ def cart2sph(P):
     Parameters
     ----------
     P : Tensor
-        a nx3 tensor containing [x,y,z]
+        a (N,3,) tensor containing [x,y,z]
 
     Returns
     -------
     Tensor
-        a nx3 tensor containing [r,theta,phi]
+        a (N,3,) tensor containing [r,theta,phi]
     """
 
     x,y,z = torch.t(P)

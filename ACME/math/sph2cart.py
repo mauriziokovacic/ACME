@@ -9,12 +9,12 @@ def sph2cart(P):
     Parameters
     ----------
     P : Tensor
-        a nx3 tensor containing [r,theta,phi]
+        a (N,3,) tensor containing [r,theta,phi]
 
     Returns
     -------
     Tensor
-        a nx3 tensor containing [x,y,z]
+        a (N,3,) tensor containing [x,y,z]
     """
 
     r,theta,phi = torch.t(P) #radius elevation azimuth

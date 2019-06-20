@@ -9,12 +9,12 @@ def cart2pol(P):
     Parameters
     ----------
     P : Tensor
-        a nx2 or nx3 tensor representing 2D or 3D points
+        a (N,2,) or (N,3,) tensor representing 2D or 3D points
 
     Returns
     -------
     Tensor
-        a nx2 or nx3 tensor containing [theta,r] or [theta,r,z]
+        a (N,2,) or (N,3,) tensor containing [theta,r] or [theta,r,z]
     """
 
     x,y   = torch.t(P)[0:2]
