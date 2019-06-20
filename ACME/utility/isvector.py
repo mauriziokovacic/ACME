@@ -25,4 +25,4 @@ def isvector(*tensors):
     """
 
     [assertion(istensor(t), 'Inputs must be tensors') for t in tensors]
-    return all([[any([numel(t)==d for d in t.shape] for t in tensors])
+    return all([any([numel(t)==d for d in t.shape]) for t in tensors])
