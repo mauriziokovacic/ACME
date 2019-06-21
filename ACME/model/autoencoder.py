@@ -113,7 +113,7 @@ class VariationalAutoEncoder(AutoEncoder):
 
 
 
-def AELoss(x, x_hat):
+def AELoss(x, x_hat, *args, **kwargs):
     """
     Returns the standard loss for an autoencoder
 
