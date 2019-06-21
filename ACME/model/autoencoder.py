@@ -1,6 +1,8 @@
 import torch
 from .model import *
 
+
+
 class AutoEncoder(Model):
     """
     A class representing a standard autoencoder
@@ -61,18 +63,13 @@ class VariationalAutoEncoder(AutoEncoder):
     """
     A class representing a variational autoencoder
 
-    Attributes
-    ----------
-    mu : int
-        the number of neurons dedicated to the mean tensor
-
     Methods
     -------
     forward(x)
         returns the autoencoder output
     """
 
-    def __init__(self, encoder, decoder, mu, name='VariationalAutoEncoder'):
+    def __init__(self, encoder, decoder, name='VariationalAutoEncoder'):
         """
         Parameters
         ----------
@@ -80,14 +77,11 @@ class VariationalAutoEncoder(AutoEncoder):
             the encoder architecture
         decoder : torch.nn.Module
             the decoder architecture
-        mu : int
-            the number of neurons dedicated to the mean tensor
         name : str (optional)
             the name of the autoencoder (default is 'VariationalAutoEncoder')
         """
 
         super(VariationalAutoEncoder, self).__init__(encoder, decoder, name=name)
-        self.mu = mu
 
     def forward(self, x):
         """
@@ -105,8 +99,8 @@ class VariationalAutoEncoder(AutoEncoder):
         """
 
         y     = self.encoder(x)
-        mu    = y[:, :self.mu]
-        sigma = 1e-6 + torch.nn.functional.softplus(y[:, self.mu:])
+        mu    = y[:, :y.size(1)//2]
+        sigma = 1e-6 + torch.nn.functional.softplus(y[:, y.size(1)//2:])
         eps   = torch.empty_like(mu, dtype=mu.dtype, device=mu.device).normal_()
         x_hat = self.decoder(mu+sigma*eps)
         return x_hat, mu, sigma
