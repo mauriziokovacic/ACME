@@ -5,6 +5,22 @@ import torch
 
 
 class Model(torch.nn.Module):
+    """
+    A class representing a generic model architecture
+
+    Attributes
+    ----------
+    name : str
+        the name of the model
+
+    Methods
+    -------
+    save_model(path)
+        stores the model state in the given path
+    load_model(path)
+        loads a model form the given path
+    """
+
     def __init__(self,name='Model'):
         """
         Parameters
@@ -32,6 +48,7 @@ class Model(torch.nn.Module):
             path = os.getcwd()
             path = path + '/' + self.name + '.pth'
         torch.save(self, path)
+        return self
 
 
 
@@ -53,3 +70,4 @@ class Model(torch.nn.Module):
             return
         self.load_state_dict(torch.load(path, map_location=self.device))
         self.model.eval()
+        return self

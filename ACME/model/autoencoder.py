@@ -1,3 +1,4 @@
+import torch
 from .model import *
 
 class AutoEncoder(Model):
