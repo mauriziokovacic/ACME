@@ -55,7 +55,7 @@ class Loss(object):
 
 
 
-    def eval(self,input,output):
+    def eval(self,input,*output):
         """
         Evaluate the loss for the given network input and output
 
@@ -72,12 +72,12 @@ class Loss(object):
             a single value Tensor representing the loss
         """
 
-        self.value = torch.mul(self.__eval__(input,output),self.alpha if self.enabled else 0)
+        self.value = torch.mul(self.__eval__(input,*output),self.alpha if self.enabled else 0)
         return self.value
 
 
 
-    def __eval__(self,input,output):
+    def __eval__(self,input,*output):
         """
         Interface for computing the loss.
 
