@@ -69,5 +69,5 @@ class Model(torch.nn.Module):
             warnings.warn('File ' + path + ' does not exists.')
             return
         self.load_state_dict(torch.load(path, map_location=self.device))
-        self.model.eval()
+        self.eval()
         return self
