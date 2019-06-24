@@ -123,7 +123,7 @@ class Trainer(object):
             for input in dataset:
                 t      = time.time()
                 output = outputFcn(self.model(inputFcn(input)))
-                loss   = self.loss.eval(input,output)
+                loss   = self.loss.eval(input,output if not istuple(output) else *output)
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
@@ -132,7 +132,12 @@ class Trainer(object):
                 else:
                     self.scheduler.step()
                 if self.stateFcn is not None:
-                    self.stateFcn(input,output,self.loss.to_dict(),epoch=(e,self.epoch,epochs),iteration=(i,n),t = time.time()-t)
+                    self.stateFcn(input,
+                                  output if not istuple(output) else *output,
+                                  self.loss.to_dict(),
+                                  epoch=(e,self.epoch,epochs),
+                                  iteration=(i,n),
+                                  t=time.time()-t)
                 i += 1
             if verbose:
                 print('DONE')
