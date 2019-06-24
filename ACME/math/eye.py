@@ -1,4 +1,6 @@
-from .diag import *
+from ACME.utility.row import *
+from ACME.utility.col import *
+from .diag            import *
 
 def eye(rows,cols=None,dtype=torch.float,device='cuda:0'):
     """
@@ -26,3 +28,22 @@ def eye(rows,cols=None,dtype=torch.float,device='cuda:0'):
         cols = rows
     n = min(rows,cols)
     return diag(torch.ones(n,dtype=dtype,device=device),rows=rows,cols=cols)
+
+
+
+def eye_like(tensor):
+    """
+    Creates an identity matrix with the same shape of the input tensor.
+
+    Parameters
+    ----------
+    tensor : Tensor
+        the input tensor
+
+    Returns
+    -------
+    Tensor
+        the identity matrix
+    """
+
+    return eye(rows=row(tensor),cols=col(tensor),dtype=tensor.dtype,device=tensor.device)
