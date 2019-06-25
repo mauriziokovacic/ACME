@@ -1,14 +1,14 @@
 import torch
 import warnings
-from ACME.utility.row           import *
-from ACME.utility.col           import *
-from ACME.utility.numel         import *
-from ACME.utility.debug_message import *
-from ACME.utility.tensor2string import *
-from ACME.utility.string2tensor import *
-from ACME.utility.transpose     import *
-from ACME.topology.poly2edge    import *
-from .io                        import *
+from ..utility.row           import *
+from ..utility.col           import *
+from ..utility.numel         import *
+from ..utility.debug_message import *
+from ..utility.tensor2string import *
+from ..utility.string2tensor import *
+from ..utility.transpose     import *
+from ..topology.poly2edge    import *
+from .io                     import *
 
 
 

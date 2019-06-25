@@ -1,11 +1,11 @@
 import numpy
 import torch
 from PIL import Image
-from ACME.utility.depth       import *
-from ACME.utility.isnumpy     import *
-from ACME.utility.istorch     import *
-from ACME.utility.numpy2torch import *
-from ACME.utility.torch2numpy import *
+from ..utility.depth       import *
+from ..utility.isnumpy     import *
+from ..utility.istorch     import *
+from ..utility.numpy2torch import *
+from ..utility.torch2numpy import *
 
 def export_PNG(filename,I):
     """
