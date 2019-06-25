@@ -1,4 +1,4 @@
-from ACME.utility.LongTensor import *
+from ..utility.LongTensor import *
 
 def label2index(value,label,device='cuda:0'):
     """

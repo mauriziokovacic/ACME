@@ -1,5 +1,5 @@
 import torch
-from ACME.math.unitvec import *
+from ..math.unitvec import *
 
 def index2onehot(index,n=None):
     """

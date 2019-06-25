@@ -1,6 +1,6 @@
 import torch
-from ACME.math.constant     import *
-from ACME.color.color2float import *
+from ..math.constant     import *
+from ..color.color2float import *
 
 def color2sph(C,rmax=None):
     """
