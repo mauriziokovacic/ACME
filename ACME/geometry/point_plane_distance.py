@@ -1,4 +1,4 @@
-from ACME.utility.sum import *
+from ..utility.sum import *
 
 def point_plane_distance(P,N,Q,dim=1):
     """

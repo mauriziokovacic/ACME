@@ -1,9 +1,9 @@
 import torch
-from ACME.utility.accumarray import *
-from ACME.math.norm          import *
-from ACME.math.angle         import *
-from .area                   import *
-from .laplacian              import *
+from ..utility.accumarray import *
+from ..math.norm          import *
+from ..math.angle         import *
+from .area                import *
+from .laplacian           import *
 
 
 

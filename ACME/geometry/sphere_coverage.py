@@ -1,8 +1,8 @@
 import torch
-from ACME.utility.indices import *
-from ACME.math.constant   import *
-from ACME.math.cos        import *
-from ACME.math.sin        import *
+from ..utility.indices import *
+from ..math.constant   import *
+from ..math.cos        import *
+from ..math.sin        import *
 
 
 

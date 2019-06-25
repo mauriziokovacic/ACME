@@ -1,9 +1,9 @@
 import torch
-from ACME.utility.accumarray import *
-from ACME.utility.strcmpi    import *
-from ACME.math.cross         import *
-from ACME.math.normvec       import *
-from .triangle_angle         import *
+from ..utility.accumarray import *
+from ..utility.strcmpi    import *
+from ..math.cross         import *
+from ..math.normvec       import *
+from .triangle_angle      import *
 
 def vertex_normal(P,T,type=None):
     """

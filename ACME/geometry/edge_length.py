@@ -1,5 +1,5 @@
-from ACME.math.norm          import *
-from ACME.topology.poly2edge import *
+from ..math.norm          import *
+from ..topology.poly2edge import *
 
 def edge_length(P,T,dim=1):
     """

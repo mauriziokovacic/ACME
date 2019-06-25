@@ -1,5 +1,5 @@
-from ACME.utility.accumarray import *
-from ACME.topology.poly2lin  import *
+from ..utility.accumarray import *
+from ..topology.poly2lin  import *
 
 def face2vertex(T,face_data):
     """

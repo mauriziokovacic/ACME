@@ -1,8 +1,8 @@
 import torch
-from ACME.utility.row        import *
-from ACME.utility.indices    import *
-from ACME.topology.ind2poly  import *
-from ACME.topology.poly2edge import *
+from ..utility.row        import *
+from ..utility.indices    import *
+from ..topology.ind2poly  import *
+from ..topology.poly2edge import *
 
 
 

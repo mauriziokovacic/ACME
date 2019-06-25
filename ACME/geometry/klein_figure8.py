@@ -1,9 +1,9 @@
 import torch
-from ACME.utility.linspace import *
-from ACME.math.constant    import *
-from ACME.math.cos         import *
-from ACME.math.sin         import *
-from .grid2mesh            import *
+from ..utility.linspace import *
+from ..math.constant    import *
+from ..math.cos         import *
+from ..math.sin         import *
+from .grid2mesh         import *
 
 
 def Klein_Figure8(radius=3,res=50,device='cuda:0'):

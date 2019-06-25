@@ -1,8 +1,8 @@
 import torch
-from ACME.utility.row         import *
-from ACME.utility.repmat      import *
-from ACME.utility.LongTensor  import *
-from ACME.utility.FloatTensor import *
+from ..utility.row         import *
+from ..utility.repmat      import *
+from ..utility.LongTensor  import *
+from ..utility.FloatTensor import *
 
 def Quad(device='cuda:0'):
     """

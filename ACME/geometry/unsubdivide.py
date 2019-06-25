@@ -1,9 +1,9 @@
 import torch
-from ACME.utility.row     import *
-from ACME.utility.col     import *
-from ACME.utility.reindex import *
-from ACME.utility.unique  import *
-from ACME.topology.ispoly import *
+from ..utility.row     import *
+from ..utility.col     import *
+from ..utility.reindex import *
+from ..utility.unique  import *
+from ..topology.ispoly import *
 
 
 def unsubdivide(P,T,iter=1):

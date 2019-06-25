@@ -1,4 +1,4 @@
-from ACME.utility.uniquetol import *
+from ..utility.uniquetol import *
 
 def soup2mesh(P,T):
     """

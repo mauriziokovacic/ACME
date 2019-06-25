@@ -1,7 +1,7 @@
 import torch
-from ACME.utility.row import *
-from ACME.utility.col import *
-from ACME.math.dot    import *
+from ..utility.row import *
+from ..utility.col import *
+from ..math.dot    import *
 
 
 

@@ -1,14 +1,14 @@
 import torch
-from ACME.utility.row        import *
-from ACME.utility.col        import *
-from ACME.utility.numel      import *
-from ACME.utility.indices    import *
-from ACME.utility.strcmpi    import *
-from ACME.utility.to_row     import *
-from ACME.utility.unique     import *
-from ACME.topology.adjacency import *
-from ACME.topology.poly2edge import *
-from .triangle_cotangent     import *
+from ..utility.row        import *
+from ..utility.col        import *
+from ..utility.numel      import *
+from ..utility.indices    import *
+from ..utility.strcmpi    import *
+from ..utility.to_row     import *
+from ..utility.unique     import *
+from ..topology.adjacency import *
+from ..topology.poly2edge import *
+from .triangle_cotangent  import *
 
 
 

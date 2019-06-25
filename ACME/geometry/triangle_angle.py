@@ -1,5 +1,5 @@
-from ACME.math.normvec import *
-from ACME.math.angle   import *
+from ..math.normvec import *
+from ..math.angle   import *
 
 def triangle_angle(P,T):
     """

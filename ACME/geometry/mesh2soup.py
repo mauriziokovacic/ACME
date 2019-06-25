@@ -1,7 +1,7 @@
 import torch
-from ACME.utility.row     import *
-from ACME.utility.numel   import *
-from ACME.utility.indices import *
+from ..utility.row     import *
+from ..utility.numel   import *
+from ..utility.indices import *
 
 def mesh2soup(P,T):
     """

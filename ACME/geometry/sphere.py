@@ -1,11 +1,11 @@
 import torch
-from ACME.utility.linspace    import *
-from ACME.utility.FloatTensor import *
-from ACME.math.constant       import *
-from ACME.math.cos            import *
-from ACME.math.sin            import *
-from ACME.math.normvec        import *
-from .grid2mesh               import *
+from ..utility.linspace    import *
+from ..utility.FloatTensor import *
+from ..math.constant       import *
+from ..math.cos            import *
+from ..math.sin            import *
+from ..math.normvec        import *
+from .grid2mesh            import *
 
 
 

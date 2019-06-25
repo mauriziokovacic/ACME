@@ -1,5 +1,5 @@
-from ACME.math.cross   import *
-from ACME.math.normvec import *
+from ..math.cross   import *
+from ..math.normvec import *
 
 def triangle_normal(P,T,dim=1):
     """

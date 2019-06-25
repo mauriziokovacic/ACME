@@ -1,10 +1,10 @@
 import torch
-from ACME.utility.linspace    import *
-from ACME.utility.FloatTensor import *
-from ACME.utility.repmat      import *
-from ACME.math.constant       import *
-from ACME.math.pol2cart       import *
-from .grid2mesh               import *
+from ..utility.linspace    import *
+from ..utility.FloatTensor import *
+from ..utility.repmat      import *
+from ..math.constant       import *
+from ..math.pol2cart       import *
+from .grid2mesh            import *
 
 
 

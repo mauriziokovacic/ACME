@@ -1,9 +1,9 @@
 import torch
-from ACME.utility.linspace import *
-from ACME.math.constant    import *
-from ACME.math.cos         import *
-from ACME.math.sin         import *
-from .grid2mesh            import *
+from ..utility.linspace import *
+from ..math.constant    import *
+from ..math.cos         import *
+from ..math.sin         import *
+from .grid2mesh         import *
 
 def Mobius_Strip(tile=(50,10),device='cuda:0'):
     """
