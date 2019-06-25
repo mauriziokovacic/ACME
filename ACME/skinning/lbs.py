@@ -1,5 +1,5 @@
 import torch
-from math.dot import *
+from ..math.dot import *
 
 
 def blend_transform(T,W):
