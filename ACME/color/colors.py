@@ -1,6 +1,6 @@
 import torch
-from ACME.utility.Uint8Tensor import *
-from .color2float       import *
+from ..utility.Uint8Tensor import *
+from .color2float          import *
 
 def black():
     return torch.zeros(1,3)
