@@ -1,5 +1,5 @@
 import torch
-from ACME.color.fetch_texture import *
+from ..color.fetch_texture import *
 
 
 class Sampler1D(torch.nn.Module):

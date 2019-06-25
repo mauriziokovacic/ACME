@@ -1,6 +1,6 @@
 import torch
-from ACME.utility.nop     import *
-from ACME.render.mesh2img import *
+from ..utility.nop     import *
+from ..render.mesh2img import *
 
 class RenderLayer(torch.nn.Module):
     """
@@ -219,9 +219,9 @@ class PositionRenderLayer(RenderLayer):
 
 
 
-class MVSRenderLayer(torch.nn.Module):
+class SVRenderLayer(torch.nn.Module):
     """
-    A class representing a multi view stack rendering layer
+    A class representing a signle view rendering layer
 
     Attributes
     ----------
@@ -236,14 +236,77 @@ class MVSRenderLayer(torch.nn.Module):
 
     Methods
     -------
-    __render(input,camera)
-        renders the input from a specific camera position
+    forward(input)
+        returns the rendered single view image of the input data
+    """
+
+    def __init__(self, render_layer, camera, keep_output=False, attr='img'):
+        """
+        Parameters
+        ----------
+        render_layer : RenderLayer
+            a rendering layer
+        camera : Tensor
+            the positions of the camera
+        keep_output : bool (optional)
+            if True keeps the output in an attribute of the input data (default is False)
+        attr : str (optional)
+            the name of the attribute to store the output to (default is 'img')
+        """
+
+        super(SVRenderLayer, self).__init__()
+        self.layer  = render_layer
+        self.camera = camera
+        self.keep   = keep_output
+        self.attr   = attr
+
+
+
+    def forward(self, input):
+        """
+        Returns the single view image of the input data
+
+        Parameters
+        ----------
+        input : Data object
+            the input data
+
+        Returns
+        -------
+        Tensor
+            the single view image tensor
+        """
+
+        self.layer.renderer.eye             =  camera
+        self.layer.renderer.light_direction = -camera
+        out = self.layer(input)
+        if self.keep:
+            setattr(input,self.attr,out)
+        return out
+
+
+
+class MVSRenderLayer(torch.nn.Module):
+    """
+    A class representing a multi view stack rendering layer
+
+    Attributes
+    ----------
+    layer : list
+        a list of single view rendering layer
+    keep : bool
+        if True keeps the output in an attribute of the input data
+    attr : str
+        the name of the attribute to store the output to
+
+    Methods
+    -------
     forward(input)
         returns the rendered multi view stack of the input data
     """
 
 
-    def __init__(self,render_layer,camera,keep_output=False,attr='mvs'):
+    def __init__(self, render_layer, camera, keep_output=False, attr='mvs'):
         """
         Parameters
         ----------
@@ -258,33 +321,9 @@ class MVSRenderLayer(torch.nn.Module):
         """
 
         super(MVSRenderLayer,self).__init__()
-        self.layer  = render_layer
-        self.camera = camera
+        self.layer  = [SVRenderLayer(render_layer,c,keep_output=False) for c in camera]
         self.keep   = keep_output
         self.attr   = attr
-
-
-
-    def __render(self,input,camera):
-        """
-        Renders the input from a specific camera position
-
-        Parameters
-        ----------
-        input : Data object
-            the input data
-        camera : Tensor
-            the position of the camera
-
-        Returns
-        -------
-        Tensor
-            an image tensor
-        """
-
-        self.layer.renderer.eye             =  camera
-        self.layer.renderer.light_direction = -camera
-        return self.layer(input)
 
 
 
@@ -303,7 +342,7 @@ class MVSRenderLayer(torch.nn.Module):
             the multi view stack image tensor
         """
 
-        out = torch.cat(tuple(self.__render(input,c).unsqueeze(0) for c in self.camera),dim=0)
+        out = torch.cat(tuple(view(input,c).unsqueeze(0) for view in self.layer),dim=0)
         if self.keep:
             setattr(input,self.attr,out)
         return out
