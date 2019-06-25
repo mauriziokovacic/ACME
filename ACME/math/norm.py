@@ -97,3 +97,32 @@ def distance(A,B,p=2,dim=1):
     """
 
     return pnorm(A-B,p=p,dim=dim)
+
+
+
+def hausdorff(A, B):
+    """
+    Computes the Hausdorff distance between the given points sets
+
+    Parameters
+    ----------
+    A : Tensor
+        a (M,D,) tensor
+    B : Tensor
+        a (N,D,) tensor
+
+    Returns
+    -------
+    Tensor
+        the (1,) tensor representing the Hausdorff distance
+    """
+
+    def dist(x, y):
+        return distance(x.view(x.size(0), 1, x.size(1)),
+                        y.view(-1, *y.size()).expand(x.size(0), -1, y.size(1)),
+                        p=2, dim=2)
+
+    def min(d):
+        return -torch.topk(-d, 1, dim=1)[0]
+
+    return max(min(dist(A, B)).max(), min(dist(B, A)).max())
