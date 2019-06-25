@@ -1,8 +1,8 @@
 import torch
-from ACME.utility.row     import *
-from ACME.utility.col     import *
-from ACME.utility.indices import *
-from .normw               import *
+from ..utility.row     import *
+from ..utility.col     import *
+from ..utility.indices import *
+from .normw            import *
 
 def limit_weight(W,k=4):
     """
