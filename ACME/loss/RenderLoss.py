@@ -1,7 +1,7 @@
-from ACME.utility.nop           import *
-from ACME.encoding.color2normal import *
-from ACME.render.mesh2img       import *
-from .Loss                      import *
+from ..utility.nop           import *
+from ..encoding.color2normal import *
+from ..render.mesh2img       import *
+from .Loss                   import *
 
 class RenderLoss(Loss):
     def __init__(self,name='Render',renderFcn=None,**kwargs):
