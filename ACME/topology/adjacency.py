@@ -1,8 +1,8 @@
 import torch
-from ACME.utility.col  import *
-from ACME.utility.find import *
-from .ind2poly         import *
-from .poly2edge        import *
+from ..utility.col  import *
+from ..utility.find import *
+from .ind2poly      import *
+from .poly2edge     import *
 
 
 

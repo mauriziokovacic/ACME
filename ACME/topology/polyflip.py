@@ -1,4 +1,4 @@
-from ACME.utility.flipud import *
+from ..utility.flipud import *
 
 def polyflip(T):
     """

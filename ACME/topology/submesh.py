@@ -1,11 +1,11 @@
 import torch
-from ACME.utility.col     import *
-from ACME.utility.isempty import *
-from ACME.utility.strcmpi import *
-from ACME.utility.indices import *
-from ACME.utility.numel   import *
-from ACME.utility.unique  import *
-from ACME.utility.find    import *
+from ..utility.col     import *
+from ..utility.isempty import *
+from ..utility.strcmpi import *
+from ..utility.indices import *
+from ..utility.numel   import *
+from ..utility.unique  import *
+from ..utility.find    import *
 
 def submesh(T,ind,type='node'):
     """

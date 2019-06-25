@@ -1,4 +1,4 @@
-from ACME.utility.row import *
+from ..utility.row import *
 
 def polysides(T):
     """

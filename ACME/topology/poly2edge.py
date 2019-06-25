@@ -1,10 +1,10 @@
 import torch
-from ACME.utility.row       import *
-from ACME.utility.col       import *
-from ACME.utility.repmat    import *
-from ACME.utility.circshift import *
-from ACME.utility.indices   import *
-from .ind2poly              import *
+from ..utility.row       import *
+from ..utility.col       import *
+from ..utility.repmat    import *
+from ..utility.circshift import *
+from ..utility.indices   import *
+from .ind2poly           import *
 
 def poly2edge(T):
     """

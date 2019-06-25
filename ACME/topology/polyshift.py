@@ -1,4 +1,4 @@
-from ACME.utility.circshift import *
+from ..utility.circshift import *
 
 def polyshift(T,k):
     """

@@ -1,9 +1,9 @@
 import numpy
 import torch
-from ACME.utility.flatten     import *
-from ACME.utility.transpose   import *
-from ACME.utility.numpy2torch import *
-from ACME.utility.torch2numpy import *
+from ..utility.flatten     import *
+from ..utility.transpose   import *
+from ..utility.numpy2torch import *
+from ..utility.torch2numpy import *
 
 def __xmesh(T,scheme,iter=None):
     """
