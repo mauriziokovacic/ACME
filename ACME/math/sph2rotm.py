@@ -1,12 +1,12 @@
 import torch
-from ACME.utility.FloatTensor import *
-from .cos                     import *
-from .sin                     import *
-from .cross                   import *
-from .normvec                 import *
-from .eye                     import *
-from .axang2rotm              import *
-from .unitvec                 import *
+from ..utility.FloatTensor import *
+from .cos                  import *
+from .sin                  import *
+from .cross                import *
+from .normvec              import *
+from .eye                  import *
+from .axang2rotm           import *
+from .unitvec              import *
 
 def sph2rotm(S,scaling=False):
     """

@@ -1,5 +1,5 @@
 import torch
-from ACME.utility.col import *
+from ..utility.col import *
 
 def affine2translation(M):
     """

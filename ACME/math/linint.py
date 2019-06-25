@@ -1,5 +1,5 @@
 import torch
-from ACME.utility.istorch import *
+from ..utility.istorch import *
 
 def linint(A,B,t):
     """

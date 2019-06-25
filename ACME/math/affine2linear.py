@@ -1,8 +1,8 @@
-from ACME.utility.row     import *
-from ACME.utility.col     import *
-from ACME.utility.ndim    import *
-from ACME.utility.reshape import *
-from ACME.utility.flatten import *
+from ..utility.row     import *
+from ..utility.col     import *
+from ..utility.ndim    import *
+from ..utility.reshape import *
+from ..utility.flatten import *
 
 def affine2linear(M):
     """

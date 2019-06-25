@@ -1,8 +1,8 @@
 import math
 import numpy
 import torch
-from ACME.utility.isnumpy import *
-from ACME.utility.istorch import *
+from ..utility.isnumpy import *
+from ..utility.istorch import *
 
 def sin(theta):
     """

@@ -1,6 +1,6 @@
 import torch
-from ACME.utility.clamp import *
-from .acos              import *
+from ..utility.clamp import *
+from .acos           import *
 
 def angle(A,B,dim=1):
     """

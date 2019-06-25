@@ -1,6 +1,6 @@
-from ACME.utility.FloatTensor import *
-from .cos                     import *
-from .sin                     import *
+from ..utility.FloatTensor import *
+from .cos                  import *
+from .sin                  import *
 
 def axang2rotm(U,theta):
     """

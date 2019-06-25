@@ -1,6 +1,6 @@
 import torch
-from ACME.utility.isinf import *
-from .unrooted_norm     import *
+from ..utility.isinf import *
+from .unrooted_norm  import *
 
 def pnorm(V,p=2,dim=1):
     """

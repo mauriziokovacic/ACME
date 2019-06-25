@@ -1,5 +1,5 @@
 import torch
-from ACME.utility.isinf import *
+from ..utility.isinf import *
 
 def unrooted_norm(tensor,p=2,dim=1):
     """

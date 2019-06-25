@@ -1,6 +1,6 @@
-from ACME.utility.row import *
-from ACME.utility.col import *
-from .diag            import *
+from ..utility.row import *
+from ..utility.col import *
+from .diag         import *
 
 def eye(rows,cols=None,dtype=torch.float,device='cuda:0'):
     """
