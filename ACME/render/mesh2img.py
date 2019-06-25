@@ -1,18 +1,18 @@
 import torch
-from ACME.utility.col              import *
-from ACME.utility.IntTensor        import *
-from ACME.utility.repmat           import *
-from ACME.utility.nop              import *
-from ACME.utility.isvector         import *
-from ACME.math.dot                 import *
-from ACME.math.normalize           import *
-from ACME.math.normvec             import *
-from ACME.geometry.triangle_normal import *
-from ACME.topology.ispoly          import *
-from ACME.topology.poly2poly       import *
-from ACME.color.fetch_texture      import *
-from ACME.color.palette            import *
-from .color2nr                     import *
+from ..utility.col              import *
+from ..utility.IntTensor        import *
+from ..utility.repmat           import *
+from ..utility.nop              import *
+from ..utility.isvector         import *
+from ..math.dot                 import *
+from ..math.normalize           import *
+from ..math.normvec             import *
+from ..geometry.triangle_normal import *
+from ..topology.ispoly          import *
+from ..topology.poly2poly       import *
+from ..color.fetch_texture      import *
+from ..color.palette            import *
+from .color2nr                  import *
 
 
 

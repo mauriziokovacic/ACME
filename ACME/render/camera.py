@@ -1,23 +1,23 @@
 import torch
-from ACME.utility.row                  import *
-from ACME.utility.nop                  import *
-from ACME.utility.indices              import *
-from ACME.math.constant                import *
-from ACME.math.cos                     import *
-from ACME.math.sin                     import *
-from ACME.math.normvec                 import *
-from ACME.math.cart2sph                import *
-from ACME.math.sph2cart                import *
-from ACME.math.sph2rotm                import *
-from ACME.topology.ind2poly            import *
-from ACME.topology.poly2poly           import *
-from ACME.topology.poly2unique         import *
-from ACME.geometry.equilateral_polygon import *
-from ACME.geometry.octahedron          import *
-from ACME.geometry.icosahedron         import *
-from ACME.geometry.shape_scale         import *
-from ACME.geometry.sphere              import *
-from ACME.geometry.soup2mesh           import *
+from ..utility.row                  import *
+from ..utility.nop                  import *
+from ..utility.indices              import *
+from ..math.constant                import *
+from ..math.cos                     import *
+from ..math.sin                     import *
+from ..math.normvec                 import *
+from ..math.cart2sph                import *
+from ..math.sph2cart                import *
+from ..math.sph2rotm                import *
+from ..topology.ind2poly            import *
+from ..topology.poly2poly           import *
+from ..topology.poly2unique         import *
+from ..geometry.equilateral_polygon import *
+from ..geometry.octahedron          import *
+from ..geometry.icosahedron         import *
+from ..geometry.shape_scale         import *
+from ..geometry.sphere              import *
+from ..geometry.soup2mesh           import *
 
 
 

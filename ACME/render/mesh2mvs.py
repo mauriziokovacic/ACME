@@ -1,8 +1,8 @@
 import torch
-from ACME.utility.nop   import *
-from ACME.math.sph2rotm import *
-from .mesh2img          import *
-from .camera            import *
+from ..utility.nop   import *
+from ..math.sph2rotm import *
+from .mesh2img       import *
+from .camera         import *
 
 
 
