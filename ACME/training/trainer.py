@@ -2,7 +2,8 @@ import os
 import time
 import torch
 import warnings
-from ..utility.nop import *
+from ..utility.istuple import *
+from ..utility.nop     import *
 
 class Trainer(object):
     """
@@ -123,7 +124,7 @@ class Trainer(object):
             for input in dataset:
                 t      = time.time()
                 output = outputFcn(self.model(inputFcn(input)))
-                loss   = self.loss.eval(input,output if not istuple(output) else *output)
+                loss   = self.loss.eval(input,*output if istuple(output) else output)
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
@@ -133,7 +134,7 @@ class Trainer(object):
                     self.scheduler.step()
                 if self.stateFcn is not None:
                     self.stateFcn(input,
-                                  output if not istuple(output) else *output,
+                                  *output if istuple(output) else output,
                                   self.loss.to_dict(),
                                   epoch=(e,self.epoch,epochs),
                                   iteration=(i,n),
