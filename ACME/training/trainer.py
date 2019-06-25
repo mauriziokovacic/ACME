@@ -2,7 +2,7 @@ import os
 import time
 import torch
 import warnings
-from ACME.utility.nop import *
+from ..utility.nop import *
 
 class Trainer(object):
     """
