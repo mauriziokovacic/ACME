@@ -85,7 +85,7 @@ class LossList(Loss):
         """
 
         assert not self.empty(), "LossList cannot be evaluated while empty."
-        self.value = reduce((lambda a,b: a.eval(input,*output)+b.eval(input,*output),self.loss)
+        self.value = reduce((lambda a,b: a.eval(input,*output)+b.eval(input,*output)),self.loss)
         return self.value
 
 
