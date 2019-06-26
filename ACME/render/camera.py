@@ -11,6 +11,7 @@ from ..math.sph2cart                import *
 from ..math.sph2rotm                import *
 from ..topology.ind2poly            import *
 from ..topology.poly2poly           import *
+from ..topology.poly2edge           import *
 from ..topology.poly2unique         import *
 from ..geometry.equilateral_polygon import *
 from ..geometry.octahedron          import *
