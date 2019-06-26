@@ -1,4 +1,5 @@
 import torch
+from ..layer.VariationalSampler import *
 from .model import *
 
 
@@ -63,13 +64,19 @@ class VariationalAutoEncoder(AutoEncoder):
     """
     A class representing a variational autoencoder
 
+    Attributes
+    ----------
+    z_sampler : callable
+
+
+
     Methods
     -------
     forward(x)
         returns the autoencoder output
     """
 
-    def __init__(self, encoder, decoder, name='VariationalAutoEncoder'):
+    def __init__(self, encoder, decoder, z_sampler=VariationalSampler(), name='VariationalAutoEncoder'):
         """
         Parameters
         ----------
@@ -77,11 +84,16 @@ class VariationalAutoEncoder(AutoEncoder):
             the encoder architecture
         decoder : torch.nn.Module
             the decoder architecture
+        z_sampler : callable (optional)
+            the z tensor sampler (default is VariationalSampler())
         name : str (optional)
             the name of the autoencoder (default is 'VariationalAutoEncoder')
         """
 
         super(VariationalAutoEncoder, self).__init__(encoder, decoder, name=name)
+        self.z_sampler = sampler
+
+
 
     def forward(self, x):
         """
@@ -98,11 +110,9 @@ class VariationalAutoEncoder(AutoEncoder):
             the autoencoder output, its mean tensor and its standard deviation tensor
         """
 
-        y     = self.encoder(x)
-        mu    = y[:, :y.size(1)//2]
-        sigma = 1e-6 + torch.nn.functional.softplus(y[:, y.size(1)//2:])
-        eps   = torch.empty_like(mu, dtype=mu.dtype, device=mu.device).normal_()
-        x_hat = self.decoder(mu+sigma*eps)
+        y            = self.encoder(x)
+        z, mu, sigma = self.z_sampler(y)
+        x_hat        = self.decoder(z)
         return x_hat, mu, sigma
 
 
