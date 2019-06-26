@@ -14,8 +14,8 @@ def isinf(*obj):
     Returns
     -------
     bool
-        True if the input is nan, False otherwise
+        True if the input is infinite, False otherwise
     """
 
     out = [flatten(o) if istensor(o) else o for o in obj]
-    return any([any(o==math.inf) for o in out])
+    return any([any(o==math.inf) if istensor(o) else o==math.inf for o in out])
