@@ -91,7 +91,9 @@ class VariationalAutoEncoder(AutoEncoder):
         """
 
         super(VariationalAutoEncoder, self).__init__(encoder, decoder, name=name)
-        self.z_sampler = sampler
+        self.z_sampler = z_sampler
+        if isinstance(z_sampler, torch.nn.Module):
+            self.add_module('z_sampler', self.z_sampler)
 
 
 
