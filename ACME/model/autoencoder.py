@@ -1,6 +1,6 @@
 import torch
 from ..layer.VariationalSampler import *
-from .model import *
+from .model                     import *
 
 
 
