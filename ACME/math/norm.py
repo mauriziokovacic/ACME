@@ -1,6 +1,8 @@
 import torch
-from ..utility.isinf import *
-from .unrooted_norm  import *
+from ..utility.isinf    import *
+from .prepare_broadcast import *
+from .knn               import *
+from .unrooted_norm     import *
 
 def pnorm(V,p=2,dim=1):
     """
@@ -117,12 +119,5 @@ def hausdorff(A, B):
         the (1,) tensor representing the Hausdorff distance
     """
 
-    def dist(x, y):
-        return distance(x.view(x.size(0), 1, x.size(1)),
-                        y.view(-1, *y.size()).expand(x.size(0), -1, y.size(1)),
-                        p=2, dim=2)
-
-    def min(d):
-        return -torch.topk(-d, 1, dim=1)[0]
-
-    return max(min(dist(A, B)).max(), min(dist(B, A)).max())
+    return max(knn(A, B, 1, distFcn=distance)[1].max(),
+               knn(B, A, 1, distFcn=distance)[1].max())

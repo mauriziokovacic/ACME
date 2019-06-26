@@ -22,12 +22,14 @@ from .dot                import *
 from .eye                import *
 from .fibonacci          import *
 from .floor              import *
+from .knn                import *
 from .linear2affine      import *
 from .linint             import *
 from .norm               import *
 from .normalize          import *
 from .normvec            import *
 from .pol2cart           import *
+from .prepare_broadcast  import *
 from .rad2deg            import *
 from .ratio              import *
 from .rescale            import *
