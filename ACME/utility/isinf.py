@@ -2,7 +2,7 @@ import math
 from .istensor import *
 from .flatten  import *
 
-def isinf(a):
+def isinf(*obj):
     """
     Returns whether or not the input is nan
 
