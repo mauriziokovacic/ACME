@@ -1,5 +1,7 @@
 import numpy
 import torch
+from .col         import *
+from .row         import *
 from .numpy2torch import *
 
 def uniquetol(A,tol=10e-4,ByRows=False):
