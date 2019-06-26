@@ -1,4 +1,5 @@
 from .Batch              import *
+from .BokehLayer         import *
 from .Bypass             import *
 from .Concatenate        import *
 from .ConstantLayer      import *
