@@ -28,5 +28,5 @@ def unsqueeze(tensor,dim):
     if isnumpy(tensor):
         return numpy.expand_dims(tensor,axis=dim)
     if istorch(tensor):
-        return tensor.squeeze(dim)
+        return tensor.unsqueeze(dim)
     assert False, 'Unknown data type'
