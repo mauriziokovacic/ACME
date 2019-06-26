@@ -1,5 +1,7 @@
 import numpy
 import torch
+from ..utility.row         import *
+from ..utility.col         import *
 from ..utility.flatten     import *
 from ..utility.transpose   import *
 from ..utility.numpy2torch import *
