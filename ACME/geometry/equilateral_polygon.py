@@ -1,5 +1,6 @@
 import torch
 from ..utility.linspace import *
+from ..math.constant    import *
 from ..math.cos         import *
 from ..math.sin         import *
 
