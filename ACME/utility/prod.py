@@ -14,4 +14,4 @@ def prod(*obj):
         the product of the input values
     """
 
-    return reduce((lambda a, b : a*b), obj)
+    return reduce((lambda a, b : a*b), *obj)
