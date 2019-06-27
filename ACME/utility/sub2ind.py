@@ -1,26 +1,27 @@
 import torch
-from .repmat import *
 
-def sub2ind(size,*tensors):
+def sub2ind(size,I):
     """
     Converts subscripts to linear indices
 
     Parameters
     ----------
-    size : list
+    size : iterable
         the size of the target tensor
-    *tensors : LongTensor...
-        a sequence of LongTensor containing the indices along a dimension
+    I : LongTensor
+        the (N,M,) subscripts tensor
 
     Returns
     -------
     LongTensor
         the linear indices of the given subscripts
+
+    Raises
+    ------
+    AssertionError
+        if rows in I are less than dimensions in size
     """
 
-    if len(tensors)==1:
-        return tensors[0]
-    T      = torch.cat(tuple(t.flatten().unsqueeze(1) for t in tensors),dim=1)
-    offset = torch.cumprod(torch.tensor(size[0:-1]),0).unsqueeze(0)
-    offset = repmat(torch.cat((torch.ones(1,1,dtype=torch.long),offset),dim=1),row(T),1).to(device=T.device)
-    return torch.sum(T*offset,1,keepdim=True)
+    assert len(size) == I.size(0), 'Tensors should match dimensions'
+    return torch.arange(0, prod(size), dtype=torch.long, device=I.device).view(size)[tuple(I)]
+
