@@ -1,7 +1,8 @@
 import torch
-from ..utility.row    import *
-from ..utility.repmat import *
-from ..utility.unique import *
+from ..utility.row     import *
+from ..utility.indices import *
+from ..utility.repmat  import *
+from ..utility.unique  import *
 
 def poly2poly(T,n):
     """
