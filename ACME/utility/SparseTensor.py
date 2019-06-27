@@ -9,9 +9,9 @@ def SparseTensor(size=None,indices=None,values=None):
     size : tuple (optional)
         the output tensor size. If None it will be automatically computed (default is None)
     indices : LongTensor (optional)
-        the indices tensor (default is None)
+        the (N,D,) indices tensor (default is None)
     values : Tensor (optional)
-        the values tensor (default is None)
+        the (N,) values tensor (default is None)
 
     Returns
     -------
