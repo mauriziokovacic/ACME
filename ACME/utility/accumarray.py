@@ -1,31 +1,33 @@
 import torch
-import torch_scatter
-from .numel          import *
-from .isscalar       import *
-from .ConstantTensor import *
 
-def accumarray(I,V,size=None,dim=0):
+def accumarray(I, V, size=None, default_value=0):
     """
     Returns a Tensor by accumulating elements of tensor V using the subscripts I
+
+    The output tensor number of dimensions is/should be equal to the number of subscripts rows
+    plus the values tensor number of dimensions minus one.
 
     Parameters
     ----------
     I : LongTensor
-        the indices of the tensor
+        the (N,) subscripts tensor
     V : Tensor
-        the values of the tensor
-    size : (optional)
-    dim : (optional)
+        the (M,F,) values tensor
+    size : tuple (optional)
+        the size of the output tensor. If None it will be automatically inferred (default is None)
+    dim : int (optional)
+        the dimension along the accumulation is performed (default is 0)
+    default_value : float (optional)
+        the default value of the output tensor (default is 0)
 
     Returns
     -------
     Tensor
-        a tensor formed by accumulating the input values in the respective input indices positions
+        the accumulated tensor
+
     """
 
     if size is None:
-        size = torch.max(I).item()+1
-    value = V
-    if isscalar(value):
-        value = ConstantTensor(value,numel(value),dtype=value.dtype,device=value.device)
-    return torch_scatter.scatter_add(value,I,dim=dim,dim_size=size)
+        size      = list(V.size())
+        size[0] = torch.max(I).item()+1
+    return default_value + torch.zeros(size, dtype=V.dtype, device=V.device).scatter_add_(0, I.view(-1, 1).expand_as(V), V)
