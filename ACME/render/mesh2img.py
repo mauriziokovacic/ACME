@@ -65,7 +65,7 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop):
     if col(T)==row(C):
         c = c[i]
 
-    c = color2nr(t,c,texture_size=2,dtype=torch.float32,device=renderer.device)
+    c = color2nr(t,c,texture_size=2,dtype=torch.float32)
     t = torch.t(t).to(dtype=torch.int,device=renderer.device).unsqueeze(0)
     I = renderer(P.unsqueeze(0),t,c)
     I = postFcn(torch.cat((I[0],
