@@ -16,6 +16,6 @@ def color2float(C):
     """
 
     c = C
-    if (C.dtype != torch.float) or (torch.max(c)[0]>1):
+    if (C.dtype != torch.float) or (torch.max(c).item()>1):
         c = torch.clamp(torch.div(C.to(dtype=torch.float),255),min=0,max=1)
     return c
