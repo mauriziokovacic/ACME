@@ -16,6 +16,7 @@ from .face2vertex             import *
 from .genus                   import *
 from .gradient                import *
 from .grid2mesh               import *
+from .hausdorff_metric        import *
 from .hexahedron              import *
 from .icosahedron             import *
 from .klein_figure8           import *
