@@ -1,8 +1,7 @@
 import torch
-from ..utility.isinf    import *
-from .prepare_broadcast import *
-from .knn               import *
-from .unrooted_norm     import *
+from ..utility.isinf import *
+from .knn            import *
+from .unrooted_norm  import *
 
 def pnorm(V,p=2,dim=1):
     """

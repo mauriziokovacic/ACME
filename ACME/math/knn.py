@@ -1,4 +1,6 @@
 import torch
+from .norm              import *
+from .prepare_broadcast import *
 
 def knn(A, B, k, distFcn=distance):
     """
