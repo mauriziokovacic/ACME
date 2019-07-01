@@ -1,7 +1,8 @@
 import torch
-from ..math.knn import *
+from ..math.knn           import *
+from ..math.unrooted_norm import *
 
-def hausdorff_metric(A, B, distFcn):
+def hausdorff_metric(A, B):
     """
     Returns the Hausdorff metric for two given tensors
 
@@ -21,5 +22,5 @@ def hausdorff_metric(A, B, distFcn):
 
     """
 
-    return torch.sum(knn(A, B, 1, distFcn=distFcn)[1])+\
-           torch.sum(knn(B, A, 1, distFcn=distFcn)[1])
+    return torch.sum(knn(A, B, 1, distFcn=sqdistance)[1])+\
+           torch.sum(knn(B, A, 1, distFcn=sqdistance)[1])
