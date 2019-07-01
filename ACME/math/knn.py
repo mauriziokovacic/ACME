@@ -32,5 +32,5 @@ def knn(A, B, k, distFcn):
     if k>1:
         d, i = torch.topk(-distFcn(a, b, dim=-1), k, dim=1)
         return i, -d
-    d, i = torch.min(distFcn(a, b, dim=-1))
+    d, i = torch.min(distFcn(a, b, dim=-1), 1, keepdim=True)
     return i, d
