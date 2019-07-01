@@ -45,7 +45,7 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop):
 
     t,i = poly2tri(T)
     if C is None:
-        c = torch.ones(1,3,dtype=torch.float,device=renderer.device)
+        c = torch.ones(1,3,dtype=torch.float,device=T.device)
     else:
         c = C
     if renderer.culling is not None:
@@ -61,16 +61,16 @@ def mesh2img(renderer,T,P,C=None,postFcn=nop):
         t = t[tf]
         i = i[tf]
     if ndim(c)==1:
-        c = fetch_texture1D(palette('parula',device=renderer.device),normalize(c))
+        c = fetch_texture1D(palette('parula',device=T.device),normalize(c))
     if col(T)==row(C):
         c = c[i]
 
     c = color2nr(t,c,texture_size=2,dtype=torch.float32)
-    t = torch.t(t).to(dtype=torch.int,device=renderer.device).unsqueeze(0)
+    t = torch.t(t).to(dtype=torch.int,device=T.device).unsqueeze(0)
     I = renderer(P.unsqueeze(0),t,c)
     I = postFcn(torch.cat((I[0],
                            normalize(I[1].unsqueeze(1),min=renderer.near,max=renderer.far),
-                           I[2].unsqueeze(1)), dim=1).to(device=renderer.device))
+                           I[2].unsqueeze(1)), dim=1))
     return I
 
 

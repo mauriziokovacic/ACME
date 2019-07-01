@@ -81,9 +81,10 @@ class RenderLayer(torch.nn.Module):
             the rendered input
         """
 
-        P   = input.pos
-        T   = input.face
-        out = mesh2img(self.renderer,T,P,self.__colorFcn__(input),postFcn=self.postFcn)
+        P   = input.pos.clone().to(device='cuda:0')
+        T   = input.face.clone().to(device='cuda:0')
+        C   = self.__colorFcn__(input).clone().to(device='cuda:0')
+        out = mesh2img(self.renderer,T,P,C=C,postFcn=self.postFcn).clone().to(device=self.renderer.device)
         if self.keep:
             setattr(input,self.attr,out)
         return out
