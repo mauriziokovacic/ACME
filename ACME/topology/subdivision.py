@@ -7,7 +7,7 @@ from ..utility.transpose   import *
 from ..utility.numpy2torch import *
 from ..utility.torch2numpy import *
 
-def __xmesh(T,scheme,iter=None):
+def _xmesh(T,scheme,iter=None):
     """
     Creates the subdivision matrix of the given topology tensor w.r.t. the input scheme.
 
@@ -72,7 +72,7 @@ def xtri(T,iter=None):
                            [j,j],[j,k],[j,i],
                            [k,k],[k,i],[k,j],
                            [i,j],[j,k],[k,i]]),3)
-    return __xmesh(T,scheme,iter=iter)
+    return _xmesh(T,scheme,iter=iter)
 
 
 
@@ -101,7 +101,7 @@ def xquad(T,iter=None):
                            [j,j,j,j],[j,j,k,k],[i,j,k,l],[j,j,i,i],
                            [k,k,k,k],[k,k,l,l],[i,j,k,l],[k,k,j,j],
                            [l,l,l,l],[l,l,i,i],[i,j,k,l],[l,l,k,k]]),4)
-    return __xmesh(T,scheme,iter=iter)
+    return _xmesh(T,scheme,iter=iter)
 
 
 
@@ -129,6 +129,6 @@ def xtri2quad(T):
     iter = 1;
     if isquad(T):
         iter=None
-    return __xmesh(T,scheme,iter)
+    return _xmesh(T,scheme,iter)
 
 
