@@ -5,8 +5,7 @@ from .ind2poly      import *
 from .poly2edge     import *
 
 
-
-def adjacency(E,W,size=None):
+def adjacency(E, W, size=None):
     """
     Computes the adjacency matrix with the given weights for the specified edges
 
@@ -26,14 +25,15 @@ def adjacency(E,W,size=None):
     """
 
     if size is None:
-        size = E.max().item()+1
-    A = torch.zeros(size,size,dtype=W.dtype,device=W.device)
-    A[tuple(E)] = W
+        size = E.max().item() + 1
+    A = torch.zeros(size, size, dtype=W.dtype, device=W.device)
+    # A[tuple(E)] = W
+    for e, w in zip(torch.t(E), W):
+        A[tuple(e)] += w
     return A
 
 
-
-def edge2adj(E,size=None):
+def edge2adj(E, size=None):
     """
     Computes the adjacency matrix from the given edge tensor
 
@@ -50,8 +50,7 @@ def edge2adj(E,size=None):
         the adjacency matrix
     """
 
-    return adjacency(E,torch.ones(col(E),dtype=torch.float,device=E.device),size=size)
-
+    return adjacency(E, torch.ones(col(E), dtype=torch.float, device=E.device), size=size)
 
 
 def adj2edge(A):
@@ -69,11 +68,10 @@ def adj2edge(A):
         the edge tensor
     """
 
-    return torch.t(find(A>0,linear=False))
+    return torch.t(find(A > 0, linear=False))
 
 
-
-def poly2adj(T,size=None):
+def poly2adj(T, size=None):
     """
     Computes the adjacency matrix for the given topology
 
@@ -90,6 +88,4 @@ def poly2adj(T,size=None):
         the adjacency matrix
     """
 
-    return edge2adj(poly2edge(T)[0],size=None)
-
-
+    return edge2adj(poly2edge(T)[0], size=size)
