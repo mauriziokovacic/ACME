@@ -22,7 +22,7 @@ def lexsort(A, dim=1):
     out = A.clone()
     if dim == 0:
         out = torch.t(out)
-    off = indices(out.shape[1], 1, dtype=A.dtype, device=A.device).squeeze()*out.shape[0]
+    off = indices(out.shape[1]-1, 0, dtype=A.dtype, device=A.device).squeeze()*out.shape[0]+1
     i   = torch.argsort(torch.sum(out*off, dim=1))
     if dim == 0:
         out = A[:, i]
