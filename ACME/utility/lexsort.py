@@ -1,7 +1,8 @@
 import torch
 from .indices import *
 
-def lexsort(A,dim=1):
+
+def lexsort(A, dim=1):
     """
     Lexicographic sort of elements in a given Tensor
 
@@ -19,12 +20,12 @@ def lexsort(A,dim=1):
     """
 
     out = A.clone()
-    if dim==0:
+    if dim == 0:
         out = torch.t(out)
-    off = indices(0,out.shape[1],dtype=A.dtype,device=A.device).squeeze()*out.shape[0]
-    i   = torch.argsort(torch.sum(out+off,axis=1))
-    if dim==0:
-        out = A[:,i]
+    off = indices(out.shape[1], 1, dtype=A.dtype, device=A.device).squeeze()*out.shape[0]
+    i   = torch.argsort(torch.sum(out*off, dim=1))
+    if dim == 0:
+        out = A[:, i]
     else:
         out = A[i]
-    return out,i
+    return out, i
