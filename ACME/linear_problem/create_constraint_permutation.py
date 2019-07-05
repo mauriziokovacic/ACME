@@ -1,7 +1,8 @@
 import torch
 from ..math.eye import *
 
-def create_constraint_permutation(I,n,dtype=torch.float,device='cuda:0')
+
+def create_constraint_permutation(I, n, dtype=torch.float, device='cuda:0'):
     """
     Creates a permutation matrix that brings the given constraints to the bottom
 
@@ -22,12 +23,12 @@ def create_constraint_permutation(I,n,dtype=torch.float,device='cuda:0')
         a permutation matrix
     """
 
-    x    = torch.zeros(n,1,dtype=torch.float,device=device);
-    x[I] = 1;
+    x    = torch.zeros(n, 1, dtype=torch.float, device=device)
+    x[I] = 1
     x1   = torch.cumsum(1-x) * (1-x)
     x2   = (torch.max(x1)[0]+torch.cumsum(x)) * x
-    P    = eye(n,dtype=dtype,device=device)#speye(N,N)
-    P    = P[:,x1+x2]
+    P    = eye(n, dtype=dtype, device=device)#speye(N,N)
+    P    = P[:, x1+x2]
     return P
 
 
