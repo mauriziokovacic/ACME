@@ -1,8 +1,11 @@
-from torch_geometric.data import data
-from ..topology.poly2poly import *
+from torch_geometric.data import Data
+from ..utility.lexsort    import *
+from ..topology.poly2edge import *
+from ..topology.polysort  import *
 from .vertex_normal       import *
 
-def mesh2data(P,T,N=None,E=None):
+
+def mesh2data(P, T, N=None, E=None):
     """
     Converts a given mesh into a torch_geometric Data object
 
@@ -23,7 +26,7 @@ def mesh2data(P,T,N=None,E=None):
         a torch_geometric Data object
     """
 
-    return Data(pos       = P.clone(),
-                face      = T.clone(),
-                norm      = N.clone() if N is not None else vertex_normal(P,T),
-                edge_index= poly2edge(T)[0] if E is None else E)
+    return Data(pos       =P.clone(),
+                face      =lexsort(polysort(T.clone(), winding=True), dim=0)[0],
+                norm      =N.clone() if N is not None else vertex_normal(P, T),
+                edge_index=lexsort(poly2edge(T)[0], dim=0)[0] if E is None else E)
