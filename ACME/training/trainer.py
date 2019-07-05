@@ -5,6 +5,7 @@ import warnings
 from ..utility.istuple import *
 from ..utility.nop     import *
 
+
 class Trainer(object):
     """
     A class representing a trainer object for an input architecture.
@@ -48,7 +49,16 @@ class Trainer(object):
         loads the trained model from the given path
     """
 
-    def __init__(self,model=None,optimizer=None,scheduler=None,loss=None,name='Model',device='cuda:0', inputFcn=None, outputFcn=None, stateFcn=None):
+    def __init__(self,
+                 model=None,
+                 optimizer=None,
+                 scheduler=None,
+                 loss=None,
+                 name='Model',
+                 device='cuda:0',
+                 inputFcn=None,
+                 outputFcn=None,
+                 stateFcn=None):
         self.model     = model
         self.optimizer = optimizer
         self.scheduler = scheduler
@@ -59,8 +69,6 @@ class Trainer(object):
         self.inputFcn  = inputFcn
         self.outputFcn = outputFcn
         self.stateFcn  = stateFcn
-
-
 
     def isready(self):
         """
@@ -77,9 +85,13 @@ class Trainer(object):
                (self.scheduler is not None) and\
                (self.loss is not None)
 
-
-
-    def train(self,dataset,epochs=None,checkpoint=True,finalNetwork=True,path=None,verbose=False):
+    def train(self,
+              dataset,
+              epochs=None,
+              checkpoint=True,
+              finalNetwork=True,
+              path=None,
+              verbose=False):
         """
         Trains the model with the input dataset for a given number of epochs
 
@@ -100,7 +112,7 @@ class Trainer(object):
         """
 
         if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         n = len(dataset)
         if path is None:
@@ -117,18 +129,18 @@ class Trainer(object):
             outputFcn = nop
         self.model.train()
         self.model.zero_grad()
-        for self.epoch in range(e,epochs):
+        for self.epoch in range(e, epochs):
             if verbose:
                 print('Epoch:' + str(self.epoch) + '...', end='')
             i = 0
             for input in dataset:
                 t      = time.time()
                 output = outputFcn(self.model(inputFcn(input)))
-                loss   = self.loss.eval(input,*output if istuple(output) else output)
+                loss   = self.loss.eval(input, *output if istuple(output) else output)
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
-                if isinstance(self.scheduler,'torch.optim.lr_scheduler.ReduceLROnPlateau'):
+                if isinstance(self.scheduler, 'torch.optim.lr_scheduler.ReduceLROnPlateau'):
                     self.scheduler.step(loss)
                 else:
                     self.scheduler.step()
@@ -136,8 +148,8 @@ class Trainer(object):
                     self.stateFcn(input,
                                   *output if istuple(output) else output,
                                   self.loss.to_dict(),
-                                  epoch=(e,self.epoch,epochs),
-                                  iteration=(i,n),
+                                  epoch=(e, self.epoch, epochs),
+                                  iteration=(i, n),
                                   t=time.time()-t)
                 i += 1
             if verbose:
@@ -147,9 +159,7 @@ class Trainer(object):
         if finalNetwork:
             self.saveModel(path)
 
-
-
-    def test(self,input):
+    def test(self, input):
         """
         Tests an input against the current model
 
@@ -165,7 +175,7 @@ class Trainer(object):
         """
 
         if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
 
         inputFcn  = self.inputFcn
@@ -179,9 +189,7 @@ class Trainer(object):
         output = outputFcn(self.model(inputFcn(input)))
         return output
 
-
-
-    def save_checkpoint(self,path=None):
+    def save_checkpoint(self, path=None):
         """
         Stores a checkpoint in the given path
 
@@ -192,7 +200,7 @@ class Trainer(object):
         """
 
         if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
@@ -205,9 +213,7 @@ class Trainer(object):
                     'epoch': self.epoch,
                     }, path)
 
-
-
-    def load_checkpoint(self,path=None):
+    def load_checkpoint(self, path=None):
         """
         Loads a checkpoint from the given path
 
@@ -218,7 +224,7 @@ class Trainer(object):
         """
 
         if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
@@ -234,9 +240,7 @@ class Trainer(object):
         self.epoch      = checkpoint['epoch']
         self.model.train()
 
-
-
-    def save_model(self,path=None):
+    def save_model(self, path=None):
         """
         Stores the final model state in the given path
 
@@ -247,16 +251,14 @@ class Trainer(object):
         """
 
         if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
             path = path + '/' + self.name + '.pth'
-        torch.save(self.model,path)
+        torch.save(self.model, path)
 
-
-
-    def load_model(self,path=None):
+    def load_model(self, path=None):
         """
         Loads a final model from the given path
 
@@ -267,7 +269,7 @@ class Trainer(object):
         """
 
         if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.',RuntimeWarning)
+            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
@@ -279,7 +281,10 @@ class Trainer(object):
         self.model.to(device=self.device)
         self.model.eval()
 
-
-
-    def __call__(self,dataset,epochs=None,checkpoint=True,finalNetwork=True,path=None):
-        self.train(dataset,epochs=epochs,checkpoint=checkpoint,finalNetwork=finalNetwork,path=path)
+    def __call__(self,
+                 dataset,
+                 epochs=None,
+                 checkpoint=True,
+                 finalNetwork=True,
+                 path=None):
+        self.train(dataset, epochs=epochs, checkpoint=checkpoint, finalNetwork=finalNetwork, path=path)

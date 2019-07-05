@@ -23,7 +23,7 @@ class Training_Observer(object):
         Receives the trainer state at the end of the training
     """
 
-    def __init__(self,trainer=None):
+    def __init__(self, trainer=None):
         """
         Parameters
         ----------
@@ -36,9 +36,7 @@ class Training_Observer(object):
         if trainer is not None:
             self.bind(trainer)
 
-
-
-    def bind(self,trainer):
+    def bind(self, trainer):
         """
         Binds the Training Observer to a given trainer
 
@@ -50,9 +48,7 @@ class Training_Observer(object):
 
         trainer.stateFcn = self.__stateFcn
 
-
-
-    def __stateFcn(self,input,output,loss,epoch,iteration,t):
+    def __stateFcn(self, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state and executes the routine functions
 
@@ -78,20 +74,18 @@ class Training_Observer(object):
 
         e = epoch[1:3]
         i = iteration
-        g = (e[0]*i[1]+i[0],e[1]*i[1])
-        if not e[0]==self.epoch:
+        g = (e[0]*i[1]+i[0], e[1]*i[1])
+        if not e[0] == self.epoch:
             self.epoch = e[0]
-            self.epochFcn(input,output,loss,epoch,iteration,t)
-        if not i[0]==self.iter:
+            self.epochFcn(input, output, loss, epoch, iteration, t)
+        if not i[0] == self.iter:
             self.iter = i[0]
-            self.iterationFcn(input,output,loss,epoch,iteration,t)
-        if g[0]==g[1]-1:
-            self.endFcn(input,output,loss,epoch,iteration,t)
+            self.iterationFcn(input, output, loss, epoch, iteration, t)
+        if g[0] == g[1]-1:
+            self.endFcn(input, output, loss, epoch, iteration, t)
         return
 
-
-
-    def iterationFcn(self,input,output,loss,epoch,iteration,t):
+    def iterationFcn(self, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at the end of each iteration
 
@@ -117,9 +111,7 @@ class Training_Observer(object):
 
         return
 
-
-
-    def epochFcn(self,input,output,loss,epoch,iteration,t):
+    def epochFcn(self, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at end of each epoch
 
@@ -145,9 +137,7 @@ class Training_Observer(object):
 
         return
 
-
-
-    def endFcn(self,input,output,loss,epoch,iteration,t):
+    def endFcn(self, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at end of the training
 
