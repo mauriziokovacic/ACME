@@ -12,7 +12,7 @@ class Bypass(torch.nn.Module):
     """
 
     def __init__(self):
-        super(Bypass,self).__init__(self)
+        super(Bypass,self).__init__()
 
     def forward(self, input):
         """
