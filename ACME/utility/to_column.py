@@ -1,29 +1,30 @@
-from .to_fat  import *
-from .flatten import *
+from .to_skinny import *
+from .flatten   import *
 
-def to_row(*tensors):
+
+def to_column(*tensors):
     """
-    Transforms the input tensor into a row vector
+    Transforms the input tensor into a column vector
 
-    If the input tensor is a matrix, it will be flattened into a (1,n) vector
-    If the input tensor is a (n,) vector, it will be unsqueezed in dimension 0
-    No operation is performed if the input is already a (1,n) vector
+    If the input tensor is a matrix, it will be flattened into a (N,1,) vector
+    If the input tensor is a (N,) vector, it will be unsqueezed in dimension 1
+    No operation is performed if the input is already a (N,1,) vector
 
     Parameters
     ----------
     *tensors : Tensor...
-        a sequence of (n,) or (n,m) tensors
+        a sequence of (N,) or (M,N,) tensors
 
     Returns
     -------
     Tensor or list
-        a (1,n) or (m,n) tensor, input if input is (1,n)
+        a (N,1,) or (N,M,) tensor, input if input is (N,1,)
 
     Raises
     ------
-    AssertError
-        if input are not tensors
+    AssertionError
+        if inputs are not tensors
     """
 
     out = [to_skinny(flatten(t)) for t in tensors]
-    return out if len(out)>1 else out[0]
+    return out if len(out) > 1 else out[0]
