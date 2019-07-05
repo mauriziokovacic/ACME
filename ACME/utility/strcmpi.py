@@ -1,6 +1,6 @@
 from .strcmp import *
 
-def strcmpi(str_a,str_b):
+def strcmpi(str_a, str_b):
     """
     Case insensitive comparison of two strings
 
@@ -17,4 +17,4 @@ def strcmpi(str_a,str_b):
         True if the two strings are identical, False otherwise
     """
 
-    return strcmp(str_a.lower(),str_b.lower())
+    return strcmp(str_a.lower(), str_b.lower())

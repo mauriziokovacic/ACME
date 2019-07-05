@@ -2,6 +2,7 @@ from .row import *
 from .col import *
 from .ismatrix import *
 
+
 def isfat(*tensors):
     """
     Returns whether or not the input tensor is a fat matrix
@@ -19,4 +20,4 @@ def isfat(*tensors):
         True if the tensors are fat, False otherwise
     """
 
-    return all([ismatrix(t) and (row(t)<col(t)) for t in tensors])
+    return all([ismatrix(t) and (row(t) < col(t)) for t in tensors])

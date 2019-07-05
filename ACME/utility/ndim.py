@@ -1,6 +1,7 @@
 from .isscalar import *
 from .size import *
 
+
 def ndim(A):
     """
     Returns the number of dimensions of the input Tensor

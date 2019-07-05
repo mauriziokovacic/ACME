@@ -1,6 +1,7 @@
 import torch
 from .row import *
 
+
 def interleave(*tensors):
     """
     Interleaves the rows of the given tensors.
@@ -18,4 +19,4 @@ def interleave(*tensors):
 
     n = len(tensors)
     r = row(tensors[0])
-    return torch.reshape(torch.cat(tensors,dim=1),(n*r,-1))
+    return torch.reshape(torch.cat(tensors, dim=1), (n*r, -1))

@@ -1,7 +1,8 @@
 import torch
 from .flatten import *
 
-def setdiff(A,B):
+
+def setdiff(A, B):
     """
     Returns the set difference tensor with all the elements in A not belonging to B
 
@@ -18,4 +19,4 @@ def setdiff(A,B):
         the set difference tensor
     """
 
-    return torch.tensor(list(set(flatten(A))-set(flatten(B))),dtype=A.dtype,device=A.device)
+    return torch.tensor(list(set(flatten(A))-set(flatten(B))), dtype=A.dtype, device=A.device)

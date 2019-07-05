@@ -1,6 +1,7 @@
 import torch
 
-def TrueTensor(*size,device='cuda:0'):
+
+def TrueTensor(*size, device='cuda:0'):
     """
     Returns a Tensor of type torch.uint8 containing only True values
 
@@ -17,4 +18,4 @@ def TrueTensor(*size,device='cuda:0'):
         a uint8 precision tensor
     """
 
-    return torch.ones(*size,dtype=torch.uint8,device=device)
+    return torch.ones(*size, dtype=torch.uint8, device=device)

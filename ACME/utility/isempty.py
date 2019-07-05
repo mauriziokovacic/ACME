@@ -1,5 +1,6 @@
 from .numel import *
 
+
 def isempty(*obj):
     """
     Returns whether or not the input Tensor has no elements
@@ -15,4 +16,4 @@ def isempty(*obj):
         True if the inputs are empty, False otherwise
     """
 
-    return all([numel(o)==0 for o in obj])
+    return all([numel(o) == 0 for o in obj])

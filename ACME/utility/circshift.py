@@ -3,7 +3,8 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
-def circshift(tensor,k,dim=None):
+
+def circshift(tensor, k, dim=None):
     """
     Circularly shifts the input tensor k times along the given dimension
 
@@ -28,7 +29,7 @@ def circshift(tensor,k,dim=None):
     """
 
     if isnumpy(tensor):
-        return numpy.roll(tensor,k,axis=dim)
+        return numpy.roll(tensor, k, axis=dim)
     if istorch(tensor):
-        return torch.roll(tensor,k,dims=dim)
+        return torch.roll(tensor, k, dims=dim)
     assert False, 'Unknown data type'

@@ -3,6 +3,7 @@ from .isscalar import *
 from .islist   import *
 from .istuple  import *
 
+
 def size(A):
     """
     Returns the size of each dimension of the input Tensor

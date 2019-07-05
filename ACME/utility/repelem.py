@@ -3,8 +3,10 @@ import torch
 from .isnumpy     import *
 from .istorch     import *
 from .numpy2torch import *
+from .torch2numpy import *
 
-def repelem(tensor,*size):
+
+def repelem(tensor, *size):
     """
     Repeats the tensor values along the tensor dimensions by the given times
 
@@ -28,10 +30,10 @@ def repelem(tensor,*size):
     if istorch(out):
         out = torch2numpy(out)
     if isnumpy(out):
-        for d in range(0,len(size)):
-            out = numpy.repeat(out,size[d],axis=d)
+        for d in range(0, len(size)):
+            out = numpy.repeat(out, size[d], axis=d)
     if istorch(tensor):
-        return numpy2torch(out,dtype=tensor.dtype,device=tensor.device)
+        return numpy2torch(out, dtype=tensor.dtype, device=tensor.device)
     if isnumpy(tensor):
         return out
     assert False, 'Unknown data type'

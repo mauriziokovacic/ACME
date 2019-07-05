@@ -13,4 +13,4 @@ def islist(*obj):
         True if the inputs are lists, False otherwise
     """
 
-    return all([isinstance(o,list) for o in obj])
+    return all([isinstance(o, list) for o in obj])

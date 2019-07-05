@@ -1,5 +1,6 @@
 import torch
 
+
 def flipud(tensor):
     """
     Flips a given tensor along the first dimension (up to down)

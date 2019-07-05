@@ -3,7 +3,8 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
-def repmat(tensor,*size):
+
+def repmat(tensor, *size):
     """
     Repeats the tensor along its dimensions by the given times
 
@@ -29,7 +30,7 @@ def repmat(tensor,*size):
     """
 
     if isnumpy(tensor):
-        return numpy.tile(tensor,size)
+        return numpy.tile(tensor, size)
     if istorch(tensor):
         return tensor.repeat(*size)
     assert False, 'Unknown data type'

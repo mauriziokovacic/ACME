@@ -1,4 +1,4 @@
-def debug_message(message,verbose,no_newline=False):
+def debug_message(message, verbose, no_newline=False):
     """
     Prints the given message if the verbose flag is true.
 
@@ -12,5 +12,5 @@ def debug_message(message,verbose,no_newline=False):
         If True does not end the message with the newline character
     """
 
-    if(verbose):
-        print(message,end='' if no_newline else '\n')
+    if verbose:
+        print(message, end='' if no_newline else '\n')

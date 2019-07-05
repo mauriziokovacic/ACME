@@ -4,7 +4,8 @@ from .isnumpy  import *
 from .istorch  import *
 from .issparse import *
 
-def sum(tensor,dim=-1,keepdim=True,**kwargs):
+
+def sum(tensor, dim=-1, keepdim=True, **kwargs):
     """
     Returns the sum of the tensor elements along the specified dimension
 
@@ -26,9 +27,9 @@ def sum(tensor,dim=-1,keepdim=True,**kwargs):
     """
 
     if isnumpy(tensor):
-        return numpy.sum(tensor,axis=dim,keepdims=keepdim,**kwargs)
+        return numpy.sum(tensor, axis=dim, keepdims=keepdim, **kwargs)
     if istorch(tensor):
         if issparse(tensor):
-            return torch.sum(tensor.to_dense(),dim,keepdim=keepdim,**kwargs)
-        return torch.sum(tensor,dim,keepdim=keepdim,**kwargs)
+            return torch.sum(tensor.to_dense(), dim, keepdim=keepdim, **kwargs)
+        return torch.sum(tensor, dim, keepdim=keepdim, **kwargs)
     assert False, 'Unknown data type'

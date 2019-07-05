@@ -1,6 +1,7 @@
 from .isnumpy import *
 from .istorch import *
 
+
 def istensor(*obj):
     """
     Returns whether or not the inputs are Numpy or PyTorch tensors

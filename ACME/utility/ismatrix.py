@@ -1,6 +1,7 @@
 from .size     import *
 from .isscalar import *
 
+
 def ismatrix(a):
     """
     Returns whether or not the input is a matrix
@@ -19,4 +20,4 @@ def ismatrix(a):
     s = size(a)
     if isscalar(s):
         return False
-    return len(s)==2
+    return len(s) == 2

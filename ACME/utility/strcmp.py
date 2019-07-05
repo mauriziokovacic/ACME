@@ -1,4 +1,4 @@
-def strcmp(str_a,str_b):
+def strcmp(str_a, str_b):
     """
     Case sensitive comparison of two strings
 

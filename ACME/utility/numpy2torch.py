@@ -3,7 +3,8 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
-def numpy2torch(tensor,dtype=torch.float,device='cuda:0'):
+
+def numpy2torch(tensor, dtype=torch.float, device='cuda:0'):
     """
     Converts the input tensor from PyTorch to Numpy.
 
@@ -30,5 +31,5 @@ def numpy2torch(tensor,dtype=torch.float,device='cuda:0'):
     if istorch(tensor):
         return tensor
     if isnumpy(tensor):
-        return torch.from_numpy(tensor).to(dtype=dtype,device=device)
+        return torch.from_numpy(tensor).to(dtype=dtype, device=device)
     assert False, 'Unknown data type'

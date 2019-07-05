@@ -13,4 +13,4 @@ def isstring(*obj):
         True if the inputs are strings, False otherwise
     """
 
-    return all([isinstance(o,str) for o in obj])
+    return all([isinstance(o, str) for o in obj])

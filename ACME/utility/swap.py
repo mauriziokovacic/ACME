@@ -1,4 +1,4 @@
-def swap(a,b):
+def swap(a, b):
     """
     Swaps the inputs
 
@@ -15,4 +15,4 @@ def swap(a,b):
         a tuple containing the inputs swapped
     """
 
-    return b,a
+    return b, a

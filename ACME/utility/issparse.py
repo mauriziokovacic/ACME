@@ -1,5 +1,6 @@
 import torch.sparse
 
+
 def issparse(*obj):
     """
     Returns whether or not the inputs are PyTorch sparse tensors
@@ -15,4 +16,4 @@ def issparse(*obj):
         True if the inputs are PyTorch sparse Tensors, False otherwise
     """
 
-    return all([isinstance(o,torch.sparse.FloatTensor) for o in obj])
+    return all([isinstance(o, torch.sparse.FloatTensor) for o in obj])

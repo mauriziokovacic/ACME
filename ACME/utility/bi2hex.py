@@ -1,6 +1,7 @@
 from .bi2de import *
 from .de2hex import *
 
+
 def bi2hex(obj):
     """
     Converts a binary number into its hexdecimal representation

@@ -1,6 +1,7 @@
 from .uniquetol import *
 
-def unique(A,ByRows=False):
+
+def unique(A, ByRows=False):
     """
     Returns the unique elements in A.
 
@@ -21,4 +22,4 @@ def unique(A,ByRows=False):
         returns the tensor of unique values/rows, their indices within the input tensor and the input tensor indices within the unique
     """
 
-    return uniquetol(A,tol=0,ByRows=ByRows)
+    return uniquetol(A, tol=0, ByRows=ByRows)

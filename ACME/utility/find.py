@@ -1,10 +1,7 @@
 import torch
-from .numel   import *
-from .ndim    import *
-from .indices import *
-from .flatten import *
 
-def find(cond,linear=True):
+
+def find(cond, linear=True):
     """
     Finds the indices of the True values within the given condition
 

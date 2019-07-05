@@ -2,6 +2,7 @@ from .assertion import *
 from .numel     import *
 from .istensor  import *
 
+
 def isvector(*tensors):
     """
     Returns whether or not the input tensor is a vector
@@ -25,4 +26,4 @@ def isvector(*tensors):
     """
 
     [assertion(istensor(t), 'Inputs must be tensors') for t in tensors]
-    return all([any([numel(t)==d for d in t.shape]) for t in tensors])
+    return all([any([numel(t) == d for d in t.shape]) for t in tensors])

@@ -2,6 +2,7 @@ from .isscalar import *
 from .size     import *
 from .prod     import *
 
+
 def numel(A):
     """
     Returns the number of elements contained in the given Tensor

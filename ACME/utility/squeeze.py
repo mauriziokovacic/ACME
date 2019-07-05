@@ -3,6 +3,7 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
+
 def squeeze(tensor):
     """
     Removes all the dimensions with value 1 of the input tensor

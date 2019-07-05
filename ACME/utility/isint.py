@@ -13,4 +13,4 @@ def isint(*obj):
         True if the inputs are int, False otherwise
     """
 
-    return all([isinstance(o,int) for o in obj])
+    return all([isinstance(o, int) for o in obj])

@@ -2,6 +2,7 @@ from .istensor  import *
 from .ndim      import *
 from .transpose import *
 from .unsqueeze import *
+from .isskinny  import *
 
 def to_fat(tensor):
     """
@@ -28,8 +29,8 @@ def to_fat(tensor):
     """
 
     assert istensor(tensor), 'Input must be a valid tensor'
-    if ndim(tensor)==1:
-        return unsqueeze(tensor,0)
+    if ndim(tensor) == 1:
+        return unsqueeze(tensor, 0)
     if isskinny(tensor):
         return transpose(tensor)
     return tensor

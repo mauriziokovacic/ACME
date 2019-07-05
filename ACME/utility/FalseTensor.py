@@ -1,6 +1,7 @@
 import torch
 
-def FalseTensor(*size,device='cuda:0'):
+
+def FalseTensor(*size, device='cuda:0'):
     """
     Returns a Tensor of type torch.uint8 containing only False values
 
@@ -17,6 +18,6 @@ def FalseTensor(*size,device='cuda:0'):
         a uint8 precision tensor
     """
 
-    return torch.zeros(*size,dtype=torch.uint8,device=device)
+    return torch.zeros(*size, dtype=torch.uint8, device=device)
 
 

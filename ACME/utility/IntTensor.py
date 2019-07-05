@@ -1,6 +1,7 @@
 import torch
 
-def IntTensor(values,device='cuda:0'):
+
+def IntTensor(values, device='cuda:0'):
     """
     Returns a Tensor of type torch.int containing the given values
 
@@ -17,4 +18,4 @@ def IntTensor(values,device='cuda:0'):
         an integer precision tensor
     """
 
-    return torch.tensor(values,dtype=torch.int,device=device)
+    return torch.tensor(values, dtype=torch.int, device=device)

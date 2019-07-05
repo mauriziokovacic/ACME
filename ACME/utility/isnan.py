@@ -17,4 +17,4 @@ def isnan(*obj):
     """
 
     out = [flatten(o) if istensor(o) else o for o in obj]
-    return any([any(o!=o) if istensor(o) else o!=o for o in out])
+    return any([any(o != o) if istensor(o) else o != o for o in out])

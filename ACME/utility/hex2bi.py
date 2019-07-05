@@ -1,5 +1,6 @@
 from .de2bi import *
 
+
 def hex2bi(obj):
     """
     Converts a hexadecimal number into its binary representation
@@ -15,4 +16,4 @@ def hex2bi(obj):
         the binary representation of the input number
     """
 
-    return de2bi(int(str(obj),16))
+    return de2bi(int(str(obj), 16))

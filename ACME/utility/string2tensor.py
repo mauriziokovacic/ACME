@@ -1,6 +1,7 @@
 import torch
 
-def string2tensor(txt,prefix='',suffix='',separator=None,end='\n',dtype=torch.float,device='cuda:0'):
+
+def string2tensor(txt, prefix='', suffix='', separator=None, end='\n', dtype=torch.float, device='cuda:0'):
     """
     Converts a string into a Tensor.
 
@@ -37,8 +38,8 @@ def string2tensor(txt,prefix='',suffix='',separator=None,end='\n',dtype=torch.fl
     token = txt.split(end)
     if not token[-1]:
         token = token[0:-1]
-    token = [t.replace(prefix,'') for t in token]
-    token = [t.replace(suffix,'') for t in token]
+    token = [t.replace(prefix, '') for t in token]
+    token = [t.replace(suffix, '') for t in token]
     token = [t.split(separator) for t in token]
     value = [[float(x) for x in t] for t in token]
-    return torch.tensor(value,dtype=dtype,device=device)
+    return torch.tensor(value, dtype=dtype, device=device)

@@ -3,6 +3,7 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
+
 def transpose(tensor):
     """
     Transposes the input tensor

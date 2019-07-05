@@ -1,5 +1,6 @@
 import torch
 
+
 def fliplr(tensor):
     """
     Flips a given tensor along the second dimension (left to right)

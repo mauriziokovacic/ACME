@@ -1,6 +1,7 @@
 from .isnan import *
 from .isinf import *
 
+
 def isfinite(*obj):
     """
     Returns whether or not the input is finite

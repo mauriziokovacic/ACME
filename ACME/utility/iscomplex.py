@@ -13,4 +13,4 @@ def iscomplex(*obj):
         True if the inputs are complex, False otherwise
     """
 
-    return all([isinstance(o,complex) for o in obj])
+    return all([isinstance(o, complex) for o in obj])

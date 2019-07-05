@@ -13,4 +13,4 @@ def isfloat(*obj):
         True if the inputs are float, False otherwise
     """
 
-    return all([isinstance(o,float) for o in obj])
+    return all([isinstance(o, float) for o in obj])

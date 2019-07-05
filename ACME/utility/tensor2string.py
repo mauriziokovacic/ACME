@@ -1,6 +1,9 @@
 import torch
+from .row import *
+from .col import *
 
-def tensor2string(tensor,prefix='',suffix='',separator=' ',end='\n'):
+
+def tensor2string(tensor, prefix='', suffix='', separator=' ', end='\n'):
     """
     Converts a Tensor into a string.
 

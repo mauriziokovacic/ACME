@@ -3,7 +3,8 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
-def reshape(tensor,shape,**kwargs):
+
+def reshape(tensor, shape, **kwargs):
     """
     Reshapes the input tensor into the given shape
 
@@ -23,7 +24,7 @@ def reshape(tensor,shape,**kwargs):
     """
 
     if isnumpy(tensor):
-        return numpy.reshape(tensor,shape,**kwargs)
+        return numpy.reshape(tensor, shape, **kwargs)
     if istorch(tensor):
-        return torch.reshape(tensor,shape)
+        return torch.reshape(tensor, shape)
     assert False, 'Unknown data type'

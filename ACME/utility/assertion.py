@@ -1,4 +1,4 @@
-def assertion(cond,msg=''):
+def assertion(cond, msg=''):
     """
     Asserts if condition is false and display a message
 

@@ -1,10 +1,13 @@
 import numpy
 import torch
-from .isnumpy import *
-from .istorch import *
-from .ndim    import *
+from .isnumpy     import *
+from .istorch     import *
+from .ndim        import *
+from .numpy2torch import *
+from .torch2numpy import *
 
-def circrepeat(tensor,k,dim=1):
+
+def circrepeat(tensor, k, dim=1):
     """
     Repeats the value of the tensor along the specified dimensions
 
@@ -31,9 +34,9 @@ def circrepeat(tensor,k,dim=1):
     if istorch(out):
         out = torch2numpy(out)
     if isnumpy(out):
-        out = np.pad(tensor,(tuple([(0,0 if i!=dim else k) for i in range(0,ndim(out))])),mode='wrap')
+        out = numpy.pad(tensor, (tuple([(0, 0 if i != dim else k) for i in range(0, ndim(out))])), mode='wrap')
     if istorch(tensor):
-        return numpy2torch(out,dtype=tensor.dtype,device=tensor.device)
+        return numpy2torch(out, dtype=tensor.dtype, device=tensor.device)
     if isnumpy(tensor):
         return out
     assert False, 'Unknown data type'

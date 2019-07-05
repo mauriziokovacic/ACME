@@ -3,6 +3,7 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
+
 def flatten(tensor):
     """
     Flattens a given tensor

@@ -2,6 +2,7 @@ from .row import *
 from .col import *
 from .ismatrix import *
 
+
 def issquare(*tensors):
     """
     Returns whether or not the input tensor is a square matrix
@@ -19,4 +20,4 @@ def issquare(*tensors):
         True if the tensors are square, False otherwise
     """
 
-    return all([ismatrix(t) and (row(t)==col(t)) for t in tensors])
+    return all([ismatrix(t) and (row(t) == col(t)) for t in tensors])

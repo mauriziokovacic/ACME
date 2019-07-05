@@ -1,8 +1,11 @@
 import math
+import torch
+from .istorch import *
 from .size import *
 from .ndim import *
 
-def clamp(a,inf=0,sup=1):
+
+def clamp(a, inf=0, sup=1):
     """
     Returns the clamped value of the input in range [inf,sup]
 
@@ -22,9 +25,8 @@ def clamp(a,inf=0,sup=1):
     """
 
     if istorch(a):
-        return torch.clamp(a,inf,sup)
-    return min(max(inf,a),sup)
-
+        return torch.clamp(a, inf, sup)
+    return min(max(inf, a), sup)
 
 
 def clampmax(a,sup=1):
@@ -47,8 +49,7 @@ def clampmax(a,sup=1):
     return clamp(a,inf=-math.inf,sup=sup)
 
 
-
-def clampmin(a,inf=0):
+def clampmin(a, inf=0):
     """
     Returns the clamped value of the input in range [inf,\infty]
 
@@ -65,5 +66,5 @@ def clampmin(a,inf=0):
         the clamped input
     """
 
-    return clamp(a,inf=inf,sup=math.inf)
+    return clamp(a, inf=inf, sup=math.inf)
 

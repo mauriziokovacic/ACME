@@ -2,6 +2,7 @@ from .isint     import *
 from .isfloat   import *
 from .iscomplex import *
 
+
 def isscalar(*obj):
     """
     Returns whether or not the input is a scalar

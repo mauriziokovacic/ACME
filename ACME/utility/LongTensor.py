@@ -1,6 +1,6 @@
 import torch
 
-def LongTensor(values,device='cuda:0'):
+def LongTensor(values, device='cuda:0'):
     """
     Returns a Tensor of type torch.long containing the given values
 
@@ -17,4 +17,4 @@ def LongTensor(values,device='cuda:0'):
         a long integer precision tensor
     """
 
-    return torch.tensor(values,dtype=torch.long,device=device)
+    return torch.tensor(values, dtype=torch.long, device=device)

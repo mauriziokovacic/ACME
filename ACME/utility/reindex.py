@@ -1,6 +1,8 @@
-from .unique  import *
+from .numel   import *
 from .indices import *
 from .squeeze import *
+from .unique  import *
+
 
 def reindex(I):
     """
@@ -18,9 +20,9 @@ def reindex(I):
     """
 
     i    = unique(I)[0]
-    j    = squeeze(indices(0,numel(i),device=I.device))
-    x    = torch.zeros(i.max()+1,dtype=torch.long,device=I.device)
+    j    = squeeze(indices(0, numel(i), device=I.device))
+    x    = torch.zeros(i.max()+1, dtype=torch.long, device=I.device)
     x[i] = j
     ind  = x[I]
-    return ind,i,j
+    return ind, i, j
 

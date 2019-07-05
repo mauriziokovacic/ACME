@@ -1,6 +1,7 @@
 import torch
+from .prod import *
 
-def sub2ind(size,I):
+def sub2ind(size, I):
     """
     Converts subscripts to linear indices
 

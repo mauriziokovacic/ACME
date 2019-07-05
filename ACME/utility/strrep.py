@@ -1,4 +1,4 @@
-def strrep(text,old,new):
+def strrep(text, old, new):
     """
     Replaces all the occurrences of a substring into a new one
 
@@ -17,4 +17,4 @@ def strrep(text,old,new):
         The new string
     """
 
-    return text.replace(old,new)
+    return text.replace(old, new)

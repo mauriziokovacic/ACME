@@ -13,4 +13,4 @@ def hex2de(obj):
         the decimal representation of the input number
     """
 
-    return int(str(obj),16)
+    return int(str(obj), 16)

@@ -2,6 +2,7 @@ from .row import *
 from .col import *
 from .ismatrix import *
 
+
 def isskinny(*tensors):
     """
     Returns whether or not the input tensor is a skinny matrix
@@ -19,4 +20,4 @@ def isskinny(*tensors):
         True if all the tensors are skinny, False otherwise
     """
 
-    return all([ismatrix(t) and (row(t)>col(t)) for t in tensors])
+    return all([ismatrix(t) and (row(t) > col(t)) for t in tensors])

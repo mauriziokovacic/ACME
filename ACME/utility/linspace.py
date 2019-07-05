@@ -1,6 +1,7 @@
 import torch
 
-def linspace(min,max,n,dtype=torch.float,device='cuda:0'):
+
+def linspace(min, max, n, dtype=torch.float, device='cuda:0'):
     """
     Generates a tensor of n evenly spaced values between min and max
 
@@ -26,4 +27,4 @@ def linspace(min,max,n,dtype=torch.float,device='cuda:0'):
         a tensor with n evenly spaced values between min and max
     """
 
-    return torch.linspace(min,max,n).to(dtype=dtype,device=device).unsqueeze(1)
+    return torch.linspace(min, max, n).to(dtype=dtype, device=device).unsqueeze(1)

@@ -3,6 +3,7 @@ import torch
 from .isnumpy import *
 from .istorch import *
 
+
 def torch2numpy(tensor):
     """
     Converts the input tensor from PyTorch to Numpy.

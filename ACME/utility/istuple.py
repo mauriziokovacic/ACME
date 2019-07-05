@@ -13,4 +13,4 @@ def istuple(*obj):
         True if the inputs are tuple, False otherwise
     """
 
-    return all([isinstance(o,tuple) for o in obj])
+    return all([isinstance(o, tuple) for o in obj])
