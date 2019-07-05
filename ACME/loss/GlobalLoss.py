@@ -1,6 +1,7 @@
 import torch
 from .LossList import *
 
+
 class GlobalLoss(LossList):
     """
     A class representing the global loss function.
@@ -36,9 +37,7 @@ class GlobalLoss(LossList):
         Convert the loss into a dictionary {name:value}
     """
 
-
-
-    def __init__(self,*losses,device='cuda:0'):
+    def __init__(self, *losses, device='cuda:0'):
         """
         Parameters
         ----------
@@ -47,4 +46,4 @@ class GlobalLoss(LossList):
         device : str or torch.device (optional)
             the device the tensors will be stored to (default is 'cuda:0')
         """
-        super().__init__(*losses,alpha=1,name='Global',enabled=True,device=device,compact=False)
+        super().__init__(*losses, alpha=1, name='Global', enabled=True, device=device, compact=False)

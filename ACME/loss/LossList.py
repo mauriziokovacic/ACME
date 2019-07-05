@@ -1,6 +1,8 @@
 import torch
 from functools import reduce
+from ..utility.islist import *
 from .Loss import *
+
 
 class LossList(Loss):
     """
@@ -39,9 +41,7 @@ class LossList(Loss):
         convert the loss into a dictionary {name:value}
     """
 
-
-
-    def __init__(self,*losses,name='List',compact=True,**kwargs):
+    def __init__(self, *losses, name='List', compact=True, **kwargs):
         """
         Parameters
         ----------
@@ -55,14 +55,12 @@ class LossList(Loss):
             any keyword argument from Loss class
         """
 
-        super().__init__(name=name,**kwargs)
+        super().__init__(name=name, **kwargs)
         self.compact = compact
         self.reset()
         self.insert(losses)
 
-
-
-    def eval(self,input,*output):
+    def eval(self, input, *output):
         """
         Evaluate the loss for the given network input and output
 
@@ -85,10 +83,8 @@ class LossList(Loss):
         """
 
         assert not self.empty(), "LossList cannot be evaluated while empty."
-        self.value = reduce((lambda a,b: a.eval(input,*output)+b.eval(input,*output)),self.loss)
+        self.value = reduce((lambda a, b: a.eval(input, *output)+b.eval(input, *output)), self.loss)
         return self.value
-
-
 
     def size(self):
         """
@@ -102,8 +98,6 @@ class LossList(Loss):
 
         return len(self)
 
-
-
     def empty(self):
         """
         Returns whether or not there are losses to be evaluated
@@ -116,9 +110,7 @@ class LossList(Loss):
 
         return not self.loss
 
-
-
-    def insert(self,*losses):
+    def insert(self, *losses):
         """
         Inserts the given list of losses to the evaluation
 
@@ -134,13 +126,11 @@ class LossList(Loss):
         """
 
         if (losses is None) or (not losses):
-           return self
+            return self
         self.loss += losses if islist(losses) else list(losses)
         return self
 
-
-
-    def remove(self,i):
+    def remove(self, i):
         """
         Removes the i-th loss function from the list
 
@@ -160,11 +150,9 @@ class LossList(Loss):
             if the given index is out of bounds
         """
 
-        assert (i>=0) and (i<len(self)), 'Index out of bounds'
+        assert (i >= 0) and (i < len(self)), 'Index out of bounds'
         del self.loss[i]
         return self
-
-
 
     def reset(self):
         """
@@ -173,8 +161,6 @@ class LossList(Loss):
 
         self.loss  = []
         self.value = None
-
-
 
     def to_dict(self):
         """
@@ -193,13 +179,9 @@ class LossList(Loss):
                     d.update(l.to_dict())
         return d
 
-
-
     def __getitem__(self, i):
         """Returns the loss function at the i-th index"""
         return self.loss[i]
-
-
 
     def __len__(self):
         """Returns the number of losses contained in the global loss function"""

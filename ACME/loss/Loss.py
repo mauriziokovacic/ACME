@@ -1,5 +1,6 @@
 import torch
 
+
 class Loss(object):
     """
     A class representing the base for any loss function.
@@ -33,7 +34,7 @@ class Loss(object):
         Convert the loss into a dictionary entry {name : value}
     """
 
-    def __init__(self,alpha=1,name='',enabled=True,device='cuda:0'):
+    def __init__(self, alpha=1, name='', enabled=True, device='cuda:0'):
         """
         Parameters
         ----------
@@ -53,9 +54,7 @@ class Loss(object):
         self.value   = None
         self.device  = device
 
-
-
-    def eval(self,input,*output):
+    def eval(self, input, *output):
         """
         Evaluate the loss for the given network input and output
 
@@ -72,12 +71,10 @@ class Loss(object):
             a single value Tensor representing the loss
         """
 
-        self.value = torch.mul(self.__eval__(input,*output),self.alpha if self.enabled else 0)
+        self.value = torch.mul(self.__eval__(input, *output), self.alpha if self.enabled else 0)
         return self.value
 
-
-
-    def __eval__(self,input,*output):
+    def __eval__(self, input, *output):
         """
         Interface for computing the loss.
 
@@ -96,9 +93,7 @@ class Loss(object):
 
         raise NotImplementedError
 
-
-
-    def toggle(self,status):
+    def toggle(self, status):
         """
         Toggle the loss evaluation on or off depending on status
 
@@ -110,21 +105,15 @@ class Loss(object):
 
         self.enabled = status
 
-
-
     def enable(self):
         """Enable the loss evaluation. Equivalent to toggle(True)."""
 
         self.toggle(True)
 
-
-
     def disable(self):
         """Disable the loss evaluation. Equivalent to toggle(False)."""
 
         self.toggle(False)
-
-
 
     def isenabled(self):
         """
@@ -137,8 +126,6 @@ class Loss(object):
         """
 
         return self.enabled
-
-
 
     def to_dict(self):
         """
@@ -153,35 +140,25 @@ class Loss(object):
         value = self.value
         if value is not None:
             value = value.item()
-        return {self.name:value}
-
-
+        return {self.name: value}
 
     def __gt__(self, other):
         """Returns True if the current loss function evaluates more than the other, False otherwise."""
 
         return self.value > other.value
 
-
-
     def __lt__(self, other):
         """Returns True if the current loss function evaluates less than the other, False otherwise."""
 
         return self.value < other.value
 
-
-
-    def __eq__(self,other):
+    def __eq__(self, other):
         """Returns True if the current loss function evaluates equal to the other, False otherwise."""
 
         return self.value == other.value
 
-
-
     def __str__(self):
         return str(self.name) + " Loss"
 
-
-
-    def __call__(self,input,output):
-        return self.eval(input,output)
+    def __call__(self, input, *output):
+        return self.eval(input, *output)
