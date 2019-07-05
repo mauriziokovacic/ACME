@@ -1,5 +1,6 @@
 from ..utility.row import *
 
+
 def polysides(T):
     """
     Returns the number of sides of the n-gons in the topology tensor

@@ -2,7 +2,8 @@ import torch
 from ..utility.unique import *
 from .polysort        import *
 
-def poly2unique(T,winding=False):
+
+def poly2unique(T, winding=False):
     """
     Returns the unique n-gons in the topology
 
@@ -19,5 +20,5 @@ def poly2unique(T,winding=False):
         returns the unique n-gons, their indices within the input tensor and the input tensor indices within the unique
     """
 
-    C,ia,ic = unique(torch.t(polysort(T,winding=winding)),ByRows=True)
-    return torch.t(C),ia,ic
+    C, ia, ic = unique(torch.t(polysort(T, winding=winding)), ByRows=True)
+    return torch.t(C), ia, ic

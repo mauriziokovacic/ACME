@@ -1,6 +1,7 @@
 from ..utility.row import *
 
-def ispoly(T,n=None):
+
+def ispoly(T, n=None):
     """
     Returns whether or not the input topology is composed of n-gons.
     If n is None then the function checks if the topology is a composed of
@@ -20,8 +21,8 @@ def ispoly(T,n=None):
     """
 
     if n is None:
-        return row(T)>4
-    return row(T)==n
+        return row(T) > 4
+    return row(T) == n
 
 
 

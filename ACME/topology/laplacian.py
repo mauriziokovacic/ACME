@@ -1,6 +1,7 @@
 import torch
 from .degree import *
 
+
 def laplacian(A):
     """
     Returns the laplacian matrix from a given adjacency matrix
@@ -19,7 +20,6 @@ def laplacian(A):
     return degree(A)-A
 
 
-
 def symmetric_normalized_laplacian(A):
     """
     Returns the symmetric normalized laplacian matrix from a given adjacency matrix
@@ -36,8 +36,7 @@ def symmetric_normalized_laplacian(A):
     """
 
     D = torch.diag(torch.reciprocal(torch.sqrt(torch.diag(degree(A)))))
-    return torch.mm(D,torch.mm(laplacian(A),D))
-
+    return torch.mm(D, torch.mm(laplacian(A), D))
 
 
 def random_walk_normalized_laplacian(A):
@@ -56,4 +55,4 @@ def random_walk_normalized_laplacian(A):
     """
 
     D = torch.diag(torch.reciprocal(torch.diag(degree(A))))
-    return torch.mm(D,laplacian(A))
+    return torch.mm(D, laplacian(A))

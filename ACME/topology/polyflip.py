@@ -1,5 +1,6 @@
 from ..utility.flipud import *
 
+
 def polyflip(T):
     """
     Flips the polygons in the topology

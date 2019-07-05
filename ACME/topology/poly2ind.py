@@ -16,7 +16,6 @@ def poly2ind(T):
     return tuple(T)
 
 
-
 def edge2ind(E):
     """
     Extracts indices from the edge tensor
@@ -35,7 +34,6 @@ def edge2ind(E):
     return poly2ind(E)
 
 
-
 def tri2ind(T):
     """
     Extracts indices from the triangle tensor
@@ -52,7 +50,6 @@ def tri2ind(T):
     """
 
     return poly2ind(T)
-
 
 
 def quad2ind(T):

@@ -6,6 +6,7 @@ from ..utility.circshift import *
 from ..utility.indices   import *
 from .ind2poly           import *
 
+
 def poly2edge(T):
     """
     Extracts the edges from the polygon tensor.
@@ -28,10 +29,9 @@ def poly2edge(T):
 
     assert row(T)>1, "Topology matrix should be at least of size 2xt"
     E = torch.cat((torch.cat(tuple(T),                   ).unsqueeze(0),
-                   torch.cat(tuple(circshift(T,-1,dim=0))).unsqueeze(0)),dim=0)
-    F = repmat(indices(0,col(T)-1,device=T.device),row(T),1)
-    return E,F
-
+                   torch.cat(tuple(circshift(T,-1,dim=0))).unsqueeze(0)), dim=0)
+    F = repmat(indices(0, col(T)-1, device=T.device), row(T), 1)
+    return E, F
 
 
 def tri2edge(T):
@@ -50,7 +50,6 @@ def tri2edge(T):
     """
 
     return poly2edge(T)
-
 
 
 def quad2edge(T):

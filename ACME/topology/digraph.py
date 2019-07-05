@@ -5,7 +5,6 @@ from ..utility.find import *
 from .adjacency     import *
 
 
-
 class Digraph(object):
     """
     A class representing a directed graph
@@ -55,8 +54,7 @@ class Digraph(object):
         self.__adj__ = None
 
 
-
-    def from_edges(self,E,W=None,size=None):
+    def from_edges(self, E, W=None, size=None):
         """
         Creates the graph from the given edge tensor
 
@@ -76,12 +74,10 @@ class Digraph(object):
         """
 
         if W is None:
-            W = torch.ones(col(E),dtype=torch.float,device=I.device)
-        return self.from_adj(adjacency(E,W,size=size))
+            W = torch.ones(col(E), dtype=torch.float, device=E.device)
+        return self.from_adj(adjacency(E, W, size=size))
 
-
-
-    def from_adj(self,A):
+    def from_adj(self, A):
         """
         Creates the graph from the given adjacency matrix
 
@@ -99,9 +95,7 @@ class Digraph(object):
         self.__adj__ = A
         return self
 
-
-
-    def successors(self,i):
+    def successors(self, i):
         """
         Returns the successors indices of node i
 
@@ -116,11 +110,9 @@ class Digraph(object):
             the successors indices
         """
 
-        return find(self.__adj__[i,:]>0)
+        return find(self.__adj__[i, :] > 0)
 
-
-
-    def predecessors(self,i):
+    def predecessors(self, i):
         """
         Returns the predecessors indices of node i
 
@@ -135,9 +127,7 @@ class Digraph(object):
             the predecessors indices
         """
 
-        return find(self.__adj__[:,i]>0)
-
-
+        return find(self.__adj__[:, i] > 0)
 
     def roots(self):
         """
@@ -149,9 +139,7 @@ class Digraph(object):
             the roots indices
         """
 
-        return find(torch.sum(self.__adj__,0)==0)
-
-
+        return find(torch.sum(self.__adj__, 0) == 0)
 
     def leaves(self):
         """
@@ -163,11 +151,9 @@ class Digraph(object):
             the leaves indices
         """
 
-        return find(torch.sum(self.__adj__,1)==0)
+        return find(torch.sum(self.__adj__, 1) == 0)
 
-
-
-    def isroot(self,i):
+    def isroot(self, i):
         """
         Returns True if node i is a root, False otherwise
 
@@ -182,11 +168,9 @@ class Digraph(object):
             True if node i is a root, False otherwise
         """
 
-        return torch.sum(self.__adj__[:,i],0)==0
+        return torch.sum(self.__adj__[:, i], 0) == 0
 
-
-
-    def isleaf(self,i):
+    def isleaf(self, i):
         """
         Returns True if node i is a leaf, False otherwise
 
@@ -201,11 +185,9 @@ class Digraph(object):
             True if node i is a leaf, False otherwise
         """
 
-        return torch.sum(self.__adj__[i,:],1)==0
+        return torch.sum(self.__adj__[i, :], 1) == 0
 
-
-
-    def isbranch(self,i):
+    def isbranch(self, i):
         """
         Returns True if node i is a branch node, False otherwise
 
@@ -223,11 +205,9 @@ class Digraph(object):
             True if node i is a branch node, False otherwise
         """
 
-        return torch.sum(self.__adj__[i,:],1)>1 or torch.sum(self.__adj__[:,i],0)>1
+        return torch.sum(self.__adj__[i, :], 1) > 1 or torch.sum(self.__adj__[:, i], 0) > 1
 
-
-
-    def isjoint(self,i):
+    def isjoint(self, i):
         """
         Returns True if node i is a joint node, False otherwise
 
@@ -244,9 +224,7 @@ class Digraph(object):
             True if node i is a joint node, False otherwise
         """
 
-        return torch.sum(self.__adj__[i,:],1)==1 * torch.sum(self.__adj__[:,i],0)==1
-
-
+        return torch.sum(self.__adj__[i, :], 1) == 1 * torch.sum(self.__adj__[:, i], 0) == 1
 
     def isempty(self):
         """
@@ -260,8 +238,6 @@ class Digraph(object):
 
         return self.size() == 0
 
-
-
     def size(self):
         """
         Returns the number of nodes in the graph
@@ -273,8 +249,6 @@ class Digraph(object):
         """
 
         return row(self.__adj__)
-
-
 
     def edges(self):
         """
@@ -288,8 +262,6 @@ class Digraph(object):
 
         return adj2edge(self.__adj__)
 
-
-
     def matrix(self):
         """
         Returns the adjacency matrix
@@ -302,9 +274,7 @@ class Digraph(object):
 
         return self.__adj__.clone()
 
-
-
-    def add_nodes(self,n=1):
+    def add_nodes(self, n=1):
         """
         Adds n new nodes to the graph
 
@@ -319,13 +289,15 @@ class Digraph(object):
             the graph
         """
 
-        self.__adj__ = torch.cat((self.__adj__,torch.zeros(self.size(),n,  dtype=self.__adj__.dtype,device=self.__adj__.device)),dim=1)
-        self.__adj__ = torch.cat((self.__adj__,torch.zeros(n,self.size()+n,dtype=self.__adj__.dtype,device=self.__adj__.device)),dim=0)
+        self.__adj__ = torch.cat((self.__adj__,
+                                  torch.zeros(self.size(), n,   dtype=self.__adj__.dtype, device=self.__adj__.device)),
+                                 dim=1)
+        self.__adj__ = torch.cat((self.__adj__,
+                                  torch.zeros(n, self.size()+n, dtype=self.__adj__.dtype, device=self.__adj__.device)),
+                                 dim=0)
         return self
 
-
-
-    def add_edge(self,E,W=None):
+    def add_edge(self, E, W=None):
         """
         Adds the given edges to the graph
 
@@ -343,12 +315,10 @@ class Digraph(object):
         """
 
         if W is None:
-            W = torch.ones(col(E),dtype=torch.float,device=I.device)
-        for i,j,w in zip(*tuple(E),W):
-            self.__adj__[i,j] = w
+            W = torch.ones(col(E), dtype=torch.float, device=E.device)
+        for i, j, w in zip(*tuple(E), W):
+            self.__adj__[i, j] = w
         return self
-
-
 
     def to(self,*args,**kwargs):
         """
@@ -361,12 +331,8 @@ class Digraph(object):
         """
 
         if not self.isempty():
-            self.__adj__.to(*args,**kwargs)
+            self.__adj__.to(*args, **kwargs)
         return self
-
-
 
     def __repr__(self):
         return str(self.__adj__)
-
-

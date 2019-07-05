@@ -1,6 +1,7 @@
 import torch
 from ..utility.to_row import *
 
+
 def ind2poly(*I):
     """
     Creates polygons from the input indices
@@ -21,8 +22,8 @@ def ind2poly(*I):
         if inputs are less than two
     """
 
-    assert len(I)>=2, 'Input must be at least two tensors'
-    return torch.cat(tuple(to_row(*I)),dim=0)
+    assert len(I) >= 2, 'Input must be at least two tensors'
+    return torch.cat(tuple(to_row(*I)), dim=0)
 
 
 

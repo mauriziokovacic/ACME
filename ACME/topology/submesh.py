@@ -7,7 +7,8 @@ from ..utility.numel   import *
 from ..utility.unique  import *
 from ..utility.find    import *
 
-def submesh(T,ind,type='node'):
+
+def submesh(T, ind, type='node'):
     """
     Given a set of a mesh nodes/polygons indices, create the indices for constructing a submesh.
 
@@ -28,18 +29,18 @@ def submesh(T,ind,type='node'):
 
     n = torch.max(T)[0]+1
     if not isempty(ind):
-        k  = torch.zeros(n,1,dtype=torch.long,device=T.device)
-        if strcmpi(type,'node'):
+        k  = torch.zeros(n, 1, dtype=torch.long, device=T.device)
+        if strcmpi(type, 'node'):
             In     = ind
-        if strcmpi(type,'topology'):
+        if strcmpi(type, 'topology'):
             It     = ind
-            In     = unique(T[:,It])[0]
-        k[In] = indices(1,numel(In))
+            In     = unique(T[:, It])[0]
+        k[In] = indices(1, numel(In))
         t     = k[T]
-        if strcmpi(type,'node'):
-            _,j = find(t>0)
-            It  = j
-        if strcmpi(type,'topology'):
-            _,j = find(torch.prod(t,0)>0)
-        t = t[:,j]-1
-    return It,In,t
+        if strcmpi(type, 'node'):
+            j  = find(t > 0)[1]
+            It = j
+        if strcmpi(type, 'topology'):
+            j = find(torch.prod(t, 0) > 0)[1]
+        t = t[:, j]-1
+    return It, In, t

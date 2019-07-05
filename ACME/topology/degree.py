@@ -1,4 +1,6 @@
 import torch
+from ..utility.ismatrix import *
+
 
 def degree(A):
     """
@@ -21,4 +23,4 @@ def degree(A):
     """
 
     assert ismatrix(A), 'Tensor must be a matrix'
-    return torch.diag(torch.sum(A,1,keepdim=False))
+    return torch.diag(torch.sum(A, 1, keepdim=False))

@@ -1,6 +1,7 @@
 from ..utility.circshift import *
 
-def polyshift(T,k):
+
+def polyshift(T, k):
     """
     Shifts the nodes within a polygon k times
 
@@ -17,4 +18,4 @@ def polyshift(T,k):
         the shifted topology tensor
     """
 
-    return circshift(T,k,dim=0)
+    return circshift(T, k, dim=0)
