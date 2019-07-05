@@ -1,5 +1,6 @@
 import os
 
+
 def fileparts(filename):
     """
     Splits the input file name string into path,name and extension
@@ -17,4 +18,4 @@ def fileparts(filename):
 
     path, name = os.path.split(filename)
     name, ext  = os.path.splitext(name)
-    return path,name,ext
+    return path, name, ext

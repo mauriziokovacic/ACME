@@ -4,7 +4,8 @@ from ..utility.tensor2string import *
 from ..color.color2int       import *
 from .io                     import *
 
-def export_PLY(filename,Point=None,Normal=None,UV=None,Face=None,Color=None,verbose=False):
+
+def export_PLY(filename, Point=None, Normal=None, UV=None, Face=None, Color=None, verbose=False):
     """
     Exports the given mesh data into an OBJ file
 
@@ -30,7 +31,7 @@ def export_PLY(filename,Point=None,Normal=None,UV=None,Face=None,Color=None,verb
     None
     """
 
-    header  = 'ply\nformat ascii 1.0\n'
+    header = 'ply\nformat ascii 1.0\n'
     header += 'element vertex {}\n'.format(row(Point) if Point is not None else 0)
     if Point is not None:
         header += 'property float x\n'
@@ -51,6 +52,7 @@ def export_PLY(filename,Point=None,Normal=None,UV=None,Face=None,Color=None,verb
     if Face is not None:
         header += 'property list uchar int vertex_index\n'
     header += 'end_header\n'
+
     def writeDataFcn(fileID):
         content = header
         if Point is not None:
@@ -62,5 +64,6 @@ def export_PLY(filename,Point=None,Normal=None,UV=None,Face=None,Color=None,verb
             content += tensor2string(torch.t(Face), prefix='{} '.format(row(Face)))
         fileID.write(content)
         return
-    export_to_text_file(filename,'ply',writeDataFcn,verbose=verbose)
+
+    export_to_text_file(filename, 'ply', writeDataFcn, verbose=verbose)
     return
