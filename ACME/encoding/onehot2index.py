@@ -1,6 +1,7 @@
 import torch
 
-def onehot2index(onehot,dim=1):
+
+def onehot2index(onehot, dim=1):
     """
     Converts a onehot encoding into an indices tensor
 
@@ -17,4 +18,4 @@ def onehot2index(onehot,dim=1):
         the indices tensor
     """
 
-    return torch.argmax(onehot,dim,keepdim=True)
+    return torch.argmax(onehot, dim, keepdim=True)

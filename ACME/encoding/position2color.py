@@ -1,6 +1,8 @@
 import torch
+from ..math.normalize import *
 
-def position2color(P,min=None,max=None):
+
+def position2color(P, min=None, max=None):
     """
     Converts the input points set into colors
 
@@ -23,4 +25,4 @@ def position2color(P,min=None,max=None):
         min = torch.min(P)[0].item()
     if max is None:
         max = torch.max(P)[0].item()
-    return normalize(P,min=min,max=max)
+    return normalize(P, min=min, max=max)

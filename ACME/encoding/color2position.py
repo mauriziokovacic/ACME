@@ -1,6 +1,7 @@
 import torch
 
-def color2position(C,min=None,max=None):
+
+def color2position(C, min=None, max=None):
     """
     Converts the input points set into colors
 
@@ -23,4 +24,4 @@ def color2position(C,min=None,max=None):
         min = -1
     if max is None:
         max = 1
-    return torch.add(torch.mul(C,max-min),min)
+    return torch.add(torch.mul(C, max-min), min)

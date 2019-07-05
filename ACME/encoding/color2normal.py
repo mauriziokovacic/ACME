@@ -1,6 +1,7 @@
 import torch
 from ..color.color2float import *
 
+
 def color2normal(C):
     """
     Converts a given color into a normal direction
@@ -16,4 +17,4 @@ def color2normal(C):
         a normal tensor
     """
 
-    return torch.add(torch.mul(color2float(C),2),-1)
+    return torch.add(torch.mul(color2float(C), 2), -1)

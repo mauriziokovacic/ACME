@@ -1,6 +1,7 @@
 from ..utility.LongTensor import *
 
-def label2index(value,label,device='cuda:0'):
+
+def label2index(value, label, device='cuda:0'):
     """
     Converts a given sequence of labelled values into a indices tensor
 
@@ -19,5 +20,5 @@ def label2index(value,label,device='cuda:0'):
         the indices tensor
     """
 
-    d = dict(zip(label,list(range(0,len(label)))))
-    return LongTensor([d[x] for x in value],device=device)
+    d = dict(zip(label, list(range(0, len(label)))))
+    return LongTensor([d[x] for x in value], device=device)

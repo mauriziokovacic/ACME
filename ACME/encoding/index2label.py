@@ -1,4 +1,4 @@
-def index2label(index,label):
+def index2label(index, label):
     """
     Converts an indices tensor into its labelled values counterpart
 

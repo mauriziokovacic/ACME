@@ -1,5 +1,6 @@
 import torch
 
+
 def normal2color(N):
     """
     Converts a given normal into a color
@@ -15,4 +16,4 @@ def normal2color(N):
         the color coded normal
     """
 
-    return torch.add(torch.mul(N,0.5),0.5)
+    return torch.add(torch.mul(N, 0.5), 0.5)

@@ -1,7 +1,8 @@
 import torch
 from ..math.unitvec import *
 
-def index2onehot(index,n=None):
+
+def index2onehot(index, n=None):
     """
     Converts an input indices tensor into a onehot encoding of n classes
 
@@ -20,4 +21,4 @@ def index2onehot(index,n=None):
 
     if n is None:
         n = torch.max(index)[0].item()
-    return torch.cat(tuple(unitvec(n,x.item(),dtype=torch.float,device=index.device) for x in index),dim=0)
+    return torch.cat(tuple(unitvec(n, x.item(), dtype=torch.float, device=index.device) for x in index), dim=0)
