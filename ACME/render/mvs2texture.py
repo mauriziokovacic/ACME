@@ -13,4 +13,4 @@ def mvs2texture(I):
         a 3D texture tensor
     """
 
-    return I.permute(1,0,2,3)
+    return I.permute(1, 0, 2, 3)

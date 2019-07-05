@@ -2,7 +2,6 @@ import neural_renderer as nr
 from ..math.unitvec import *
 
 
-
 class Renderer(nr.Renderer):
     """
     A class extending the Neural Renderer
@@ -28,7 +27,7 @@ class Renderer(nr.Renderer):
         enables front face culling
     """
 
-    def __init__(self,device='cuda:0',culling=None,lighting=False,**kwargs):
+    def __init__(self, device='cuda:0', culling=None, lighting=False, **kwargs):
         """
         Parameters
         ----------
@@ -40,16 +39,14 @@ class Renderer(nr.Renderer):
             the Neural Renderer keyworded arguments
         """
 
-        super(Renderer,self).__init__(camera_mode='look_at',**kwargs)
-        self.eye             = unitvec(3,0,device=device)
+        super(Renderer, self).__init__(camera_mode='look_at', **kwargs)
+        self.eye             = unitvec(3, 0, device=device)
         self.light_direction = -self.eye
         self.device          = device
         self.culling         = culling
         self.toggle_lighting(lighting)
 
-
-
-    def toggle_lighting(self,status):
+    def toggle_lighting(self, status):
         """
         Toggles the renderer directional lighting on or off depending on status
 
@@ -65,28 +62,20 @@ class Renderer(nr.Renderer):
             self.light_intensity_directional = 0
         self.light_intensity_ambient = 1-self.light_intensity_directional
 
-
-
     def enable_lighting(self):
         """Enables the renderer lighting"""
 
         self.toggle_lighting(True)
-
-
 
     def disable_lighting(self):
         """Disables the renderer lighting"""
 
         self.toggle_lighting(False)
 
-
-
     def disable_culling(self):
         """Disables face culling"""
 
         self.culling = None
-
-
 
     def enable_back_culling(self):
         """
@@ -94,8 +83,6 @@ class Renderer(nr.Renderer):
         """
 
         self.culling = 'back'
-
-
 
     def enable_front_culling(self):
         """

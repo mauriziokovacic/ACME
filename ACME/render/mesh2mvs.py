@@ -5,8 +5,7 @@ from .mesh2img       import *
 from .camera         import *
 
 
-
-def mesh2mvs(renderer,T,P,C=None,Cam=None,postFcn=nop,pivoting=False):
+def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=nop, pivoting=False):
     """
     Renders a multi view stack of images of the input mesh with the given renderer
 
@@ -39,8 +38,8 @@ def mesh2mvs(renderer,T,P,C=None,Cam=None,postFcn=nop,pivoting=False):
         def viewFcn(c):
             renderer.eye             = c
             renderer.light_direction = -c
-            return mesh2img(renderer,T,P,C=C,postFcn=postFcn)
+            return mesh2img(renderer, T, P, C=C, postFcn=postFcn)
     else:
         def viewFcn(c):
-            return mesh2img(renderer,T,torch.mm(P,sph2rotm(c)),C=C,postFcn=postFcn)
-    return torch.cat(tuple(viewFcn(c).unsqueeze(0) for c in Cam),dim=0)
+            return mesh2img(renderer, T, torch.mm(P, sph2rotm(c)), C=C, postFcn=postFcn)
+    return torch.cat(tuple(viewFcn(c).unsqueeze(0) for c in Cam), dim=0)

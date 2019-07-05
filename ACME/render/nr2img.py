@@ -13,4 +13,4 @@ def nr2img(I):
         a (W,H,C,) tensor
     """
 
-    return I.permute(3,2,1,0)[:,:,0:3,0]
+    return I.permute(3, 2, 1, 0)[:, :, 0:3, 0]
