@@ -3,7 +3,6 @@ import warnings
 import torch
 
 
-
 class Model(torch.nn.Module):
     """
     A class representing a generic model architecture
@@ -21,7 +20,7 @@ class Model(torch.nn.Module):
         loads a model form the given path
     """
 
-    def __init__(self,name='Model'):
+    def __init__(self, name='Model'):
         """
         Parameters
         ----------
@@ -29,12 +28,10 @@ class Model(torch.nn.Module):
             the name of the model (default is 'Model')
         """
 
-        super(Model,self).__init__()
-        self.name  = name
+        super(Model, self).__init__()
+        self.name = name
 
-
-
-    def save_model(self,path=None):
+    def save_model(self, path=None):
         """
         Stores the model state in the given path
 
@@ -50,9 +47,7 @@ class Model(torch.nn.Module):
         torch.save(self, path)
         return self
 
-
-
-    def load_model(self,path=None):
+    def load_model(self, path=None):
         """
         Loads a model from the given path
 
