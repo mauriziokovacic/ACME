@@ -13,4 +13,4 @@ def affine2cart(P):
         the cartesian coorodinates
     """
 
-    return P[:,0:3]
+    return P[:, 0:3]

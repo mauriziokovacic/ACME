@@ -1,6 +1,7 @@
 from .rot_z import *
 
-def rot2(theta,affine=False,device='cuda:0'):
+
+def rot2(theta, affine=False, device='cuda:0'):
     """
     Creates a 2D rotation matrix.
 
@@ -19,7 +20,7 @@ def rot2(theta,affine=False,device='cuda:0'):
         a (2,2) or (3,3) rotation matrix
     """
 
-    R = rot_z(theta,affine=False,device=device)
+    R = rot_z(theta, affine=False, device=device)
     if affine:
         return R
-    return R[0:2,0:2]
+    return R[0:2, 0:2]

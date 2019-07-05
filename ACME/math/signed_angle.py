@@ -2,7 +2,8 @@ import torch
 from .angle import *
 from .cross import *
 
-def signed_angle(A,B,N,dim=1):
+
+def signed_angle(A, B, N, dim=1):
     """
     Computes the signed angle between the A and B w.r.t. N, along the specified dimension
 
@@ -23,4 +24,4 @@ def signed_angle(A,B,N,dim=1):
         the tensor containing the signed angles
     """
 
-    return angle(A,B,dim=dim) * torch.sign(dot(N,cross(A,B,dim=dim)))
+    return angle(A, B, dim=dim) * torch.sign(dot(N, cross(A, B, dim=dim)))

@@ -1,8 +1,10 @@
 import torch
 from ..utility.clamp import *
 from .acos           import *
+from .dot            import *
 
-def angle(A,B,dim=1):
+
+def angle(A, B, dim=1):
     """
     Computes the angle in radians between the inputs along the specified dimension
 
@@ -21,4 +23,4 @@ def angle(A,B,dim=1):
         the tensor containing the angle between the inputs
     """
 
-    return acos(clamp(dot(A,B,dim=dim),-1,1))
+    return acos(clamp(dot(A, B, dim=dim), -1, 1))

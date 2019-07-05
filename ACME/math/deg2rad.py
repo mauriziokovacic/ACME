@@ -1,12 +1,13 @@
 from .constant import *
 
-def deg2rad(degree):
+
+def deg2rad(value):
     """
     Converts degree values into radians
 
     Parameters
     ----------
-    degree : int,float or Tensor
+    value : int,float or Tensor
         the degree values
 
     Returns

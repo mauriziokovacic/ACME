@@ -1,14 +1,15 @@
 import torch
 from ..utility.FloatTensor import *
+from .axis                 import *
 from .cos                  import *
 from .sin                  import *
 from .cross                import *
 from .normvec              import *
 from .eye                  import *
 from .axang2rotm           import *
-from .unitvec              import *
 
-def sph2rotm(S,scaling=False):
+
+def sph2rotm(S, scaling=False):
     """
     Creates a rotation matrix from a given spherical coordinate triplet [radius,theta,phi]
 
@@ -27,5 +28,7 @@ def sph2rotm(S,scaling=False):
     """
 
     return torch.mm(eye(3)*(S[0] if scaling else 1),
-                    torch.mm(axang2rotm(normr(cross(z_axis(),FloatTensor([[cos(S[1]),sin(S[1]),0]],device=S.device))).squeeze(), S[2]),
+                    torch.mm(axang2rotm(normr(cross(z_axis(),
+                                                    FloatTensor([[cos(S[1]), sin(S[1]), 0]], device=S.device))).squeeze(),
+                                        S[2]),
                              axang2rotm(z_axis().squeeze(), S[1])))

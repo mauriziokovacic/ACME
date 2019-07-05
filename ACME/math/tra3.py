@@ -16,6 +16,6 @@ def tra3(t):
         a (4,4) translation matrix
     """
 
-    T = eye(4,dtype=t.dtype,device=t.device)
-    T[0:3,3] = t.flatten()
+    T = eye(4, dtype=t.dtype, device=t.device)
+    T[0:3, 3] = t.flatten()
     return T

@@ -1,7 +1,8 @@
 import torch
 from ..utility.istorch import *
 
-def linint(A,B,t):
+
+def linint(A, B, t):
     """
     Computes the linear interpolation between the two input at the specified parameter
 
@@ -20,6 +21,6 @@ def linint(A,B,t):
         the inpterpolated value
     """
 
-    if istorch(A,B):
-        return torch.lerp(A,B,t)
+    if istorch(A, B):
+        return torch.lerp(A, B, t)
     return A*(1-t)+B*t

@@ -1,6 +1,7 @@
 import torch
 
-def normalize(tensor,min=None,max=None):
+
+def normalize(tensor, min=None, max=None):
     """
     Normalize the tensor values between [0-1]
 
@@ -23,4 +24,4 @@ def normalize(tensor,min=None,max=None):
         min = torch.min(tensor)
     if max is None:
         max = torch.max(tensor)
-    return torch.div(torch.add(tensor,-min),(max-min))
+    return torch.div(torch.add(tensor, -min), (max-min))

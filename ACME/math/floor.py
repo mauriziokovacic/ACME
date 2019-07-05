@@ -4,6 +4,7 @@ import torch
 from ..utility.isnumpy import *
 from ..utility.istorch import *
 
+
 def floor(a):
     """
     Returns the floor of the input

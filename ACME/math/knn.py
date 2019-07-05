@@ -1,6 +1,7 @@
 import torch
 from .prepare_broadcast import *
 
+
 def knn(A, B, k, distFcn):
     """
     Returns the indices of the k-nearest neighbors of A in B
@@ -27,9 +28,9 @@ def knn(A, B, k, distFcn):
         if k is lower than 1
     """
 
-    assert k>0, 'k value must be greater than 0'
+    assert k > 0, 'k value must be greater than 0'
     a, b = prepare_broadcast(A, B)
-    if k>1:
+    if k > 1:
         d, i = torch.topk(-distFcn(a, b, dim=-1), k, dim=1)
         return i, -d
     d, i = torch.min(distFcn(a, b, dim=-1), 1, keepdim=True)

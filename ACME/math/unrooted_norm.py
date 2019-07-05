@@ -1,7 +1,9 @@
 import torch
 from ..utility.isinf import *
+from ..utility.strcmpi import *
 
-def unrooted_norm(tensor,p=2,dim=1):
+
+def unrooted_norm(tensor, p=2, dim=1):
     """
     Computes the unrooted norm of the input tensor along the given dimension.
 
@@ -26,16 +28,15 @@ def unrooted_norm(tensor,p=2,dim=1):
     """
 
     if p == 2:
-        return torch.sum(torch.pow(tensor,p),dim,keepdim=True)
+        return torch.sum(torch.pow(tensor, p), dim, keepdim=True)
     if p == 1:
-        return torch.sum(torch.abs(tensor),dim,keepdim=True)
-    if isinf(p) or strcmpi(p,'inf'):
-        return torch.max(torch.abs(tensor),dim,keepdim=True)[0]
+        return torch.sum(torch.abs(tensor), dim, keepdim=True)
+    if isinf(p) or strcmpi(p, 'inf'):
+        return torch.max(torch.abs(tensor), dim, keepdim=True)[0]
     raise ValueError('Only 1-norm, 2-norm and Inf-norm are supported.')
 
 
-
-def sqnorm(tensor,dim=1):
+def sqnorm(tensor, dim=1):
     """
     Computes the squared norm of the input tensor along the given dimension.
 
@@ -52,11 +53,10 @@ def sqnorm(tensor,dim=1):
         a tensor containing the squared norm of the input tensor
     """
 
-    return unrooted_norm(tensor,p=2,dim=dim)
+    return unrooted_norm(tensor, p=2, dim=dim)
 
 
-
-def sqdistance(A,B,dim=1):
+def sqdistance(A, B, dim=1):
     """
     Computes the squared distance between the given tensors
 
@@ -75,4 +75,4 @@ def sqdistance(A,B,dim=1):
         a tensor containing the norm of the input tensors
     """
 
-    return sqnorm(A-B,dim=dim)
+    return sqnorm(A-B, dim=dim)

@@ -1,7 +1,8 @@
 import torch
 from .norm import *
 
-def normvec(tensor,p=2,dim=1):
+
+def normvec(tensor, p=2, dim=1):
     """
     Normalizes the input tensor along the specified dimension, using the specified norm
 
@@ -15,12 +16,12 @@ def normvec(tensor,p=2,dim=1):
         dimension along the norm is computed (default is 1)
     """
 
-    n = pnorm(tensor,p=p,dim=dim)
-    return tensor/(n+torch.eq(n,0).to(dtype=torch.float,device=tensor.device))
+    n = pnorm(tensor, p=p, dim=dim)
+    return tensor/(n+torch.eq(n, 0).to(dtype=torch.float, device=tensor.device))
 
 
 
-def normr(tensor,p=2):
+def normr(tensor, p=2):
     """
     Normalizes the input tensor rows using the specified norm
 
@@ -32,11 +33,10 @@ def normr(tensor,p=2):
         exponent of the norm (default is 2)
     """
 
-    return normvec(tensor,p=p,dim=1)
+    return normvec(tensor, p=p, dim=1)
 
 
-
-def normc(tensor,p=2):
+def normc(tensor, p=2):
     """
     Normalizes the input tensor cols using the specified norm
 
@@ -48,11 +48,10 @@ def normc(tensor,p=2):
         exponent of the norm (default is 2)
     """
 
-    return normvec(tensor,p=p,dim=0)
+    return normvec(tensor, p=p, dim=0)
 
 
-
-def normd(tensor,p=2):
+def normd(tensor, p=2):
     """
     Normalizes the input tensor channels/slices using the specified norm
 
@@ -64,4 +63,4 @@ def normd(tensor,p=2):
         exponent of the norm (default is 2)
     """
 
-    return normvec(tensor,p=p,dim=2)
+    return normvec(tensor, p=p, dim=2)

@@ -1,6 +1,7 @@
 import torch
 
-def dot(A,B,dim=1):
+
+def dot(A, B, dim=1):
     """
     Computes the dot product of the input tensors along the specified dimension
 
@@ -19,4 +20,4 @@ def dot(A,B,dim=1):
         the tensor containing the dot products
     """
 
-    return torch.sum(A*B,dim,keepdim=True)
+    return torch.sum(A*B, dim, keepdim=True)

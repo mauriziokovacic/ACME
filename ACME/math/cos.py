@@ -4,6 +4,7 @@ import torch
 from ..utility.isnumpy import *
 from ..utility.istorch import *
 
+
 def cos(theta):
     """
     Computes the cosine of the input thetas

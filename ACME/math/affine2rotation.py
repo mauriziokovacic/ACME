@@ -1,6 +1,7 @@
 import torch
 from .affine2rotm import *
 
+
 def affine2rotation(M):
     """
     Returns the rotation component of the input affine matrix
@@ -16,5 +17,5 @@ def affine2rotation(M):
         a (3,3) tensor
     """
 
-    u,_,v = torch.svd(affine2rotm(M))
-    return torch.mm(u,v)
+    u, _, v = torch.svd(affine2rotm(M))
+    return torch.mm(u, v)

@@ -1,6 +1,7 @@
 import torch
 
-def unitvec(size,i,dtype=torch.float,device='cuda:0'):
+
+def unitvec(size, i, dtype=torch.float, device='cuda:0'):
     """
     Creates a 1xn zero tensor with a single 1 in the specified position
 
@@ -21,6 +22,6 @@ def unitvec(size,i,dtype=torch.float,device='cuda:0'):
         a 1xn tensor
     """
 
-    e = torch.zeros(size,dtype=dtype,device=device)
+    e = torch.zeros(size, dtype=dtype, device=device)
     e[i] = 1
     return e.unsqueeze(0)

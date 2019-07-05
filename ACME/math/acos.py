@@ -4,6 +4,7 @@ import torch
 from ..utility.isnumpy import *
 from ..utility.istorch import *
 
+
 def acos(theta):
     """
     Computes the arccosine of the input thetas

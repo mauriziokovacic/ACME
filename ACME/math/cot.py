@@ -1,7 +1,8 @@
-from .norm import *
-from .dot  import *
+from .norm  import *
+from .dot   import *
+from .cross import *
 
-def cot(A,B,dim=1):
+def cot(A, B, dim=1):
     """
     Computes the cotangent of the angle between the inputs along the specified dimension
 
@@ -20,4 +21,4 @@ def cot(A,B,dim=1):
         the tensor containing the cotangent values
     """
 
-    return dot(A,B,dim=dim)/norm(cross(A,B,dim=dim))
+    return dot(A, B, dim=dim)/norm(cross(A, B, dim=dim))

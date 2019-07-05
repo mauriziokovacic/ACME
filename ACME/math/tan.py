@@ -2,7 +2,8 @@ from .norm  import *
 from .dot   import *
 from .cross import *
 
-def tan(A,B,dim=1):
+
+def tan(A, B, dim=1):
     """
     Computes the tangent value of the angle between the inputs along the specified dimension
 
@@ -20,4 +21,4 @@ def tan(A,B,dim=1):
     Tensor
         the tensor containing the tangent values
     """
-    return norm(cross(A,B,dim=dim))/dot(A,B,dim=dim)
+    return norm(cross(A, B, dim=dim))/dot(A, B, dim=dim)

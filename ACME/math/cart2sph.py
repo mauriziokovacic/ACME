@@ -1,6 +1,7 @@
 import torch
 from .norm import *
 
+
 def cart2sph(P):
     """
     Converts the input cartesian coordinates [x,y,z] into spherical coordinates [r,theta,phi]
@@ -18,11 +19,11 @@ def cart2sph(P):
         a (N,3,) tensor containing [r,theta,phi]
     """
 
-    x,y,z = torch.t(P)
-    x     = x.unsqueeze(1)
-    y     = y.unsqueeze(1)
-    z     = z.unsqueeze(1)
-    r     = pnorm(P)                  #radius
-    theta = torch.atan2(z,hypot(x,y)) #elevation
-    phi   = torch.atan2(y,x)          #azimuth
-    return torch.cat((r,theta,phi),dim=1)
+    x, y, z = torch.t(P)
+    x       = x.unsqueeze(1)
+    y       = y.unsqueeze(1)
+    z       = z.unsqueeze(1)
+    r       = pnorm(P)                    #radius
+    theta   = torch.atan2(z, hypot(x, y)) #elevation
+    phi     = torch.atan2(y, x)           #azimuth
+    return torch.cat((r, theta, phi), dim=1)

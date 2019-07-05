@@ -2,7 +2,8 @@ import torch
 from ..utility.numel      import *
 from ..utility.LongTensor import *
 
-def diag(tensor,rows=None,cols=None):
+
+def diag(tensor, rows=None, cols=None):
     """
     Creates a diagonal matrix from the given input tensor
 
@@ -25,6 +26,6 @@ def diag(tensor,rows=None,cols=None):
         rows = numel(tensor)
     if cols is None:
         cols = rows
-    n = min(rows,cols)
-    v = torch.cat((tensor.flatten(),torch.zeros(n-numel(tensor),dtype=tensor.dtype,device=tensor.device)))
+    n = min(rows, cols)
+    v = torch.cat((tensor.flatten(), torch.zeros(n-numel(tensor), dtype=tensor.dtype, device=tensor.device)))
     return torch.diag(v)

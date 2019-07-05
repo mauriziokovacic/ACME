@@ -2,7 +2,8 @@ from ..utility.row import *
 from ..utility.col import *
 from .diag         import *
 
-def eye(rows,cols=None,dtype=torch.float,device='cuda:0'):
+
+def eye(rows, cols=None, dtype=torch.float, device='cuda:0'):
     """
     Creates an identity matrix with the specified shape. If columns are not specified
     the matrix is intended squared.
@@ -26,9 +27,8 @@ def eye(rows,cols=None,dtype=torch.float,device='cuda:0'):
 
     if cols is None:
         cols = rows
-    n = min(rows,cols)
-    return diag(torch.ones(n,dtype=dtype,device=device),rows=rows,cols=cols)
-
+    n = min(rows, cols)
+    return diag(torch.ones(n, dtype=dtype, device=device), rows=rows, cols=cols)
 
 
 def eye_like(tensor):
@@ -46,4 +46,4 @@ def eye_like(tensor):
         the identity matrix
     """
 
-    return eye(rows=row(tensor),cols=col(tensor),dtype=tensor.dtype,device=tensor.device)
+    return eye(rows=row(tensor), cols=col(tensor), dtype=tensor.dtype, device=tensor.device)

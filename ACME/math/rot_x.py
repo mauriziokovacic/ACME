@@ -2,7 +2,8 @@ from ..utility.FloatTensor import *
 from .axang2rotm           import *
 from .rotm2affine          import *
 
-def rot_x(theta,affine=False,device='cuda:0'):
+
+def rot_x(theta, affine=False, device='cuda:0'):
     """
     Creates a 3D rotation matrix around x axis with the specified angle in radians
 
@@ -21,7 +22,7 @@ def rot_x(theta,affine=False,device='cuda:0'):
         a (3,3) or (4,4) rotation matrix
     """
 
-    R = axang2rotm(FloatTensor([1,0,0],device=device),theta)
+    R = axang2rotm(FloatTensor([1, 0, 0], device=device), theta)
     if affine:
         R = rotm2affine(R)
     return R

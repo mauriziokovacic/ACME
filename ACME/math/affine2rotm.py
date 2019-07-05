@@ -1,6 +1,7 @@
 from ..utility.row import *
 from ..utility.col import *
 
+
 def affine2rotm(A):
     """
     Returns the rotation matrix M within the affine matrix.
@@ -21,4 +22,4 @@ def affine2rotm(A):
         a (3,3) or (2,2) matrix
     """
 
-    return A[0:row(A),0:col(A)]
+    return A[0:row(A), 0:col(A)]

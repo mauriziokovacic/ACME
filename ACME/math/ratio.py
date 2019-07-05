@@ -1,5 +1,6 @@
 import math
 
+
 def ratio(N):
     """
     Returns the N-th ratio value
@@ -18,7 +19,6 @@ def ratio(N):
     return (N+math.sqrt(N*N+4))/2
 
 
-
 def golden_ratio():
     """
     Returns the golden ratio value
@@ -32,7 +32,6 @@ def golden_ratio():
     return ratio(1)
 
 
-
 def silver_ratio():
     """
     Returns the silver ratio value
@@ -44,7 +43,6 @@ def silver_ratio():
     """
 
     return ratio(2)
-
 
 
 def bronze_ratio():

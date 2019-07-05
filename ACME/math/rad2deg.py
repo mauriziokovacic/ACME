@@ -1,10 +1,13 @@
-def rad2deg(radians):
+from .constant import *
+
+
+def rad2deg(value):
     """
     Computes the degree value from input radians
 
     Parameters
     ----------
-    radians : int,float or Tensor
+    value : int,float or Tensor
         input radians values
 
     Returns
@@ -13,4 +16,4 @@ def rad2deg(radians):
         the degree values
     """
 
-    return (radians*180)/PI
+    return (value*180)/PI

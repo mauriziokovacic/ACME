@@ -1,7 +1,8 @@
 import torch
 from .normalize import *
 
-def rescale(tensor,min=None,max=None):
+
+def rescale(tensor, min=None, max=None):
     """
     Rescales the tensor values in range [min-max]
 
@@ -24,4 +25,4 @@ def rescale(tensor,min=None,max=None):
         min = 0
     if max is None:
         max = 1
-    return torch.add(torch.mul(normalize(tensor),max-min),min)
+    return torch.add(torch.mul(normalize(tensor), max-min), min)

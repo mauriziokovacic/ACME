@@ -4,6 +4,7 @@ import torch
 from ..utility.isnumpy import *
 from ..utility.istorch import *
 
+
 def sin(theta):
     """
     Computes the sine of the input thetas

@@ -2,7 +2,8 @@ import torch
 from ..utility.row            import *
 from ..utility.ConstantTensor import *
 
-def cart2affine(P,w=1):
+
+def cart2affine(P, w=1):
     """
     Converts a points set from cartersian to affine coordinates
 
@@ -19,4 +20,4 @@ def cart2affine(P,w=1):
         the affine coorodinates
     """
 
-    return torch.cat((P,ConstantTensor(row(P),1,dtype=P.dtype,device=P.device)),dim=1)
+    return torch.cat((P, ConstantTensor(w, row(P), 1, dtype=P.dtype, device=P.device)), dim=1)

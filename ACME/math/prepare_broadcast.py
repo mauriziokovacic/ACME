@@ -1,5 +1,6 @@
 import torch
 
+
 def prepare_broadcast(A, B):
     """
     Prepares the tensors for a broadcasting operation of A onto B

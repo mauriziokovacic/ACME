@@ -1,6 +1,7 @@
 import math
 
-def n_bonacci(N,n):
+
+def n_bonacci(N, n):
     """
     Computes the n-bonacci number for the given input
 
@@ -18,9 +19,8 @@ def n_bonacci(N,n):
     """
 
     if n <= 1:
-        return n;
-    return N*n_bonacci(n-1,N)+n_bonacci(n-2,N);
-
+        return n
+    return N*n_bonacci(n-1, N)+n_bonacci(n-2, N)
 
 
 def fibonacci(n):
@@ -38,4 +38,4 @@ def fibonacci(n):
         the fibonacci number
     """
 
-    return N_bonacci(n,1);
+    return n_bonacci(n, 1)

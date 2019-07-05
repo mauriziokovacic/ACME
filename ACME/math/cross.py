@@ -1,6 +1,7 @@
 import torch
 
-def cross(A,B,dim=1):
+
+def cross(A, B, dim=1):
     """
     Computes the cross product of the input tensors along the specified dimension
 
@@ -19,4 +20,4 @@ def cross(A,B,dim=1):
         the cross products of the input tensors
     """
 
-    return torch.cross(A,B,dim=dim)
+    return torch.cross(A, B, dim=dim)

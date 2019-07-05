@@ -1,5 +1,8 @@
 import torch
-from .unitvec import *
+from ..utility.row import *
+from ..utility.col import *
+from .unitvec      import *
+
 
 def rotm2affine(M):
     """
@@ -21,5 +24,5 @@ def rotm2affine(M):
         a (4,4) or (3,3) matrix
     """
 
-    return torch.cat((torch.cat((M,torch.zeros(row(M),1,dtype=M.dtype,device=M.device)),dim=1),
-                      unitvec(col(M)+1,col(M),dtype=M.dtype,device=M.device)),dim=0)
+    return torch.cat((torch.cat((M, torch.zeros(row(M), 1, dtype=M.dtype, device=M.device)), dim=1),
+                      unitvec(col(M)+1, col(M), dtype=M.dtype, device=M.device)), dim=0)
