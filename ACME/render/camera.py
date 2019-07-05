@@ -83,7 +83,7 @@ def camera_stage(tile=(6,4),camera_distance=1,to_spherical=False,device='cuda:0'
 
 
 
-def camera_from_polyhedron(polyhedronFcn,camera_distance=1,to_spherical=False, device='cuda:0'):
+def camera_from_polyhedron(polyhedronFcn, camera_distance=1, to_spherical=False, device='cuda:0'):
     """
     Returns the positions of a camera lying on the vertices of a given polyhedron
 
@@ -104,7 +104,7 @@ def camera_from_polyhedron(polyhedronFcn,camera_distance=1,to_spherical=False, d
         the positions and the edge tensor of the camera views
     """
 
-    P,T   = hedronFcn(device=device)[0:2]
+    P,T   = polyhedronFcn(device=device)[0:2]
     theta = PI/100
     R     = torch.tensor([[1,0,0],[0,cos(theta),-sin(theta)],[0,sin(theta),cos(theta)]],dtype=torch.float,device=device)
     P     = torch.mul(torch.mm(normr(P),torch.t(R)),camera_distance)
