@@ -3,7 +3,8 @@ from ..topology.ispoly      import *
 from ..topology.subdivision import *
 from .soup2mesh             import *
 
-def subdivide(P,T,iter=1):
+
+def subdivide(P, T, iter=1):
     """
     Subdivides the given mesh n times
 
@@ -18,8 +19,8 @@ def subdivide(P,T,iter=1):
 
     Returns
     -------
-    (Tensor,LongTensor)
-        the new points set and the new topology
+    (Tensor, LongTensor, Tensor)
+        the new points set, the new topology and the subdivision matrix
     """
 
     if istri(T):
@@ -29,7 +30,7 @@ def subdivide(P,T,iter=1):
             fun = xquad
         else:
             assert False,'Topology not supported yet'
-    M,T = fun(T,iter=iter)
-    P   = torch.mm(M,P)
-    P,T = soup2mesh(P,T)[0:2]
-    return P,T
+    M, t    = fun(T, iter=iter)
+    p       = torch.mm(M, P)
+    p, t, I = soup2mesh(p, t)[0:3]
+    return p, t, M[I]
