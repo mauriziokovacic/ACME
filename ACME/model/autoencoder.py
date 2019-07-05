@@ -1,7 +1,5 @@
 import torch
-from ..layer.VariationalSampler import *
-from .model                     import *
-
+from .model import *
 
 
 class AutoEncoder(Model):
@@ -59,7 +57,6 @@ class AutoEncoder(Model):
         return x_hat
 
 
-
 class VariationalSampler(torch.nn.Module):
     """
     A class representing the sampler used in Variational AutoEncoders
@@ -78,8 +75,8 @@ class VariationalSampler(torch.nn.Module):
     """
 
     def __init__(self,
-                 mean_model=(lambda y: y[:,:y.size(1)]),
-                 sdev_model=(lambda y: y[:,y.size(1):])):
+                 mean_model=(lambda y: y[:, :y.size(1)]),
+                 sdev_model=(lambda y: y[:, y.size(1):])):
         """
         Parameters
         ----------
@@ -92,8 +89,6 @@ class VariationalSampler(torch.nn.Module):
         super(VariationalSampler, self).__init__()
         self.mu    = mean_model
         self.sigma = sdev_model
-
-
 
     def forward(self, y):
         """
@@ -115,7 +110,6 @@ class VariationalSampler(torch.nn.Module):
         eps   = torch.empty_like(mu, dtype=mu.dtype, device=mu.device).normal_()
         z     = mu + torch.exp(sigma/2)*eps
         return z, mu, sigma
-
 
 
 class VariationalAutoEncoder(AutoEncoder):
@@ -153,8 +147,6 @@ class VariationalAutoEncoder(AutoEncoder):
         if isinstance(z_sampler, torch.nn.Module):
             self.add_module('z_sampler', self.z_sampler)
 
-
-
     def forward(self, x):
         """
         Returns the autoencoder output
@@ -174,7 +166,6 @@ class VariationalAutoEncoder(AutoEncoder):
         z, mu, sigma = self.z_sampler(y)
         x_hat        = self.decoder(z)
         return x_hat, mu, sigma
-
 
 
 def reconstruction_loss(x, x_hat):
@@ -197,7 +188,6 @@ def reconstruction_loss(x, x_hat):
     return torch.mean(torch.sum(x * torch.log(x_hat) + (1-x) * torch.log(1-x_hat), 1))
 
 
-
 def KL_divergence(mu, sigma, beta=1):
     """
     Parameters
@@ -216,7 +206,6 @@ def KL_divergence(mu, sigma, beta=1):
     """
 
     return beta * torch.mean(0.5 * torch.sum(mu**2 + torch.exp(sigma) - sigma - 1, 1))
-
 
 
 def VAELoss(x, x_hat, mu, sigma, beta=1):
@@ -243,7 +232,3 @@ def VAELoss(x, x_hat, mu, sigma, beta=1):
     """
 
     return reconstruction_loss(x, x_hat) + KL_divergence(mu, sigma, beta=beta)
-
-
-
-
