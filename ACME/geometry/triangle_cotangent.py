@@ -1,6 +1,7 @@
 from ..math.cot import *
 
-def triangle_cotangent(P,T):
+
+def triangle_cotangent(P, T):
     """
     Returns the angles cotangents of the given triangles
 
@@ -17,8 +18,8 @@ def triangle_cotangent(P,T):
         the cotangent tensors of the input triangles
     """
 
-    Pi,Pj,Pk = P[T]
+    Pi, Pj, Pk = P[T]
     Eij = Pj-Pi
     Ejk = Pk-Pj
     Eki = Pi-Pk
-    return cot(Eij,-Eki),cot(Ejk,-Eij),cot(Eki,-Ejk)
+    return cot(Eij, -Eki), cot(Ejk, -Eij), cot(Eki, -Ejk)

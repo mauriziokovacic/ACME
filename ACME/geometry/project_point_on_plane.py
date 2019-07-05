@@ -1,5 +1,6 @@
 from .point_plane_distance import *
 
+
 def project_point_on_plane(P, N, Q, dim=1):
     """
     Returns the projection of a given point Q onto the plane passing in P, with normal N

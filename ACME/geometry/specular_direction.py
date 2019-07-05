@@ -1,7 +1,8 @@
 import torch
 from ..math.dot import *
 
-def specular_direction(dN,dI,dim=1):
+
+def specular_direction(dN, dI, dim=1):
     """
     Computes the specular vector of an input one w.r.t. a given direction
 
@@ -20,4 +21,4 @@ def specular_direction(dN,dI,dim=1):
         the specular direction
     """
 
-    return torch.mul(dot(dN,dI,dim=dim),2)*dN-dI
+    return torch.mul(dot(dN, dI, dim=dim), 2)*dN-dI

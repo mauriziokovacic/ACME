@@ -1,9 +1,9 @@
 import torch
 from ..topology.laplacian import *
+from .adjacency           import *
 
 
-
-def combinatorial_Laplacian(P,T):
+def combinatorial_Laplacian(P, T):
     """
     Computes the combinatorial laplacian matrix for a given mesh.
 
@@ -20,11 +20,10 @@ def combinatorial_Laplacian(P,T):
         the laplacian matrix
     """
 
-    return laplacian(Adjacency(T,P=P,type='std'))
+    return laplacian(Adjacency(T, P=P, type='std'))
 
 
-
-def cotangent_Laplacian(P,T):
+def cotangent_Laplacian(P, T):
     """
     Computes the cotangent weights laplacian matrix for a given triangle mesh.
 
@@ -41,4 +40,4 @@ def cotangent_Laplacian(P,T):
         the laplacian matrix
     """
 
-    return laplacian(Adjacency(T,P=P,type='cot'))
+    return laplacian(Adjacency(T, P=P, type='cot'))

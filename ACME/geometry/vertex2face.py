@@ -1,6 +1,7 @@
 from .barycenter import *
 
-def vertex2face(T,vertex_data):
+
+def vertex2face(T, vertex_data):
     """
     Returns the face data computed from the vertices
 
@@ -17,4 +18,4 @@ def vertex2face(T,vertex_data):
         the face data
     """
 
-    return barycenter(vertex_data,T)
+    return barycenter(vertex_data, T)

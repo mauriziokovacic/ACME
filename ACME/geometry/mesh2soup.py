@@ -1,9 +1,11 @@
 import torch
 from ..utility.row     import *
+from ..utility.col     import *
 from ..utility.numel   import *
 from ..utility.indices import *
 
-def mesh2soup(P,T):
+
+def mesh2soup(P, T):
     """
     Converts the given mesh into a polygon soup
 
@@ -21,5 +23,5 @@ def mesh2soup(P,T):
     """
 
     n = col(T)
-    v = torch.reshape(T,numel(T),1)
-    return P[v], torch.reshape(indices(0,row(P)-1,device=T.device),n,numel(v)/n)
+    v = torch.reshape(T, (numel(T), 1))
+    return P[v], torch.reshape(indices(0, row(P)-1, device=T.device), (n, numel(v)/n))

@@ -8,8 +8,7 @@ from ..math.normvec        import *
 from .grid2mesh            import *
 
 
-
-def Sphere(tile=(20,20),device='cuda:0'):
+def Sphere(tile=(20, 20), device='cuda:0'):
     """
     Creates a unit sphere quad mesh
 
@@ -28,18 +27,18 @@ def Sphere(tile=(20,20),device='cuda:0'):
 
     n              = tile[0]+1
     m              = tile[1]+1
-    theta          = torch.t(linspace(-1,1,n,device=device))*PI
-    phi            = linspace(-1,1,m,device=device)*PI_2
+    theta          = torch.t(linspace(-1, 1, n, device=device))*PI
+    phi            = linspace(-1, 1, m, device=device)*PI_2
     cosphi         = cos(phi)
     cosphi[ 0]     = 0
     cosphi[-1]     = 0
     sintheta       = sin(theta)
     sintheta[:, 0] = 0
     sintheta[:,-1] = 0
-    x              = torch.mm(cosphi,cos(theta))
-    y              = torch.mm(cosphi,sintheta)
-    z              = torch.mm(sin(phi),torch.ones(1,n,dtype=torch.float,device=device))
-    T,P            = grid2mesh(x,y,z)
+    x              = torch.mm(cosphi, cos(theta))
+    y              = torch.mm(cosphi, sintheta)
+    z              = torch.mm(sin(phi), torch.ones(1, n, dtype=torch.float, device=device))
+    T,P            = grid2mesh(x, y, z)
     P              = normr(P)
     N              = P.clone()
-    return P,T,N
+    return P, T, N

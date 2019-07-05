@@ -5,8 +5,7 @@ from ..math.cos        import *
 from ..math.sin        import *
 
 
-
-def sphere_coverage(n,dtype=torch.float,device='cuda:0'):
+def sphere_coverage(n, dtype=torch.float, device='cuda:0'):
     """
     Returns a almost-uniform sampling of a sphere, using the Fibonacci formula
 
@@ -25,12 +24,12 @@ def sphere_coverage(n,dtype=torch.float,device='cuda:0'):
         the points set tensor
     """
 
-    i    = indices(0,n-1,dtype=dtype,device=device)
+    i    = indices(0, n-1, dtype=dtype, device=device)
     phi  = i/SQRT3
     phi  = (phi-torch.floor(phi))*PI2
     cosT = (i*2+1)/n-1
-    sinT = torch.sqrt(torch.clamp(1-torch.pow(cosT,2),min=0,max=1))
-    return torch.cat((cos(phi)*sinT,sin(phi)*sinT,cosT),dim=1)
+    sinT = torch.sqrt(torch.clamp(1-torch.pow(cosT, 2), min=0, max=1))
+    return torch.cat((cos(phi)*sinT, sin(phi)*sinT, cosT), dim=1)
 
 
 

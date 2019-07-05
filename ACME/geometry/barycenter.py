@@ -1,7 +1,8 @@
 import torch
 from functools import reduce
 
-def barycenter(P,T=None,dim=0):
+
+def barycenter(P, T=None, dim=0):
     """
     Returns the barycenters of the n-gons if a topology is provided, the
     barycenter of the input point set along the specified dimension otherwise
@@ -22,6 +23,6 @@ def barycenter(P,T=None,dim=0):
     """
 
     if T is None:
-        return torch.mean(P,dim,keepdim=True)
+        return torch.mean(P, dim, keepdim=True)
     p = tuple(P[T])
-    return torch.div(reduce((lambda a, b : a+b), p),len(p))
+    return torch.div(reduce((lambda a, b: a + b), p), len(p))

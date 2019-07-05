@@ -1,6 +1,7 @@
 import torch
 from ..math.norm import *
 
+
 def normalize_scale(P):
     """
     Returns the rescaled points set in range [-1,1]
@@ -16,7 +17,7 @@ def normalize_scale(P):
         the rescaled points set
     """
 
-    min = torch.min(P,dim=0,keepdim=True)[0]
-    max = torch.max(P,dim=0,keepdim=True)[0]
-    d   = torch.mul(distance(min,max),0.5)
-    return torch.div(P,d)
+    min = torch.min(P, dim=0, keepdim=True)[0]
+    max = torch.max(P, dim=0, keepdim=True)[0]
+    d   = torch.mul(distance(min, max), 0.5)
+    return torch.div(P, d)

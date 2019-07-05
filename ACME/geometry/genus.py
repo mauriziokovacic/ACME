@@ -1,6 +1,7 @@
 from .euler_characteristic import *
 
-def genus(P,E,F,V=None):
+
+def genus(P, E, F, V=None):
     """
     Returns the genus of the input shape
 
@@ -21,4 +22,4 @@ def genus(P,E,F,V=None):
         the genus of the input shape
     """
 
-    return euler_characteristic(P,E,F,V)-2
+    return euler_characteristic(P, E, F, V)-2

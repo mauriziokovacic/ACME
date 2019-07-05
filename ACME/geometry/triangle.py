@@ -6,7 +6,6 @@ from ..utility.FloatTensor import *
 from .equilateral_polygon  import *
 
 
-
 def Triangle(device='cuda:0'):
     """
     Creates a single triangle mesh
@@ -22,7 +21,7 @@ def Triangle(device='cuda:0'):
         the point set tensor, the topology tensor, the vertex normals
     """
 
-    P = equilateral_polygon(3,device=device)
-    T = torch.t(LongTensor([[0,1,2]],device=device))
-    N = repmat(FloatTensor([[0,0,1]],device=device),(row(P),1))
-    return P,T,N
+    P = equilateral_polygon(3, device=device)
+    T = torch.t(LongTensor([[0, 1, 2]], device=device))
+    N = repmat(FloatTensor([[0, 0, 1]], device=device), (row(P), 1))
+    return P, T, N

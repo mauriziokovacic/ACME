@@ -1,7 +1,8 @@
 from ..math.norm          import *
 from ..topology.poly2edge import *
 
-def edge_length(P,T,dim=1):
+
+def edge_length(P, T, dim=1):
     """
     Returns the edge lenghts of the given input topology
 
@@ -22,4 +23,4 @@ def edge_length(P,T,dim=1):
 
     E     = poly2edge(T)[0]
     Pi,Pj = P[E]
-    return distance(Pi,Pj,dim=dim)
+    return distance(Pi, Pj, dim=dim)

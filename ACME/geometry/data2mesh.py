@@ -13,4 +13,4 @@ def data2mesh(data):
         the points set, the topology and the vertex normals tensor
     """
 
-    return data.pos,data.face,data.norm
+    return data.pos, data.face, data.norm

@@ -2,6 +2,7 @@ import torch
 from ..math.knn           import *
 from ..math.unrooted_norm import *
 
+
 def hausdorff_metric(A, B):
     """
     Returns the Hausdorff metric for the given two points sets

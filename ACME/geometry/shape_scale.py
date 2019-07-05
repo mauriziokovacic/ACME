@@ -1,7 +1,8 @@
 from ..math.norm   import *
 from .bounding_box import *
 
-def shape_scale(P,dim=0):
+
+def shape_scale(P, dim=0):
     """
     Returns the diagonal of the input point set bounding box along the specified dimension
 
@@ -18,5 +19,5 @@ def shape_scale(P,dim=0):
         the length of the point set bounding box diagonal
     """
 
-    min,max = bounding_box(P,dim=dim)
+    min ,max = bounding_box(P, dim=dim)
     return norm(max-min)

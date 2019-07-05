@@ -4,7 +4,8 @@ from ..math.normvec    import *
 from ..topology.ispoly import *
 from .area             import *
 
-def gradient(P,T,F):
+
+def gradient(P, T, F):
     """
     Computes the gradient of a scalar field F over the input triangle mesh
 
@@ -29,14 +30,14 @@ def gradient(P,T,F):
     """
 
     assert istri(T), 'Unsupported topology'
-    Pi,Pj,Pk = P[T]
-    Fi,Fj,Fk = F[T]
+    Pi, Pj, Pk = P[T]
+    Fi, Fj, Fk = F[T]
     Eij = Pj-Pi
     Ejk = Pk-Pj
     Eki = Pi-Pk
-    N   = normr(cross(Eij,-Eki))
-    A   = triangle_area(P,T)
-    dF  = (Fi * cross(N,Ejk) +
-           Fj * cross(N,Eki) +
-           Fk * cross(N,Eij)) * torch.reciprocal(torch.mul(A,2))
+    N   = normr(cross(Eij, -Eki))
+    A   = triangle_area(P, T)
+    dF  = (Fi * cross(N, Ejk) +
+           Fj * cross(N, Eki) +
+           Fk * cross(N, Eij)) * torch.reciprocal(torch.mul(A, 2))
     return -dF

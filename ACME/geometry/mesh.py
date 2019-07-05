@@ -9,9 +9,9 @@ from ..utility.TrueTensor  import *
 from ..topology.ispoly     import *
 from ..topology.poly2edge  import *
 from ..topology.poly2ind   import *
+from ..topology.poly2lin   import *
 from .genus                import *
 from .mesh2data            import *
-
 
 
 class Mesh(object):
@@ -91,9 +91,7 @@ class Mesh(object):
         Computes the external volumes flags
     """
 
-
-
-    def __init__(self,Vertex=None,Normal=None,UV=None,Edge=None,Face=None,Hedra=None,name=''):
+    def __init__(self, Vertex=None, Normal=None, UV=None, Edge=None, Face=None, Hedra=None, name=''):
         """
         Parameters
         ----------
@@ -115,16 +113,14 @@ class Mesh(object):
 
         self.Vertex = Vertex
         self.Normal = Normal
-        self.UV     = UV
-        self.Edge   = Edge
-        self.Face   = Face
-        self.Hedra  = Hedra
-        self.name   = name
+        self.UV = UV
+        self.Edge = Edge
+        self.Face = Face
+        self.Hedra = Hedra
+        self.name = name
         if isempty(self.Edge):
             self.__compute_edge()
         self.update_ext()
-
-
 
     def nVertex(self):
         """
@@ -138,8 +134,6 @@ class Mesh(object):
 
         return row(self.Vertex)
 
-
-
     def nEdge(self):
         """
         Returns the number of edges in the mesh
@@ -151,8 +145,6 @@ class Mesh(object):
         """
 
         return col(self.Edge)
-
-
 
     def nFace(self):
         """
@@ -166,8 +158,6 @@ class Mesh(object):
 
         return col(self.Face)
 
-
-
     def nHedra(self):
         """
         Returns the number of volumes in the mesh
@@ -179,8 +169,6 @@ class Mesh(object):
         """
 
         return col(self.Hedra)
-
-
 
     def isempty(self):
         """
@@ -194,14 +182,10 @@ class Mesh(object):
 
         return isempty(self.Vertex)
 
-
-
     def recompute_normals(self):
         """Recomputes the vertex normals"""
 
-        self.Normal = vertex_normal(self.Vertex,self.Face)
-
-
+        self.Normal = vertex_normal(self.Vertex, self.Face)
 
     def isSurfaceMesh(self):
         """
@@ -215,8 +199,6 @@ class Mesh(object):
 
         return not isempty(self.Face)
 
-
-
     def isTriMesh(self):
         """
         Returns whether the mesh is a triangle mesh or not
@@ -227,9 +209,7 @@ class Mesh(object):
             True if the mesh has triangle faces, False otherwise
         """
 
-        return self.isSurfaceMesh(self) and istri(self.Face)
-
-
+        return self.isSurfaceMesh() and istri(self.Face)
 
     def isQuadMesh(self):
         """
@@ -241,9 +221,7 @@ class Mesh(object):
             True if the mesh has quad faces, False otherwise
         """
 
-        return self.isSurfaceMesh(self) and isquad(self.Face)
-
-
+        return self.isSurfaceMesh() and isquad(self.Face)
 
     def isPolygonMesh(self):
         """
@@ -255,9 +233,7 @@ class Mesh(object):
             True if the mesh has polygonal faces, False otherwise
         """
 
-        return self.isSurfaceMesh(self) and ispoly(self.Face)
-
-
+        return self.isSurfaceMesh() and ispoly(self.Face)
 
     def isVolumetricMesh(self):
         """
@@ -271,8 +247,6 @@ class Mesh(object):
 
         return not isempty(self.Hedra)
 
-
-
     def isTetMesh(self):
         """
         Returns whether the mesh is a tetrahedral mesh or not
@@ -283,9 +257,7 @@ class Mesh(object):
             True if the mesh has tetrahedral volumes, False otherwise
         """
 
-        return self.isVolumetricMesh(self) and isquad(self.Hedra)
-
-
+        return self.isVolumetricMesh() and isquad(self.Hedra)
 
     def isHexMesh(self):
         """
@@ -297,9 +269,7 @@ class Mesh(object):
             True if the mesh has hexaedral volumes, False otherwise
         """
 
-        return self.isVolumetricMesh(self) and ishex(self.Hedra)
-
-
+        return self.isVolumetricMesh() and ishex(self.Hedra)
 
     def isPolyhedralMesh(self):
         """
@@ -311,9 +281,7 @@ class Mesh(object):
             True if the mesh has polyhedral volumes, False otherwise
         """
 
-        return self.isVolumetricMesh(self) and ispoly(self.Hedra)
-
-
+        return self.isVolumetricMesh() and ispoly(self.Hedra)
 
     def genus(self):
         """
@@ -325,9 +293,7 @@ class Mesh(object):
             the genus of the mesh
         """
 
-        return genus(self.Vertex,self.Edge,self.Face,self.Hedra)
-
-
+        return genus(self.Vertex, self.Edge, self.Face, self.Hedra)
 
     def update_ext(self):
         """Updates the external flags for vertices, edges, faces and volumes"""
@@ -336,8 +302,6 @@ class Mesh(object):
         self.__compute_external_vertex()
         self.__compute_external_edge()
         self.__compute_external_hedra()
-
-
 
     def to_data(self):
         """
@@ -349,9 +313,7 @@ class Mesh(object):
             a torch_geometric Data object
         """
 
-        return mesh2data(self.Vertex,self.Face,self.Normal,self.Edge)
-
-
+        return mesh2data(self.Vertex, self.Face, self.Normal, self.Edge)
 
     def __compute_edge(self):
         """Computes the mesh edges"""
@@ -359,53 +321,45 @@ class Mesh(object):
         if isempty(self.Face):
             return
         self.Edge = poly2edge(self.Face)[0]
-        self.Edge = torch.t(unique(torch.t(torch.sort(self.Edge, dim=0)[0]),ByRows=True)[0])
-
-
+        self.Edge = torch.t(unique(torch.t(torch.sort(self.Edge, dim=0)[0]), ByRows=True)[0])
 
     def __compute_external_vertex(self):
         """Computes the external vertices flags"""
 
-        self.ExternalVertex = FalseTensor(row(self.Vertex),device=self.Vertex.device)
+        self.ExternalVertex = FalseTensor(row(self.Vertex), device=self.Vertex.device)
         if not self.isVolumetricMesh():
-            self.ExternalVertex = TrueTensor(row(self.Vertex),device=self.Vertex.device)
+            self.ExternalVertex = TrueTensor(row(self.Vertex), device=self.Vertex.device)
             return
-        J,I = poly2lin(self.Face)
-        self.ExternalVertex = accumarray(J,self.ExternalFace[I])>=1
+        J, I = poly2lin(self.Face)
+        self.ExternalVertex = accumarray(J, self.ExternalFace[I]) >= 1
         self.ExternalVertex = self.ExternalVertex
-
-
 
     def __compute_external_edge(self):
         """Computes the external edges flags"""
 
-        self.ExternalEdge = FalseTensor(col(self.Edge),device=self.Vertex.device)
+        self.ExternalEdge = FalseTensor(col(self.Edge), device=self.Vertex.device)
         if not self.isVolumetricMesh():
-            self.ExternalEdge = TrueTensor(col(self.Edge),device=self.Vertex.device)
+            self.ExternalEdge = TrueTensor(col(self.Edge), device=self.Vertex.device)
             return
-        self.ExternalEdge = self.ExternalVertex(self.Edge[0,:]) and self.ExternalVertex(self.Edge[1,:])
-
-
+        self.ExternalEdge = self.ExternalVertex(self.Edge[0, :]) and self.ExternalVertex(self.Edge[1, :])
 
     def __compute_external_face(self):
         """Computes the external faces flags"""
 
-        self.ExternalFace = FalseTensor(col(self.Face),device=self.Vertex.device)
+        self.ExternalFace = FalseTensor(col(self.Face), device=self.Vertex.device)
         if not self.isVolumetricMesh():
-            self.ExternalFace = TrueTensor(col(self.Face),device=self.Vertex.device)
+            self.ExternalFace = TrueTensor(col(self.Face), device=self.Vertex.device)
             return
         J = poly2lin(self.Hedra)[0]
-        self.ExternalFace = accumarray(J,1)==1
+        self.ExternalFace = accumarray(J, 1) == 1
         self.ExternalFace = self.ExternalFace
-
-
 
     def __compute_external_hedra(self):
         """Computes the external volumes flags"""
 
-        self.ExternalHedra = FalseTensor(col(self.Hedra),device=self.Vertex.device)
+        self.ExternalHedra = FalseTensor(col(self.Hedra), device=self.Vertex.device)
         if not self.isVolumetricMesh():
             return
-        J,I = poly2ind(self.Hedra)
-        self.ExternalHedra = accumarray(I,self.ExternalFace[J])>=1
+        J, I = poly2ind(self.Hedra)
+        self.ExternalHedra = accumarray(I, self.ExternalFace[J]) >= 1
         self.ExternalHedra = self.ExternalHedra

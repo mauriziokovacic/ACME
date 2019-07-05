@@ -1,6 +1,7 @@
 import torch
 
-def bounding_box(P,dim=0):
+
+def bounding_box(P, dim=0):
     """
     Returns the bounding box minimum and maximum points of the given
     input point set along the specified dimension
@@ -18,4 +19,4 @@ def bounding_box(P,dim=0):
         the minimum and maximum points of the input bounding box
     """
 
-    return torch.min(P,dim,keepdim=True)[0],torch.max(P,dim,keepdim=True)[0]
+    return torch.min(P, dim, keepdim=True)[0], torch.max(P, dim, keepdim=True)[0]

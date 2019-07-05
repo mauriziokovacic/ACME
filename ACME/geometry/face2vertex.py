@@ -1,7 +1,8 @@
 from ..utility.accumarray import *
 from ..topology.poly2lin  import *
 
-def face2vertex(T,face_data):
+
+def face2vertex(T, face_data):
     """
     Returns the vertex data computed from the faces
 
@@ -18,5 +19,5 @@ def face2vertex(T,face_data):
         the vertex data
     """
 
-    I,t = poly2lin(T)
-    return accumarray(I,face_data[t]) / accumarray(I,1)
+    I, t = poly2lin(T)
+    return accumarray(I, face_data[t]) / accumarray(I, 1)

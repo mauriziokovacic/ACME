@@ -1,6 +1,7 @@
 from ..utility.sum import *
 
-def point_plane_distance(P,N,Q,dim=1):
+
+def point_plane_distance(P, N, Q, dim=1):
     """
     Returns the distance of point Q from the plane passing in P, with normal N
 
@@ -21,4 +22,4 @@ def point_plane_distance(P,N,Q,dim=1):
         the point-plane distances
     """
 
-    return sum(N*(P-Q),dim,keepdim=True)
+    return sum(N*(P-Q), dim, keepdim=True)

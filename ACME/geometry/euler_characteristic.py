@@ -1,7 +1,8 @@
 from ..utility.row import *
 from ..utility.col import *
 
-def euler_characteristic(P,E,F,V=None):
+
+def euler_characteristic(P, E, F, V=None):
     """
     Returns the euler characteristic of the given set of points,edges,faces and volumes
 

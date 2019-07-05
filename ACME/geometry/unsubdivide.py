@@ -6,7 +6,7 @@ from ..utility.unique  import *
 from ..topology.ispoly import *
 
 
-def unsubdivide(P,T,iter=1):
+def unsubdivide(P, T, iter=1):
     """
     Unsubdivides the given mesh n times
 
@@ -28,13 +28,13 @@ def unsubdivide(P,T,iter=1):
     """
 
     i = T.clone()
-    for n in range(0,iter):
-        i = torch.t(torch.reshape(i[0],col(i)//4,4))
-        if(istri(T)):
+    for n in range(0, iter):
+        i = torch.t(torch.reshape(i[0], (col(i)//4, 4)))
+        if istri(T):
             i = i[0:3]
-        if (row(i)==1):
+        if row(i) == 1:
             i = torch.t(i)
     p = P[unique(i)[0]]
     t = reindex(i)
     i = unique(i)[0]
-    return p,t,i
+    return p, t, i
