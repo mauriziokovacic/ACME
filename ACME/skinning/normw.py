@@ -1,5 +1,6 @@
 import torch
 
+
 def normw(W):
     """
     Normalizes the given weights
@@ -15,4 +16,4 @@ def normw(W):
         the (N,H,) normalized weights matrix
     """
 
-    return W/torch.sum(W,1,keepdim=True)
+    return W/torch.sum(W, 1, keepdim=True)

@@ -1,5 +1,6 @@
 import torch
 
+
 def weight_valence(W):
     """
     Returns the number of non zero weights per vertex
@@ -15,4 +16,4 @@ def weight_valence(W):
         the (N,1,) weights valence tensor
     """
 
-    return torch.sum(W!=0,1,keepdim=True).to(dtype=torch.long)
+    return torch.sum(W != 0, 1, keepdim=True).to(dtype=torch.long)

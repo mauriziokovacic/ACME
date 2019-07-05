@@ -1,8 +1,9 @@
 import torch
-from ..math.dot import *
+from ..math.dot     import *
+from ..math.normvec import *
 
 
-def blend_transform(T,W):
+def blend_transform(T, W):
     """
     Blends the given flattened 3x4 transforms with the specified weights
 
@@ -24,11 +25,10 @@ def blend_transform(T,W):
         a (N,12,) tensor representing the transform of every vertex
     """
 
-    return torch.mm(W,T)
+    return torch.mm(W, T)
 
 
-
-def transform_point(T,P):
+def transform_point(T, P):
     """
     Transforms the given points with the specified transforms
 
@@ -45,13 +45,12 @@ def transform_point(T,P):
         a (N,3,) points set tensor
     """
 
-    return torch.cat((dot(T[:,0: 3],P)+T[:, 3],
-                      dot(T[:,4: 7],P)+T[:, 7],
-                      dot(T[:,8:11],P)+T[:,11]),dim=1)
+    return torch.cat((dot(T[:, 0: 3], P)+T[:,  3],
+                      dot(T[:, 4: 7], P)+T[:,  7],
+                      dot(T[:, 8:11], P)+T[:, 11]), dim=1)
 
 
-
-def transform_normal(T,N):
+def transform_normal(T, N):
     """
     Transforms the given normals with the specified transforms
 
@@ -68,13 +67,12 @@ def transform_normal(T,N):
         a (N,3,) normals set tensor
     """
 
-    return torch.cat((dot(T[:,0: 3],N),
-                      dot(T[:,4: 7],N),
-                      dot(T[:,8:11],N)),dim=1)
+    return torch.cat((dot(T[:, 0: 3], N),
+                      dot(T[:, 4: 7], N),
+                      dot(T[:, 8:11], N)), dim=1)
 
 
-
-def linear_blend_skinning(P,N,T,W):
+def linear_blend_skinning(P, N, T, W):
     """
     Performs the linear blend skinning
 
@@ -95,6 +93,6 @@ def linear_blend_skinning(P,N,T,W):
         the transformed points and normals sets tensors
     """
 
-    t = blend_transform(T,W)
-    return transform_point(P,t), normr(transform_normal(N,t))
+    t = blend_transform(T, W)
+    return transform_point(P, t), normr(transform_normal(N, t))
 
