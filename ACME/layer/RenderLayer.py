@@ -1,6 +1,11 @@
 import torch
-from ..utility.nop     import *
-from ..render.mesh2img import *
+from ..utility.nop              import *
+from ..encoding.normal2color    import *
+from ..encoding.position2color  import *
+from ..render.mesh2img          import *
+from ..geometry.triangle_normal import *
+from ..geometry.vertex_normal   import *
+
 
 class RenderLayer(torch.nn.Module):
     """
@@ -25,7 +30,7 @@ class RenderLayer(torch.nn.Module):
         returns the rendered input
     """
 
-    def __init__(self,renderer,postFcn=nop,keep_output=False,attr='img'):
+    def __init__(self, renderer, postFcn=nop, keep_output=False, attr='img'):
         """
         Parameters
         ----------
@@ -39,15 +44,13 @@ class RenderLayer(torch.nn.Module):
             the name of the attribute to store the output to (default is 'img')
         """
 
-        super(RenderLayer,self).__init__()
+        super(RenderLayer, self).__init__()
         self.renderer = renderer
         self.postFcn  = postFcn
         self.keep     = keep_output
         self.attr     = attr
 
-
-
-    def __colorFcn__(self,input):
+    def __colorFcn__(self, input):
         """
         Creates colors from the input data
 
@@ -64,9 +67,7 @@ class RenderLayer(torch.nn.Module):
 
         return None
 
-
-
-    def forward(self,input):
+    def forward(self, input):
         """
         Returns the rendered input data
 
@@ -84,11 +85,10 @@ class RenderLayer(torch.nn.Module):
         P   = input.pos.clone().to(device='cuda:0')
         T   = input.face.clone().to(device='cuda:0')
         C   = self.__colorFcn__(input).clone().to(device='cuda:0')
-        out = mesh2img(self.renderer,T,P,C=C,postFcn=self.postFcn).clone().to(device=self.renderer.device)
+        out = mesh2img(self.renderer, T, P, C=C, postFcn=self.postFcn).clone().to(device=self.renderer.device)
         if self.keep:
-            setattr(input,self.attr,out)
+            setattr(input, self.attr, out)
         return out
-
 
 
 class NormalRenderLayer(RenderLayer):
@@ -116,7 +116,7 @@ class NormalRenderLayer(RenderLayer):
         returns the rendered input
     """
 
-    def __init__(self,renderer,per_vertex=True,**kwargs):
+    def __init__(self, renderer, per_vertex=True, **kwargs):
         """
         Parameters
         ----------
@@ -128,12 +128,10 @@ class NormalRenderLayer(RenderLayer):
             the keyword arguments of RenderLayer
         """
 
-        super(NormalRenderLayer,self).__init__(renderer,**kwargs)
+        super(NormalRenderLayer, self).__init__(renderer, **kwargs)
         self.per_vertex = per_vertex
 
-
-
-    def __colorFcn__(self,input):
+    def __colorFcn__(self, input):
         """
         Creates colors from the normals of the input data
 
@@ -151,12 +149,11 @@ class NormalRenderLayer(RenderLayer):
             the color tensor
         """
 
-        if hasattr(input,'normals'):
+        if hasattr(input, 'normals'):
             return normal2color(input.normals)
-        if per_vertex:
-            return normal2color(vertex_normal(input.pos,input.face))
-        return normal2color(triangle_normal(input.pos,input.face))
-
+        if self.per_vertex:
+            return normal2color(vertex_normal(input.pos, input.face))
+        return normal2color(triangle_normal(input.pos, input.face))
 
 
 class PositionRenderLayer(RenderLayer):
@@ -184,8 +181,7 @@ class PositionRenderLayer(RenderLayer):
         returns the rendered input
     """
 
-
-    def __init__(self,renderer,**kwargs):
+    def __init__(self, renderer, **kwargs):
         """
         Parameters
         ----------
@@ -195,11 +191,9 @@ class PositionRenderLayer(RenderLayer):
             the keyword arguments of RenderLayer
         """
 
-        super(PositionRenderLayer,self).__init__(renderer,**kwargs)
+        super(PositionRenderLayer, self).__init__(renderer, **kwargs)
 
-
-
-    def __colorFcn__(self,input):
+    def __colorFcn__(self, input):
         """
         Creates colors from the positions of the input data
 
@@ -216,8 +210,7 @@ class PositionRenderLayer(RenderLayer):
             the color tensor
         """
 
-        return position2color(input.pos,min=-1,max=1)
-
+        return position2color(input.pos, min=-1, max=1)
 
 
 class SVRenderLayer(torch.nn.Module):
@@ -261,8 +254,6 @@ class SVRenderLayer(torch.nn.Module):
         self.keep   = keep_output
         self.attr   = attr
 
-
-
     def forward(self, input):
         """
         Returns the single view image of the input data
@@ -278,13 +269,12 @@ class SVRenderLayer(torch.nn.Module):
             the single view image tensor
         """
 
-        self.layer.renderer.eye             =  camera
-        self.layer.renderer.light_direction = -camera
+        self.layer.renderer.eye             =  self.camera
+        self.layer.renderer.light_direction = -self.camera
         out = self.layer(input)
         if self.keep:
-            setattr(input,self.attr,out)
+            setattr(input, self.attr, out)
         return out
-
 
 
 class MVSRenderLayer(torch.nn.Module):
@@ -306,7 +296,6 @@ class MVSRenderLayer(torch.nn.Module):
         returns the rendered multi view stack of the input data
     """
 
-
     def __init__(self, render_layer, camera, keep_output=False, attr='mvs'):
         """
         Parameters
@@ -321,14 +310,12 @@ class MVSRenderLayer(torch.nn.Module):
             the name of the attribute to store the output to (default is 'mvs')
         """
 
-        super(MVSRenderLayer,self).__init__()
-        self.layer  = [SVRenderLayer(render_layer,c,keep_output=False) for c in camera]
+        super(MVSRenderLayer, self).__init__()
+        self.layer  = [SVRenderLayer(render_layer, c, keep_output=False) for c in camera]
         self.keep   = keep_output
         self.attr   = attr
 
-
-
-    def forward(self,input):
+    def forward(self, input):
         """
         Returns the multi view stack of the input data
 
@@ -343,7 +330,7 @@ class MVSRenderLayer(torch.nn.Module):
             the multi view stack image tensor
         """
 
-        out = torch.cat(tuple(view(input,c).unsqueeze(0) for view in self.layer),dim=0)
+        out = torch.cat(tuple(view(input) for view in self.layer), dim=0)
         if self.keep:
-            setattr(input,self.attr,out)
+            setattr(input, self.attr, out)
         return out
