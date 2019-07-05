@@ -21,7 +21,7 @@ class ConstantLayer(torch.nn.Module):
         returns a constant tensor
     """
 
-    def __init__(self,value,*dim,device='cuda:0'):
+    def __init__(self, value, *dim, device='cuda:0'):
         """
         Parameters
         ----------
@@ -33,14 +33,12 @@ class ConstantLayer(torch.nn.Module):
             the device the tensor will be stored to (default is 'cuda:0')
         """
 
-        super(ConstantLayer,self).__init__()
+        super(ConstantLayer, self).__init__()
         self.value  = value
         self.dim    = dim
         self.device = device
 
-
-
-    def forward(self,input):
+    def forward(self, input):
         """
         Returns a constant tensor
 
@@ -55,8 +53,7 @@ class ConstantLayer(torch.nn.Module):
             the constant tensor
         """
 
-        return ConstantTensor(self.value,self.dim,device=self.device)
-
+        return ConstantTensor(self.value, self.dim, device=self.device)
 
 
 class ZerosLayer(ConstantLayer):
@@ -64,7 +61,7 @@ class ZerosLayer(ConstantLayer):
     Returns a null tensor
     """
 
-    def __init__(self,*dim,device='cuda:0'):
+    def __init__(self, *dim, device='cuda:0'):
         """
         Parameters
         ----------
@@ -74,8 +71,7 @@ class ZerosLayer(ConstantLayer):
             the device the tensor will be stored to (default is 'cuda:0')
         """
 
-        super(ZerosLayer,self).__init__(0,*dim,device=device)
-
+        super(ZerosLayer, self).__init__(0, *dim, device=device)
 
 
 class OnesLayer(ConstantLayer):
@@ -83,7 +79,7 @@ class OnesLayer(ConstantLayer):
     Returns a tensor of ones
     """
 
-    def __init__(self,*dim,device='cuda:0'):
+    def __init__(self, *dim, device='cuda:0'):
         """
         Parameters
         ----------
@@ -93,4 +89,4 @@ class OnesLayer(ConstantLayer):
             the device the tensor will be stored to (default is 'cuda:0')
         """
 
-        super(OnesLayer,self).__init__(1,*dim,device=device)
+        super(OnesLayer, self).__init__(1, *dim, device=device)

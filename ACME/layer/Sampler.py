@@ -13,9 +13,9 @@ class Sampler1D(torch.nn.Module):
     """
 
     def __init__(self):
-        super(Sampler1D,self).__init__()
+        super(Sampler1D, self).__init__()
 
-    def forward(self,input,param):
+    def forward(self, input, param):
         """
         Returns the data read from the given input with the given parametrization
 
@@ -32,8 +32,7 @@ class Sampler1D(torch.nn.Module):
             the sampled (U,C,) tensor
         """
 
-        return fetch_texture1D(input,param,mode='bilinear')
-
+        return fetch_texture1D(input, param, mode='bilinear')
 
 
 class Sampler2D(torch.nn.Module):
@@ -47,9 +46,9 @@ class Sampler2D(torch.nn.Module):
     """
 
     def __init__(self):
-        super(Sampler2D,self).__init__()
+        super(Sampler2D, self).__init__()
 
-    def forward(self,input,param):
+    def forward(self, input, param):
         """
         Returns the data read from the given input with the given parametrization
 
@@ -66,8 +65,7 @@ class Sampler2D(torch.nn.Module):
             the sampled (UV,C,) tensor
         """
 
-        return fetch_texture2D(input,param,mode='bilinear')
-
+        return fetch_texture2D(input, param, mode='bilinear')
 
 
 class Sampler3D(torch.nn.Module):
@@ -81,9 +79,9 @@ class Sampler3D(torch.nn.Module):
     """
 
     def __init__(self):
-        super(Sampler3D,self).__init__()
+        super(Sampler3D, self).__init__()
 
-    def forward(self,input,param):
+    def forward(self, input, param):
         """
         Returns the data read from the given input with the given parametrization
 
@@ -100,4 +98,4 @@ class Sampler3D(torch.nn.Module):
             the sampled (UVW,C,) tensor
         """
 
-        return fetch_texture3D(input,param,mode='bilinear')
+        return fetch_texture3D(input, param, mode='bilinear')

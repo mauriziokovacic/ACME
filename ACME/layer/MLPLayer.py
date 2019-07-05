@@ -1,5 +1,6 @@
 import torch
 
+
 class MLPLayer(torch.nn.Module):
     """
     A class representing a MLP layer
@@ -17,11 +18,7 @@ class MLPLayer(torch.nn.Module):
         evaluates the inner architecture with the given input
     """
 
-    def __init__(self,
-             dim,
-             cfg=[32,32],
-             in_channels=3,
-            ):
+    def __init__(self, dim, cfg=[32,32], in_channels=3, batch_norm=False):
         """
         Parameters
         ----------
@@ -31,12 +28,12 @@ class MLPLayer(torch.nn.Module):
             a list containing the inner architecture configuration
         in_channels : int (optional)
             the number of input channels (default is 3)
-        batch_norm : bool
+        batch_norm : bool (optional)
             if True adds batch normalization layers (default is False)
         """
 
         super(MLPLayer,self).__init__()
-        self.model = self.__create_model(cfg,in_channels,dim)
+        self.model = self.__create_model(cfg, in_channels, dim)
 
 
 

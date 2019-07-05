@@ -1,5 +1,6 @@
 import torch
 
+
 class VGGPerceptron(torch.nn.Module):
     """
     A class representing the standard VGG perceptron for feature extraction
@@ -38,12 +39,10 @@ class VGGPerceptron(torch.nn.Module):
             if True adds batch normalization layers (default is False)
         """
 
-        super(VGGPerceptron,self).__init__()
-        self.__create_model(cfg,in_channels,*data_size,batch_norm)
+        super(VGGPerceptron, self).__init__()
+        self.__create_model(cfg, in_channels, *data_size, batch_norm)
 
-
-
-    def __create_model(self,cfg,in_channels,data_size,batch_norm):
+    def __create_model(self, cfg, in_channels, data_size, batch_norm):
         """
         Creates the inner architecture of this layer
 
@@ -64,15 +63,13 @@ class VGGPerceptron(torch.nn.Module):
             the inner architecture
         """
 
-        layers,pool = self.__create_layers(cfg,in_channels=in_channels,batch_norm=batch_norm,dim=len(data_size))
+        layers, pool = self.__create_layers(cfg, in_channels=in_channels, batch_norm=batch_norm, dim=len(data_size))
         self.model = torch.nn.Sequential(
             *layers,
             eval('torch.nn.AdaptiveAvgPool'+str(len(data_size))+'d('+(str(tuple((eval(str(x)+'//'+str(2**pool))) for x in data_size)))+')')
         )
 
-
-
-    def __create_layers(self,cfg,in_channels=3,batch_norm=False,dim=2):
+    def __create_layers(self, cfg, in_channels=3, batch_norm=False, dim=2):
         """
         Creates the inner convolutions layers
 
@@ -105,11 +102,9 @@ class VGGPerceptron(torch.nn.Module):
                     layers += [eval('torch.nn.BatchNorm'+str(dim)+'d(v)')]
                 layers += [torch.nn.ReLU(inplace=True)]
                 in_channels = v
-        return layers,pool
+        return layers, pool
 
-
-
-    def forward(self,input):
+    def forward(self, input):
         """
         Evaluates the inner architecture with the given input
 

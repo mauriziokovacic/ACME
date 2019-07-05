@@ -1,5 +1,6 @@
 import torch
 
+
 class Concatenate(torch.nn.Module):
     """
     A layer concatenating the inputs along the specified dimension
@@ -15,7 +16,7 @@ class Concatenate(torch.nn.Module):
         concatenates the inputs
     """
 
-    def __init__(self,dim=0):
+    def __init__(self, dim=0):
         """
         Parameters
         ----------
@@ -23,12 +24,10 @@ class Concatenate(torch.nn.Module):
             the dimension along the concatenation is performed (default is 0)
         """
 
-        super(Concatenate,self).__init__()
+        super(Concatenate, self).__init__()
         self.dim = dim
 
-
-
-    def forward(self,*inputs):
+    def forward(self, *inputs):
         """
         Concatenates the input
 
@@ -43,8 +42,7 @@ class Concatenate(torch.nn.Module):
             the concatenated tensors
         """
 
-        return torch.cat(*inputs,dim=self.dim)
-
+        return torch.cat(*inputs, dim=self.dim)
 
 
 class AggregationLayer(Concatenate):
@@ -62,7 +60,7 @@ class AggregationLayer(Concatenate):
         forwards the input(s) to each contained model
     """
 
-    def __init__(self,*models,dim=0):
+    def __init__(self, *models, dim=0):
         """
         Parameters
         ----------
@@ -72,12 +70,10 @@ class AggregationLayer(Concatenate):
             the dimension along the concatenation is performed (default is 0)
         """
 
-        super(AggregationLayer,self).__init__()
+        super(AggregationLayer, self).__init__(dim=dim)
         self.models = torch.nn.ModuleList(*models)
 
-
-
-    def forward(self,*inputs):
+    def forward(self, *inputs):
         """
         Forwards the input(s) to each contained model
 
@@ -92,8 +88,8 @@ class AggregationLayer(Concatenate):
             the concatenated output of each model
         """
 
-        if len(inputs)==1:
+        if len(inputs) == 1:
             out = [f(*inputs) for f in self.models]
         else:
-            out = [f(i) for f,i in zip(self.models,inputs)]
-        return super(AggregationLayer,self).forward(*out)
+            out = [f(i) for f, i in zip(self.models, inputs)]
+        return super(AggregationLayer, self).forward(*out)

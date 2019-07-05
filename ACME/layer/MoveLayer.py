@@ -1,5 +1,6 @@
 import torch
 
+
 class MoveLayer(torch.nn.Module):
     """
     A layer moving the input to a specifc device
@@ -15,7 +16,7 @@ class MoveLayer(torch.nn.Module):
         returns the moved input
     """
 
-    def __init__(self,device):
+    def __init__(self, device):
         super(MoveLayer, self).__init__()
         """
         Parameters
@@ -24,10 +25,8 @@ class MoveLayer(torch.nn.Module):
             the device to move the input to
         """
 
-        super(MoveLayer,self).__init__()
+        super(MoveLayer, self).__init__()
         self.device = device
-
-
 
     def forward(self, input):
         """

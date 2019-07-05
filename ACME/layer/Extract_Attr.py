@@ -1,5 +1,6 @@
 import torch
 
+
 class Extract_Attr(torch.nn.Module):
     """
     A layer extracting a specific attribute from the given input
@@ -15,7 +16,7 @@ class Extract_Attr(torch.nn.Module):
         returns the extracted attribute
     """
 
-    def __init__(self,attr):
+    def __init__(self, attr):
         super(Extract_Attr, self).__init__()
         """
         Parameters
@@ -25,8 +26,6 @@ class Extract_Attr(torch.nn.Module):
         """
 
         self.attr = attr
-
-
 
     def forward(self, input):
         """
@@ -43,4 +42,4 @@ class Extract_Attr(torch.nn.Module):
             the output attribute
         """
 
-        return getattr(input,self.attr)
+        return getattr(input, self.attr)

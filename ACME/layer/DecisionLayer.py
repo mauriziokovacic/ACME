@@ -1,7 +1,6 @@
 import torch
 
 
-
 class DecisionLayer(torch.nn.Module):
     """
     A fully connected layer performing a decision
@@ -19,7 +18,7 @@ class DecisionLayer(torch.nn.Module):
         returns the decision tensor
     """
 
-    def __init__(self,input_size,*cfg):
+    def __init__(self, input_size, *cfg):
         """
         Parameters
         ----------
@@ -29,12 +28,12 @@ class DecisionLayer(torch.nn.Module):
             the output size of each fully connected layer
         """
 
-        super(DecisionLayer,self).__init__()
-        self.__create_layers(input_size,cfg)
+        super(DecisionLayer, self).__init__()
+        self.__create_layers(input_size, cfg)
 
 
 
-    def __create_layers(self,input_size,cfg):
+    def __create_layers(self, input_size, cfg):
         """
         Creates the inner fully connected layers
 
@@ -52,12 +51,10 @@ class DecisionLayer(torch.nn.Module):
                        torch.nn.ReLU(inplace=True),
                        torch.nn.Dropout()]
             input_size = v
-        layers += [torch.nn.Linear(input_size,cfg[-1])]
+        layers += [torch.nn.Linear(input_size, cfg[-1])]
         self.model = torch.nn.Sequential(layers)
 
-
-
-    def forward(self,input):
+    def forward(self, input):
         """
         Returns the decision tensor
 
@@ -75,8 +72,7 @@ class DecisionLayer(torch.nn.Module):
         return self.model(input)
 
 
-
-def classifier_layer(input_size,*cfg):
+def classifier_layer(input_size, *cfg):
     """
     Returns a standard classifier with the input architecture
 
@@ -94,10 +90,9 @@ def classifier_layer(input_size,*cfg):
     """
 
     return torch.nn.Sequential(
-        DecisionLayer(input_size,*cfg),
+        DecisionLayer(input_size, *cfg),
         torch.nn.Softmax(),
     )
-
 
 
 def VGG_classifier(input_size):
@@ -115,4 +110,4 @@ def VGG_classifier(input_size):
         the VGG classifier architecture
     """
 
-    return classifier_layer(input_size,[4096,4096,1000])
+    return classifier_layer(input_size, [4096, 4096, 1000])

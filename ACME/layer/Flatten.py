@@ -1,5 +1,6 @@
 from torch.nn import Module
 
+
 class Flatten(Module):
     """
     A layer performing the flattening of the input tensor
@@ -12,8 +13,6 @@ class Flatten(Module):
 
     def __init__(self):
         super(Flatten, self).__init__()
-
-
 
     def forward(self, input):
         """

@@ -2,6 +2,7 @@ import torch
 from ..math.eye           import *
 from ..topology.adjacency import *
 
+
 class BokehLayer(torch.nn.Module):
     """
     A class representing a module for the bokeh effect
@@ -17,7 +18,7 @@ class BokehLayer(torch.nn.Module):
         returns the bokeh effect for the input tensor
     """
 
-    def __init__(self,edge):
+    def __init__(self, edge):
         """
         Parameters
         ----------
@@ -25,13 +26,11 @@ class BokehLayer(torch.nn.Module):
             the (2,N,) edge tensor of the view points topology
         """
 
-        super(Bokeh,self).__init__()
+        super(BokehLayer, self).__init__()
         self.adj = edge2adj(edge)
         self.adj = self.adj + eye_like(self.adj)
-        self.adj = self.adj / torch.sum(self.adj,1,keepdim=True)
+        self.adj = self.adj / torch.sum(self.adj, 1, keepdim=True)
         self.adj = self.adj.unsqueeze(0)
-
-
 
     def forward(self, x):
         """
@@ -48,5 +47,5 @@ class BokehLayer(torch.nn.Module):
             the transformed input tensor
         """
 
-        x_hat = torch.matmul(self.adj, x.view(*x.size()[0:2],-1)).view(*x.size())
+        x_hat = torch.matmul(self.adj, x.view(*x.size()[0:2], -1)).view(*x.size())
         return x_hat

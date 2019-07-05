@@ -1,6 +1,7 @@
-from torch.nn import Module
+import torch
 
-class Reshape(Module):
+
+class Reshape(torch.nn.Module):
     """
     A layer performing the reshape of the input tensor
 
@@ -15,7 +16,7 @@ class Reshape(Module):
         reshapes the input tensor
     """
 
-    def __init__(self,dim):
+    def __init__(self, dim):
         """
         Parameters
         ----------
@@ -23,12 +24,10 @@ class Reshape(Module):
             the new shape of the tensor
         """
 
-        super(Reshape,self).__init__()
+        super(Reshape, self).__init__()
         self.dim = (-1,)+dim
 
-
-
-    def forward(self,input):
+    def forward(self, input):
         """
         Reshapes the input tensor
 
@@ -43,4 +42,4 @@ class Reshape(Module):
             the reshaped input
         """
 
-        return torch.reshape(input,self.dim)
+        return torch.reshape(input, self.dim)
