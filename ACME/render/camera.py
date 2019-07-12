@@ -5,7 +5,10 @@ from ..utility.indices              import *
 from ..math.constant                import *
 from ..math.cos                     import *
 from ..math.sin                     import *
+from ..math.tan                     import *
 from ..math.normvec                 import *
+from ..math.eye                     import *
+from ..math.cross                   import *
 from ..math.cart2sph                import *
 from ..math.sph2cart                import *
 from ..math.sph2rotm                import *
@@ -19,6 +22,23 @@ from ..geometry.icosahedron         import *
 from ..geometry.shape_scale         import *
 from ..geometry.sphere              import *
 from ..geometry.soup2mesh           import *
+
+
+def view_matrix(eye, target, up):
+    dir = normr(target-eye)
+    vr  = cross(dir, up)
+    vup = cross(dir, vr)
+    return torch.cat((vr.t(), vup.t(), dir.t(), eye.t()), dim=1)
+
+
+def perspective_matrix(aspect, fov, near, far, device='cuda:0'):
+    M = eye(4, device=device)
+    M[0, 0] = 1/(aspect*tan(fov/2))
+    M[1, 1] = 1/tan(fov/2)
+    M[2, 2] = -(far+near)/(far-near)
+    M[2, 3] = -2 * (far * near) / (far-near)
+    M[3, 2] = -1
+    return M
 
 
 def bokeh_camera(P, n=4, aperture=PI_16):
