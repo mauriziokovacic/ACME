@@ -1,36 +1,61 @@
 import torch
-from ..math.dot     import *
-from ..math.normvec import *
+from ..utility.strcmpi  import *
+from ..math.normvec     import *
+from ..math.cart2affine import *
 
 
-def blend_transform(T, W):
+def blend_transform(W, T):
     """
-    Blends the given flattened 3x4 transforms with the specified weights
-
-    Transforms are intended being 3D affine transforms in the form:
-        |R t|
-        |0 1|
-    where the last row is taken out. The transforms needs to be flattened.
+    Blends the given transforms with the specified weights
 
     Parameters
     ----------
-    T : Tensor
-        a (H,12,) tensor representing a 3x4 matrix
     W : Tensor
         the (N,H,) weights matrix
+    T : Tensor
+        a (H,R,C,) tensor representing the transforms
 
     Returns
     -------
     Tensor
-        a (N,12,) tensor representing the transform of every vertex
+        a (N,R,C,) tensor representing the transform of every vertex
     """
 
-    return torch.mm(W, T)
+    return torch.matmul(W, T.view(T.size(0), -1)).view(-1, *T.size()[1:])
+
+
+def transform(T, X, mode='point'):
+    """
+    Transforms the given set with the specified affine transforms
+
+    Parameters
+    ----------
+    T : Tensor
+        a (N,R,C) tensor representing the transforms
+    X : Tensor
+        a (N,3,) tensor
+    mode : str (optional)
+        either 'point' or 'normal', depending on the argument
+
+    Returns
+    -------
+    Tensor
+        a (N,3,) points set tensor
+    """
+
+    if strcmpi(mode, 'point'):
+        w = 1
+    else:
+        if strcmpi(mode, 'normal'):
+            w = 0
+    return torch.matmul(T,
+                        cart2affine(P, w=w).view(-1, X.size(1)+1, 1)
+                        )[:, :-1].view(*X.size())
 
 
 def transform_point(T, P):
     """
-    Transforms the given points with the specified transforms
+    Transforms the given normals with the specified transforms
 
     Parameters
     ----------
@@ -42,12 +67,10 @@ def transform_point(T, P):
     Returns
     -------
     Tensor
-        a (N,3,) points set tensor
+        a (N,3,) normals set tensor
     """
 
-    return torch.cat((dot(T[:, 0: 3], P)+T[:,  3],
-                      dot(T[:, 4: 7], P)+T[:,  7],
-                      dot(T[:, 8:11], P)+T[:, 11]), dim=1)
+    return transform(T, P, mode='point')
 
 
 def transform_normal(T, N):
@@ -58,7 +81,7 @@ def transform_normal(T, N):
     ----------
     T : Tensor
         a (N,12,) tensor representing the transforms
-    P : Tensor
+    N : Tensor
         a (N,3,) normals set tensor
 
     Returns
@@ -67,9 +90,7 @@ def transform_normal(T, N):
         a (N,3,) normals set tensor
     """
 
-    return torch.cat((dot(T[:, 0: 3], N),
-                      dot(T[:, 4: 7], N),
-                      dot(T[:, 8:11], N)), dim=1)
+    return transform(T, N, mode='normal')
 
 
 def linear_blend_skinning(P, N, T, W):
