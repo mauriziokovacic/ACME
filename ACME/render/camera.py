@@ -24,14 +24,56 @@ from ..geometry.sphere              import *
 from ..geometry.soup2mesh           import *
 
 
-def view_matrix(eye, target, up):
-    dir = normr(target-eye)
-    vr  = cross(dir, up)
-    vup = cross(dir, vr)
-    return torch.cat((vr.t(), vup.t(), dir.t(), eye.t()), dim=1)
+def view_matrix(cam, target, up):
+    """
+    Returns the view matrix from the camera position, target and up vector
+
+    Parameters
+    ----------
+    cam : Tensor
+        the (1,3,) camera position tensor
+    target : Tensor
+        the (1,3,) target position tensor
+    up : Tensor
+        the (1,3,) up tensor
+
+    Returns
+    -------
+    Tensor
+        a (4,4,) view matrix
+    """
+
+    M       = eye(4, device=cam.device)
+    dir     = normr(target-cam)
+    vr      = cross(dir, up)
+    vup     = cross(dir, vr)
+    M[:3,:] = torch.cat((vr.t(), vup.t(), dir.t(), cam.t()), dim=1)
+    return M
 
 
 def perspective_matrix(aspect, fov, near, far, device='cuda:0'):
+    """
+    Returns the perspective projection matrix from the camera settings
+
+    Parameters
+    ----------
+    aspect : float
+        the aspect ratio of the final image
+    fov : float
+        the lens angle aperture (in radians)
+    near : float
+        the distance of the near clipping plane
+    far : float
+        the distance of the far clipping plane
+    device : str or torch.device (optional)
+        the device the tensor will be stored to (default is 'cuda:0')
+
+    Returns
+    -------
+    Tensor
+        a (4,4,) projection matrix
+    """
+
     M = eye(4, device=device)
     M[0, 0] = 1/(aspect*tan(fov/2))
     M[1, 1] = 1/tan(fov/2)
