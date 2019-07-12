@@ -1,4 +1,5 @@
 import torch
+from torch.nn.functional import grid_sample
 from ..utility.numel     import *
 from ..utility.to_column import *
 
@@ -22,7 +23,7 @@ def fetch_texture1D(texture, t, mode='bilinear'):
         the fetched data from the input texture
     """
 
-    return torch.t(torch.reshape(torch.nn.functional.grid_sample(
+    return torch.t(torch.reshape(grid_sample(
                 torch.reshape(torch.t(texture), (1, 3, -1, 1)),
                 torch.reshape(torch.cat((torch.zeros(numel(t), 1,
                                                      dtype=torch.float,
@@ -51,10 +52,10 @@ def fetch_texture2D(texture, uv, mode='bilinear'):
         the fetched data from the input texture
     """
 
-    return torch.reshape(torch.nn.functional.grid_sample(texture.unsqueeze(0),
-                                                         torch.reshape(uv*2-1, (1, 1, -1, 2)),
-                                                         mode=mode,
-                                                         padding_mode='border').squeeze(0), (-1, texture.shape[0]))
+    return grid_sample(texture.unsqueeze(0),
+                       (uv*2-1).view(1, 1, -1, 2),
+                       mode=mode,
+                       padding_mode='border').squeeze(0).view(-1, texture.shape[0])
 
 
 def fetch_texture3D(texture, uv, mode='bilinear'):
@@ -76,7 +77,7 @@ def fetch_texture3D(texture, uv, mode='bilinear'):
         the fetched data from the input texture
     """
 
-    return torch.reshape(torch.nn.functional.grid_sample(texture.unsqueeze(0),
-                                                         torch.reshape(uv*2-1, (1, 1, 1, -1, 3)),
-                                                         mode=mode,
-                                                         padding_mode='border').squeeze(0), (-1, texture.shape[0]))
+    return torch.reshape(grid_sample(texture.unsqueeze(0),
+                                     torch.reshape(uv*2-1, (1, 1, 1, -1, 3)),
+                                     mode=mode,
+                                     padding_mode='border').squeeze(0), (-1, texture.shape[0]))
