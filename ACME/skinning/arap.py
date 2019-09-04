@@ -24,3 +24,7 @@ def arap_Si(P, P_prime, A, i):
     Dij       = diag(A[i, j])
     return arap_S(Eij, Dij, Eij_prime)
 
+
+def arap_metric(P, P_prime, A, E):
+    R = torch.cat([arap_R(arap_Si(P, P_prime, A, i)).unsqueeze(0) for i in range(row(P))], dim=0)
+    return arap_energy(P, P_prime, R, A[tuple(E)], E)
