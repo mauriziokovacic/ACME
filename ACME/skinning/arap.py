@@ -1,5 +1,5 @@
-from ACME.math import *
-from ACME.geometry import *
+from ..math import unrooted_norm
+from ..math import diag
 
 def arap_energy(P, P_prime, R, wij, E):
     """
