@@ -1,3 +1,4 @@
+import torch
 from ..math import unrooted_norm
 from ..math import diag
 
