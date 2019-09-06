@@ -1,5 +1,5 @@
 !/.gitignore
 
+# PyCharm related ignore
 **/__pycache__
 venv
-data
