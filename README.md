@@ -8,4 +8,5 @@ Numpy
 PyTorch
 torch_scatter
 torch_geometric
+neural_renderer
 
