@@ -77,12 +77,12 @@ class Training_Observer(object):
         g = (e[0]*i[1]+i[0], e[1]*i[1])
         if not e[0] == self.epoch:
             self.epoch = e[0]
-            self.epochFcn(input, output, loss, epoch, iteration, t)
+            self.epochFcn(input, output, loss, epoch, iteration, g[0]*t)
         if not i[0] == self.iter:
             self.iter = i[0]
             self.iterationFcn(input, output, loss, epoch, iteration, t)
         if g[0] == g[1]-1:
-            self.endFcn(input, output, loss, epoch, iteration, t)
+            self.endFcn(input, output, loss, epoch, iteration, g[0]*t)
         return
 
     def iterationFcn(self, input, output, loss, epoch, iteration, t):
