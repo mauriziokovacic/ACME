@@ -1,6 +1,8 @@
 import torch
-from ..math import unrooted_norm
-from ..math import diag
+from ..utility.row        import *
+from ..utility.find       import *
+from ..math.unrooted_norm import *
+from ..math.diag          import *
 
 def arap_energy(P, P_prime, R, wij, E):
     """
