@@ -7,6 +7,7 @@ from .cube                    import *
 from .curvature               import *
 from .cylinder                import *
 from .data2mesh               import *
+from .differential_operators  import *
 from .disk                    import *
 from .divergence              import *
 from .edge_length             import *
@@ -21,8 +22,8 @@ from .hexahedron              import *
 from .icosahedron             import *
 from .klein_figure8           import *
 from .laplacian               import *
-from .mesh                    import *
-from .mesh2data               import *
+#from .mesh                    import *
+#from .mesh2data               import *
 from .mesh2soup               import *
 from .mobius_strip            import *
 from .normalize_scale         import *
