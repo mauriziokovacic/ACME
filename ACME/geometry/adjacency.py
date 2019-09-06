@@ -43,17 +43,17 @@ def Adjacency(T, P=None, type='std'):
         n = torch.max(T)[0] + 1
     else:
         n = row(P)
-
     if strcmpi(type, 'std'):
         E = poly2edge(T)[0]
-        E = torch.cat((E, flipud(E)), dim=1)
+        # E = torch.cat((E, flipud(E)), dim=1)
         return edge2adj(E, size=(n, n))
 
     if strcmpi(type, 'cot'):
         assert P is not None, 'Point tensor should not be None'
         assert istri(T), 'Cotangent adjacency defined only for triangular meshes'
         E = poly2edge(T)[0]
-        W = 0.5 * poly2edge(torch.cat(tuple(to_row(w) for w in triangle_cotangent(P, T)), dim=0))[0]
+        #W = 0.5 * poly2edge(torch.cat(tuple(to_row(w) for w in triangle_cotangent(P, T)), dim=0))[0]
+        W = 0.5 * torch.cat(triangle_cotangent(P, T), dim=0)
         return adjacency(E, W, size=(n, n))
 
     if strcmpi(type, 'face'):
