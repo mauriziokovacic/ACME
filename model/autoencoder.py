@@ -120,8 +120,6 @@ class VariationalAutoEncoder(AutoEncoder):
     ----------
     z_sampler : callable
 
-
-
     Methods
     -------
     forward(x)
