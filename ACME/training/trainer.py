@@ -100,8 +100,8 @@ class Trainer(object):
         dataset :
             a dataloader object containing the dataset
         epochs : int (optional)
-            the number of epochs to be perfomed. If None it will be automatically set to len(dataset) (default is None)
-        checkpoit : bool (optional)
+            the number of epochs to be performed. If None it will be automatically set to len(dataset) (default is None)
+        checkpoint : bool (optional)
             if True stores a checkpoint of the training at the end of every epoch (default is True)
         finalNetwork : bool (optional)
             if True stores the final trained model (default is True)
@@ -155,9 +155,9 @@ class Trainer(object):
             if verbose:
                 print('DONE')
             if checkpoint:
-                self.saveCheckpoint(path)
+                self.save_checkpoint(path)
         if finalNetwork:
-            self.saveModel(path)
+            self.save_model(path)
 
     def test(self, input):
         """
