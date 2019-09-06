@@ -30,5 +30,5 @@ def spdiag(tensor, rows=None, cols=None):
         cols = rows
     n = min(rows, cols)
     v = torch.cat((tensor.flatten(), torch.zeros(n-numel(tensor), dtype=tensor.dtype, device=tensor.device)))
-    E = torch.t(indices(0, n, device=tensor.device))
-    return SparseTensor(size=(rows, cols), indices=torch.cat((E,E),dim=0), values=v)
+    E = torch.t(indices(0, n-1, device=tensor.device))
+    return SparseTensor(size=(rows, cols), indices=torch.cat((E, E), dim=0), values=v)
