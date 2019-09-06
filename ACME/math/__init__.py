@@ -42,6 +42,8 @@ from .sawtooth           import *
 from .sca3               import *
 from .signed_angle       import *
 from .sin                import *
+from .spdiag             import *
+from .speye              import *
 from .sph2cart           import *
 from .sph2rotm           import *
 from .tan                import *
