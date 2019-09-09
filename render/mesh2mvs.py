@@ -34,7 +34,7 @@ def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=nop, pivoting=False):
 
     if Cam is None:
         Cam = camera_18(camera_distance=shape_scale(P)*1.4, to_spherical=pivoting, device=renderer.device)[0]
-    if pivoting:
+    if not pivoting:
         def viewFcn(c):
             renderer.eye             = c
             renderer.light_direction = -c
