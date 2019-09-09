@@ -28,7 +28,7 @@ def adjacency(E, W, size=None):
         size = E.max().item() + 1
     A = torch.zeros(size, dtype=W.dtype, device=W.device)
     # A[tuple(E)] = W
-    for e, w in zip(torch.t(E), W):
+    for e, w in zip(torch.t(E), W.squeeze()):
         A[tuple(e)] += w
     return A
 
