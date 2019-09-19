@@ -82,8 +82,8 @@ class Trainer(object):
 
         return (self.model is not None) and\
                (self.optimizer is not None) and\
-               (self.scheduler is not None) and\
                (self.loss is not None)
+               #(self.scheduler is not None) and\
 
     def train(self,
               dataset,
@@ -134,19 +134,21 @@ class Trainer(object):
                 print('Epoch:' + str(self.epoch) + '...', end='')
             i = 0
             for input in dataset:
-                t      = time.time()
-                output = outputFcn(self.model(inputFcn(input)))
-                loss   = self.loss.eval(input, *output if istuple(output) else output)
+                t    = time.time()
+                x    = inputFcn(input)
+                y    = outputFcn(self.model(x))
+                loss = self.loss.eval(x, *y if istuple(y) else y)
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
-                if isinstance(self.scheduler, 'torch.optim.lr_scheduler.ReduceLROnPlateau'):
-                    self.scheduler.step(loss)
-                else:
-                    self.scheduler.step()
+                if self.scheduler is not None:
+                    if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                        self.scheduler.step(loss)
+                    else:
+                        self.scheduler.step()
                 if self.stateFcn is not None:
-                    self.stateFcn(input,
-                                  *output if istuple(output) else output,
+                    self.stateFcn(x,
+                                  y,
                                   self.loss.to_dict(),
                                   epoch=(e, self.epoch, epochs),
                                   iteration=(i, n),
@@ -204,11 +206,11 @@ class Trainer(object):
             return
         if path is None:
             path = os.getcwd()
-            path = path + '/' + self.name + '.tar'
+        path = path + '/' + self.name + '.tar'
         torch.save({
                     'model_state_dict': self.model.state_dict(),
                     'optimizer_state_dict': self.optimizer.state_dict(),
-                    'scheduler_state_dict': self.scheduler.state_dict(),
+                    'scheduler_state_dict': self.scheduler.state_dict() if self.scheduler is not None else '',
                     'loss': self.loss.value.item(),
                     'epoch': self.epoch,
                     }, path)
@@ -235,7 +237,8 @@ class Trainer(object):
         checkpoint = torch.load(path)
         self.model.load_state_dict(checkpoint['model_state_dict'])#,map_location=self.device)
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+        if self.scheduler is not None:
+            self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
         self.loss.value = checkpoint['loss']
         self.epoch      = checkpoint['epoch']
         self.model.train()
