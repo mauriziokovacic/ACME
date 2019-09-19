@@ -34,7 +34,7 @@ def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=nop, pivoting=False):
 
     if Cam is None:
         Cam = camera_18(camera_distance=shape_scale(P)*1.4, to_spherical=pivoting, device=renderer.device)[0]
-    if pivoting:
+    if not pivoting:
         def viewFcn(c):
             renderer.eye             = c
             renderer.light_direction = -c
@@ -42,4 +42,4 @@ def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=nop, pivoting=False):
     else:
         def viewFcn(c):
             return mesh2img(renderer, T, torch.mm(P, sph2rotm(c)), C=C, postFcn=postFcn)
-    return torch.cat(tuple(viewFcn(c).unsqueeze(0) for c in Cam), dim=0)
+    return torch.cat(tuple(viewFcn(c) for c in Cam), dim=0)
