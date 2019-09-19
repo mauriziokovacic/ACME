@@ -149,8 +149,8 @@ class NormalRenderLayer(RenderLayer):
             the color tensor
         """
 
-        if hasattr(input, 'normals'):
-            return normal2color(input.normals)
+        if hasattr(input, 'norm'):
+            return normal2color(input.norm)
         if self.per_vertex:
             return normal2color(vertex_normal(input.pos, input.face))
         return normal2color(triangle_normal(input.pos, input.face))
