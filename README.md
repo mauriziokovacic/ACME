@@ -4,9 +4,9 @@ A collection of utility functions and classes for Python, using Numpy and PyTorc
 
 
 # Known dependencies
-Numpy
-PyTorch
-torch_scatter
-torch_geometric
-neural_renderer
+* Numpy
+* PyTorch
+* torch_scatter
+* torch_geometric
+* neural_renderer
 
