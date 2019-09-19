@@ -167,8 +167,8 @@ def quad2tri(T):
     """
 
     I = poly2ind(T)
-    return torch.cat((torch.cat((I[0], I[1], I[2]), dim=0).unsqueeze(1),
-                      torch.cat((I[0], I[2], I[3]), dim=0).unsqueeze(1)), dim=1)
+    return torch.cat((torch.cat((I[0].unsqueeze(0), I[1].unsqueeze(0), I[2].unsqueeze(0)), dim=0),
+                      torch.cat((I[0].unsqueeze(0), I[2].unsqueeze(0), I[3].unsqueeze(0)), dim=0)), dim=1)
 
 
 def poly2node(T):
