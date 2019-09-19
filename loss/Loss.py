@@ -157,7 +157,7 @@ class Loss(object):
 
         return self.value == other.value
 
-    def __str__(self):
+    def __repr__(self):
         return str(self.name) + " Loss"
 
     def __call__(self, input, *output):
