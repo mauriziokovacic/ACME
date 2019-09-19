@@ -19,4 +19,4 @@ def interleave(*tensors):
 
     n = len(tensors)
     r = row(tensors[0])
-    return torch.reshape(torch.cat(tensors, dim=1), (n*r, -1))
+    return torch.reshape(torch.cat(tensors, dim=1), (n*r, *tuple(tensors[0].shape[1:])))
