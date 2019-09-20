@@ -50,7 +50,7 @@ def mesh2img(renderer, T, P, C=None, postFcn=nop):
         c = C
     if renderer.culling is not None:
         n = triangle_normal(P, t)
-        d = dot(normr(-renderer.eye), n)
+        d = dot(normr(-renderer.eye.unsqueeze(0)), n)
         if strcmpi(renderer.culling, 'back'):
             tf = d < 0
         else:
@@ -58,7 +58,8 @@ def mesh2img(renderer, T, P, C=None, postFcn=nop):
                 tf = d > 0
             else:
                 assert False, 'Unknown culling type'
-        t = t[tf]
+        tf = tf.squeeze()
+        t = t[:,tf]
         i = i[tf]
     if ndim(c) == 1:
         c = fetch_texture1D(palette('parula', device=T.device), normalize(c))
