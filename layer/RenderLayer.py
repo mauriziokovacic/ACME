@@ -292,6 +292,8 @@ class MVSRenderLayer(torch.nn.Module):
 
     Methods
     -------
+    size()
+        returns the number of view points
     forward(input)
         returns the rendered multi view stack of the input data
     """
@@ -314,6 +316,17 @@ class MVSRenderLayer(torch.nn.Module):
         self.layer  = [SVRenderLayer(render_layer, c, keep_output=False) for c in camera]
         self.keep   = keep_output
         self.attr   = attr
+
+    def size(self):
+        """
+        Returns the number of view points
+
+        Returns
+        -------
+        int
+            the number of view points
+        """
+        return len(self.layer)
 
     def forward(self, input):
         """
