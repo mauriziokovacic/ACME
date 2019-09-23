@@ -42,4 +42,4 @@ def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=nop, pivoting=False):
     else:
         def viewFcn(c):
             return mesh2img(renderer, T, torch.mm(P, sph2rotm(c)), C=C, postFcn=postFcn)
-    return torch.cat(tuple(viewFcn(c).unsqueeze(0) for c in Cam), dim=0)
+    return torch.cat(tuple(viewFcn(c) for c in Cam), dim=0)

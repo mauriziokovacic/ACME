@@ -10,6 +10,8 @@ class Renderer(nr.Renderer):
     ----------
     device : str or torch.device (optional)
         the tensor the renderer will be stored to (default is 'cuda:0')
+    culling : str (optional)
+        the current active face culling (default is None)
 
     Methods
     -------
@@ -33,6 +35,9 @@ class Renderer(nr.Renderer):
         ----------
         device : str or torch.device (optional)
             the device the tensors will be stored to (default is 'cuda:0')
+        culling : str (optional)
+            the current active face culling, either 'front' or 'back'.
+            If None no culling is performed (default is None)
         lighting : bool (optional)
             if True activates the lighting, False otherwise
         **kwargs : ...

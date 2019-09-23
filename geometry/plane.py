@@ -21,8 +21,8 @@ def PlanePatch(tile=(2, 2), device='cuda:0'):
     Tensor
         the (3,M,N,) tensor representing the plane
     """
-    x, y = torch.meshgrid(linspace(-1 / 2, 1 / 2, tile[0] + 1, device=device),
-                          linspace(-1 / 2, 1 / 2, tile[1] + 1, device=device))
+    x, y = torch.meshgrid(linspace(-1 / 2, 1 / 2, tile[0] + 1, device=device).squeeze(),
+                          linspace(-1 / 2, 1 / 2, tile[1] + 1, device=device).squeeze())
     return torch.cat((x.unsqueeze(0), y.unsqueeze(0), torch.zeros_like(x).unsqueeze(0)), dim=0)
 
 

@@ -58,7 +58,7 @@ class LossList(Loss):
         super().__init__(name=name, **kwargs)
         self.compact = compact
         self.reset()
-        self.insert(losses)
+        self.insert(*losses)
 
     def eval(self, input, *output):
         """
@@ -83,7 +83,10 @@ class LossList(Loss):
         """
 
         assert not self.empty(), "LossList cannot be evaluated while empty."
-        self.value = reduce((lambda a, b: a.eval(input, *output)+b.eval(input, *output)), self.loss)
+        #self.value = reduce((lambda a, b: a.eval(input, *output) + b.eval(input, *output)), self.loss)
+        self.value = torch.zeros(1, dtype=torch.float, device=self.device)
+        for loss in self.loss:
+            self.value += loss.eval(input, *output)
         return self.value
 
     def size(self):
@@ -186,3 +189,9 @@ class LossList(Loss):
     def __len__(self):
         """Returns the number of losses contained in the global loss function"""
         return len(self.loss)
+    
+    def __repr__(self):
+        text = '['
+        for l in self.loss:
+            text += l.__repr__()
+        return text+']'

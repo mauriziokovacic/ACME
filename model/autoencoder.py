@@ -48,13 +48,13 @@ class AutoEncoder(Model):
 
         Returns
         -------
-        Tensor
-            the autoencoder output
+        (Tensor, Tensor)
+            the decoder and encoder output
         """
 
         y     = self.encoder(x)
         x_hat = self.decoder(y)
-        return x_hat
+        return x_hat, y
 
 
 class VariationalSampler(torch.nn.Module):
@@ -75,8 +75,8 @@ class VariationalSampler(torch.nn.Module):
     """
 
     def __init__(self,
-                 mean_model=(lambda y: y[:, :y.size(1)]),
-                 sdev_model=(lambda y: y[:, y.size(1):])):
+                 mean_model=(lambda y: y[:, :y.size(1)//2]),
+                 sdev_model=(lambda y: y[:, y.size(1)//2:])):
         """
         Parameters
         ----------
@@ -166,7 +166,7 @@ class VariationalAutoEncoder(AutoEncoder):
         return x_hat, mu, sigma
 
 
-def reconstruction_loss(x, x_hat):
+def reconstruction_loss(x, x_hat, *args, **kwargs):
     """
     Returns the binary cross entropy loss
 
@@ -183,6 +183,7 @@ def reconstruction_loss(x, x_hat):
         the (1,) loss tensor
     """
 
+    return torch.nn.BCELoss()(x_hat, x)
     return torch.mean(torch.sum(x * torch.log(x_hat) + (1-x) * torch.log(1-x_hat), 1))
 
 
