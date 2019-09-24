@@ -14,6 +14,10 @@ class Model(torch.nn.Module):
 
     Methods
     -------
+    freeze()
+        freezes all the parameters in the model
+    unfreeze()
+        unfreezes all the parameters in the model
     save_model(path)
         stores the model state in the given path
     load_model(path)
@@ -30,6 +34,34 @@ class Model(torch.nn.Module):
 
         super(Model, self).__init__()
         self.name = name
+        
+    def freeze(self):
+        """
+        Freezes all the parameters in the model
+        
+        Returns
+        -------
+        Model
+            the model itself
+        """
+        
+        for param in self.parameters():
+            param.requires_grad = False
+        return self
+            
+    def unfreeze(self):
+        """
+        Unfreezes all the parameters in the model
+        
+        Returns
+        -------
+        Model
+            the model itself
+        """
+        
+        for param in self.parameters():
+            param.requires_grad = True
+        return self
 
     def save_model(self, path=None):
         """
