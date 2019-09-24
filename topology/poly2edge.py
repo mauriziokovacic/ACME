@@ -70,7 +70,7 @@ def quad2edge(T):
 
 
 def edge2undirect(E):
-    return poly2edge(poly2unique(E))[0]
+    return poly2edge(poly2unique(E)[0])[0]
 
 
 def poly2undirect(T):
