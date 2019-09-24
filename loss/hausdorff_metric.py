@@ -20,5 +20,5 @@ def hausdorff_metric(A, B):
         a (1,) metric tensor
     """
 
-    return torch.sum(knn(A, B, 1, distFcn=sqdistance)[1]) + \
-           torch.sum(knn(B, A, 1, distFcn=sqdistance)[1])
+    return torch.sum(knn(A, B, 1, distFcn=sqdistance)[1].squeeze()) + \
+           torch.sum(knn(B, A, 1, distFcn=sqdistance)[1].squeeze())
