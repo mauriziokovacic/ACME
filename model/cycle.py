@@ -39,7 +39,7 @@ class Cycle(Model):
         self.add_module('f', self.f)
         self.add_module('g', self.g)
 
-    def forward(self, x, s):
+    def forward(self, x, s, detach=False):
         """
         Returns the cycle model outputs
 
@@ -49,6 +49,8 @@ class Cycle(Model):
             the input data
         s : object
             the signature data
+        detach : bool (optional)
+            if True detaches the input for the inverse network (default is False)
 
         Returns
         -------
@@ -56,11 +58,11 @@ class Cycle(Model):
             the decoder and the inverse decoder outputs
         """
         y     = self.f(x, s)
-        x_inv = self.g(y, s)
+        x_inv = self.g(y if not detach else y.detach(), s)
         return y, x_inv
 
 
-def loss_cycle(x_hat, x_inv):
+def cycle_consistency_loss(x_hat, x_inv):
     """
     Returns the loss for the Cycle model
 
