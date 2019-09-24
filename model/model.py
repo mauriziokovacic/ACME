@@ -42,12 +42,11 @@ class Model(torch.nn.Module):
         """
 
         if path is None:
-            path = os.getcwd()
-            path = path + '/' + self.name + '.pth'
+            path = os.getcwd() + '/' + self.name + '.pth'
         torch.save(self, path)
         return self
 
-    def load_model(self, path=None):
+    def load_model(self, path=None, device='cuda:0'):
         """
         Loads a model from the given path
 
@@ -58,11 +57,10 @@ class Model(torch.nn.Module):
         """
 
         if path is None:
-            path = os.getcwd()
-            path = path + '/' + self.name + '.pth'
+            path = os.getcwd() + '/' + self.name + '.pth'
         if not os.path.isfile(path):
             warnings.warn('File ' + path + ' does not exists.')
             return
-        self.load_state_dict(torch.load(path, map_location=self.device))
+        self = torch.load(path, map_location=device)
         self.eval()
         return self
