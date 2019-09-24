@@ -206,14 +206,13 @@ class Trainer(object):
             return
         if path is None:
             path = os.getcwd()
-        path = path + '/' + self.name + '.tar'
         torch.save({
                     'model_state_dict': self.model.state_dict(),
                     'optimizer_state_dict': self.optimizer.state_dict(),
                     'scheduler_state_dict': self.scheduler.state_dict() if self.scheduler is not None else '',
                     'loss': self.loss.value.item(),
                     'epoch': self.epoch,
-                    }, path)
+                    }, path + '/' + self.name + '.tar')
 
     def load_checkpoint(self, path=None):
         """
@@ -229,8 +228,7 @@ class Trainer(object):
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
-            path = os.getcwd()
-            path = path + '/' + self.name + '.tar'
+            path = os.getcwd() + '/' + self.name + '.tar'
         if not os.path.isfile(path):
             print('File ' + path + ' does not exists.')
             return
@@ -258,8 +256,8 @@ class Trainer(object):
             return
         if path is None:
             path = os.getcwd()
-            path = path + '/' + self.name + '.pth'
-        torch.save(self.model, path)
+        self.model.eval()
+        torch.save(self.model, path + '/' + self.name + '.pth')
 
     def load_model(self, path=None):
         """
@@ -275,12 +273,11 @@ class Trainer(object):
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
-            path = os.getcwd()
-            path = path + '/' + self.name + '.pth'
+            path = os.getcwd() + '/' + self.name + '.pth'
         if not os.path.isfile(path):
             print('File ' + path + ' does not exists.')
             return
-        self.model.load_state_dict(torch.load(path,map_location=self.device))
+        self.model = torch.load(path, map_location=self.device)
         self.model.to(device=self.device)
         self.model.eval()
 
