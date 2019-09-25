@@ -1,7 +1,6 @@
 import torch
 from ..utility.col  import *
 from ..utility.find import *
-from .ind2poly      import *
 from .poly2edge     import *
 
 
