@@ -22,6 +22,7 @@ from .hexahedron              import *
 from .icosahedron             import *
 from .klein_figure8           import *
 from .laplacian               import *
+from .meandering_triangle     import *
 from .mesh                    import *
 from .mesh2data               import *
 from .mesh2soup               import *
