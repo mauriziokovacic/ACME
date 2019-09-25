@@ -32,4 +32,4 @@ def circshift(tensor, k, dim=None):
         return numpy.roll(tensor, k, axis=dim)
     if istorch(tensor):
         return torch.roll(tensor, k, dims=dim)
-    assert False, 'Unknown data type'
+    raise RuntimeError('Unknown data type')
