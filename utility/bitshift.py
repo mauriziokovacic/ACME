@@ -16,9 +16,9 @@ def bitshift(obj, k):
     Parameters
     ----------
     obj : scalar or list or tuple or Tensor
-        the input object to perform the bitshift on
+        A number or a Numpy or PyTorch tensor
     k : int
-        the number of shift to perform. Positive values perform a left shift, negative values a right shift
+        the number of shifts to perform. Positive values perform a left shift, negative values a right shift
 
     Returns
     -------
