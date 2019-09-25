@@ -2,6 +2,7 @@ from .accumarray     import *
 from .assertion      import *
 from .bi2de          import *
 from .bi2hex         import *
+from .bitshift       import *
 from .circrepeat     import *
 from .circshift      import *
 from .clamp          import *
