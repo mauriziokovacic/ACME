@@ -6,4 +6,5 @@ from .local2model      import *
 from .model2local      import *
 from .normw            import *
 from .relative2current import *
+from .skin             import *
 from .weight_valence   import *
