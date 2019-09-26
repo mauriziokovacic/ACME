@@ -29,7 +29,7 @@ def clamp(a, inf=0, sup=1):
     return min(max(inf, a), sup)
 
 
-def clampmax(a,sup=1):
+def clamp_max(a, sup=1):
     """
     Returns the clamped value of the input in range [-\infty,sup]
 
@@ -46,10 +46,10 @@ def clampmax(a,sup=1):
         the clamped input
     """
 
-    return clamp(a,inf=-math.inf,sup=sup)
+    return clamp(a, inf=-math.inf, sup=sup)
 
 
-def clampmin(a, inf=0):
+def clamp_min(a, inf=0):
     """
     Returns the clamped value of the input in range [inf,\infty]
 
