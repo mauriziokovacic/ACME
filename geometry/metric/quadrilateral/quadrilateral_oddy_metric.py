@@ -11,3 +11,6 @@ class QuadrilateralOddyMetric(QuadrilateralMetric):
             full_range=Range(min=0, max=Inf),
             q_for_unit=0,
         )
+
+    def eval(self, P, T):
+        raise NotImplementedError

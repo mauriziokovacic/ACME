@@ -11,3 +11,6 @@ class QuadrilateralMinimumAngleMetric(QuadrilateralMetric):
             full_range=Range(min=0.0, max=360.0),
             q_for_unit=90.0,
         )
+
+    def eval(self, P, T):
+        raise NotImplementedError

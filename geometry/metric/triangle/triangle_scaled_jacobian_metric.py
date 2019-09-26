@@ -19,7 +19,11 @@ class TriangleScaledJacobianMetric(TriangleMetric):
         Lmax = torch.max(Lmax,
                          norm(L1, dim=1) * norm(L2, dim=1), keepdim=True)[0]
         n = self.normal(P, T)
-        J = torch.det()
+        ######## How the fudge should I do this?
+        J = torch.cat((L2.unsqueeze(2), -L1.unsqueeze(2)), dim=2)
+        J = torch.matmul(J.permute(0, 2, 1), J)
+        J = torch.det(J).unsqueeze(1)
+        ########
         if dot(n, cross(L2, L1, dim=1), dim=1):
             J = -J
         return (2*SQRT3)/3 * (J / Lmax)

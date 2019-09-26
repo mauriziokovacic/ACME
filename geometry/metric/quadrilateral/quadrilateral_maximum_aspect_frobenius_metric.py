@@ -1,6 +1,7 @@
 from .quadrilateral_metric                       import *
 from ..triangle.triangle_aspect_frobenius_metric import *
 
+
 class QuadrilateralMaximumAspectFrobeniusMetric(QuadrilateralMetric):
     def __init__(self):
         super(QuadrilateralMaximumAspectFrobeniusMetric, self).__init__(

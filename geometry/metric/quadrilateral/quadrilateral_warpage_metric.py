@@ -13,7 +13,7 @@ class QuadrilateralWarpageMetric(QuadrilateralMetric):
         )
 
     def eval(self, P, T):
-        n0, n1, n2, n3 = self.corner_normalized_normals(P, T)
+        n0, n1, n2, n3 = self.normalized_corner_normals(P, T)
         return 1 - torch.min(torch.pow(dot(n0, n2, dim=1), 3),
                              torch.pow(dot(n1, n3, dim=1), 3), keepdim=True)
 

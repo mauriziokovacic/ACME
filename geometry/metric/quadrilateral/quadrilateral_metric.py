@@ -92,4 +92,3 @@ class QuadrilateralMetric(Metric):
 
     def is_degenerate(self, P, T):
         return torch.any(torch.cat(self.areas(P, T), dim=1) < 0, dim=1)
-        

@@ -14,6 +14,4 @@ class QuadrilateralDistortionMetric(Metric):
         )
 
     def eval(self, P, T):
-        A = QuadrilateralAreaMetric().eval(P, T)
-
-        return (4 * torch.det(J)) / A
+        raise NotImplementedError

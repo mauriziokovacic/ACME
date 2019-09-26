@@ -18,4 +18,4 @@ class QuadrilateralRadiusRatioMetric(QuadrilateralMetric):
         hmax = torch.max(torch.max(L, dim=1, keepdim=True)[0], self.max_diagonal_length(P, T), keepdim=True)
         L2   = torch.sum(torch.pow(L, 2), dim=1, keepdim=True)
         A    = torch.abs(a / 2)
-        return (L2*hmax)/torch.min(A, dim=1, keepdim=True)[0]
+        return (L2*hmax) / torch.min(A, dim=1, keepdim=True)[0]

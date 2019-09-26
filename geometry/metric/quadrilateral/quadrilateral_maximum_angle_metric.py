@@ -12,3 +12,6 @@ class QuadrilateralMaximumAngleMetric(QuadrilateralMetric):
             q_for_unit=90.0,
         )
 
+    def eval(self, P, T):
+        raise NotImplementedError
+
