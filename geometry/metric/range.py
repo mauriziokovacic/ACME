@@ -3,8 +3,8 @@ from ...math.constant import *
 
 class Range(object):
     def __init__(self, min=-Inf, max=Inf):
-        self.min = min
-        self.max = max
+        self.min = float(min)
+        self.max = float(max)
 
     def eval(self, value):
         return (value >= self.min) * (value <= self.max)
