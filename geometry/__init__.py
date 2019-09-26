@@ -26,6 +26,7 @@ from .meandering_triangle     import *
 from .mesh                    import *
 from .mesh2data               import *
 from .mesh2soup               import *
+from .metric                  import *
 from .mobius_strip            import *
 from .normalize_scale         import *
 from .octahedron              import *
