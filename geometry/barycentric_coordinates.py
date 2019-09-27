@@ -17,7 +17,7 @@ def barycentric_coordinates(Pi, Pj, Pk, Q):
     Pk : Tensor
         the third point of the triangle
     Q : Tensor
-        the point to compute the barycentric coordinates
+        the point to compute the barycentric coordinates for
 
     Returns
     -------
