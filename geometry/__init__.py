@@ -30,6 +30,12 @@ from .octahedron              import *
 from .pca                     import *
 from .plane                   import *
 from .point_plane_distance    import *
+from .poly_corner_angles      import *
+from .poly_corner_cosines     import *
+from .poly_corner_cotangents  import *
+from .poly_corner_normals     import *
+from .poly_edges              import *
+from .poly_points             import *
 from .project_point_on_plane  import *
 from .quad                    import *
 from .shape_scale             import *
