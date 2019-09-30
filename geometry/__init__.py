@@ -6,7 +6,6 @@ from .bounding_box            import *
 from .cube                    import *
 from .curvature               import *
 from .cylinder                import *
-from .data2mesh               import *
 from .differential_operators  import *
 from .disk                    import *
 from .divergence              import *
@@ -23,8 +22,6 @@ from .icosahedron             import *
 from .klein_figure8           import *
 from .laplacian               import *
 from .meandering_triangle     import *
-from .mesh                    import *
-from .mesh2data               import *
 from .mesh2soup               import *
 from .metric                  import *
 from .mobius_strip            import *
@@ -53,3 +50,11 @@ from .triangle_ratio          import *
 from .unsubdivide             import *
 from .vertex_normal           import *
 from .vertex2face             import *
+
+# Import with dependencies
+try:
+    from .mesh      import *
+    from .mesh2data import *
+    from .data2mesh import *
+except ImportError:
+    print('torch_geometric failed to be imported.\nAll dependent imports are ignored.')
