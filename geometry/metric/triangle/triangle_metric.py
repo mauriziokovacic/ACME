@@ -11,7 +11,7 @@ class TriangleMetric(Metric):
         super(TriangleMetric, self).__init__(*args, **kwargs)
 
     def points(self, P, T):
-        return P[T]
+        return tuple(P[T])
 
     def edges(self, P, T):
         P0, P1, P2 = self.points(P, T)
