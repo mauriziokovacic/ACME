@@ -84,7 +84,7 @@ def import_OBJ(filename, device='cuda:0', verbose=False):
         content = fileID.read()
         # tokenize
         content = content.split('\n')
-        # delete empty liens
+        # delete empty lines
         content = list(x for x in content if len(x) != 0)
         # delete comments
         content = list(x for x in content if x[0] != '#')

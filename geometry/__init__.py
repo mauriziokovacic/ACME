@@ -6,7 +6,6 @@ from .bounding_box            import *
 from .cube                    import *
 from .curvature               import *
 from .cylinder                import *
-from .data2mesh               import *
 from .differential_operators  import *
 from .disk                    import *
 from .divergence              import *
@@ -22,15 +21,21 @@ from .hexahedron              import *
 from .icosahedron             import *
 from .klein_figure8           import *
 from .laplacian               import *
-from .mesh                    import *
-from .mesh2data               import *
+from .meandering_triangle     import *
 from .mesh2soup               import *
+from .metric                  import *
 from .mobius_strip            import *
 from .normalize_scale         import *
 from .octahedron              import *
 from .pca                     import *
 from .plane                   import *
 from .point_plane_distance    import *
+from .poly_corner_angles      import *
+from .poly_corner_cosines     import *
+from .poly_corner_cotangents  import *
+from .poly_corner_normals     import *
+from .poly_edges              import *
+from .poly_points             import *
 from .project_point_on_plane  import *
 from .quad                    import *
 from .shape_scale             import *
@@ -51,3 +56,11 @@ from .triangle_ratio          import *
 from .unsubdivide             import *
 from .vertex_normal           import *
 from .vertex2face             import *
+
+# Import with dependencies
+try:
+    from .mesh      import *
+    from .mesh2data import *
+    from .data2mesh import *
+except ImportError:
+    print('torch_geometric failed to be imported.\nAll dependent imports are ignored.')

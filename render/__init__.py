@@ -4,4 +4,7 @@ from .mesh2img    import *
 from .mesh2mvs    import *
 from .mvs2texture import *
 from .nr2img      import *
-from .renderer    import *
+try:
+    from .renderer import *
+except ImportError:
+    print('neural_renderer failed to be imported.\nAll dependent imports are ignored.')

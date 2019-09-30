@@ -19,6 +19,7 @@ from .cross              import *
 from .deg2rad            import *
 from .diag               import *
 from .dot                import *
+from .eul2rotm           import *
 from .eye                import *
 from .fibonacci          import *
 from .floor              import *
@@ -31,6 +32,7 @@ from .normvec            import *
 from .pol2cart           import *
 from .prepare_broadcast  import *
 from .rad2deg            import *
+from .randrotm           import *
 from .ratio              import *
 from .rescale            import *
 from .rot_x              import *

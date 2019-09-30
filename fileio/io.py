@@ -127,7 +127,7 @@ def import_from_text_file(filename, defaultExt, readDataFcn, verbose=False):
 
 def import_from_binary_file(filename, defaultExt, readDataFcn, verbose=False):
     """
-    Opens a given text file and reads data using the specified function
+    Opens a given binary file and reads data using the specified function
 
     Parameters
     ----------

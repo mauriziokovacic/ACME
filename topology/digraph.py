@@ -53,8 +53,7 @@ class Digraph(object):
     def __init__(self):
         self.__adj__ = None
 
-
-    def from_edges(self, E, W=None, size=None):
+    def from_edges(self, E, W=None, num_nodes=None):
         """
         Creates the graph from the given edge tensor
 
@@ -64,7 +63,7 @@ class Digraph(object):
             the (2,N,) edge tensor
         W : Tensor (optional)
             the edge weights tensor. If None, all edges have weight 1 (default is 1)
-        size : int (optional)
+        num_nodes : int (optional)
             the number of graph nodes. If None it will be automatically computed (default is None)
 
         Returns
@@ -75,7 +74,7 @@ class Digraph(object):
 
         if W is None:
             W = torch.ones(col(E), dtype=torch.float, device=E.device)
-        return self.from_adj(adjacency(E, W, size=size))
+        return self.from_adj(adjacency(E, W, size=num_nodes))
 
     def from_adj(self, A):
         """
@@ -153,7 +152,7 @@ class Digraph(object):
 
         return find(torch.sum(self.__adj__, 1) == 0)
 
-    def isroot(self, i):
+    def is_root(self, i):
         """
         Returns True if node i is a root, False otherwise
 
@@ -170,7 +169,7 @@ class Digraph(object):
 
         return torch.sum(self.__adj__[:, i], 0) == 0
 
-    def isleaf(self, i):
+    def is_leaf(self, i):
         """
         Returns True if node i is a leaf, False otherwise
 
@@ -187,7 +186,7 @@ class Digraph(object):
 
         return torch.sum(self.__adj__[i, :], 1) == 0
 
-    def isbranch(self, i):
+    def is_branch(self, i):
         """
         Returns True if node i is a branch node, False otherwise
 
@@ -207,7 +206,7 @@ class Digraph(object):
 
         return torch.sum(self.__adj__[i, :], 1) > 1 or torch.sum(self.__adj__[:, i], 0) > 1
 
-    def isjoint(self, i):
+    def is_joint(self, i):
         """
         Returns True if node i is a joint node, False otherwise
 
@@ -226,7 +225,7 @@ class Digraph(object):
 
         return torch.sum(self.__adj__[i, :], 1) == 1 * torch.sum(self.__adj__[:, i], 0) == 1
 
-    def isempty(self):
+    def is_empty(self):
         """
         Returns True if the graph has no nodes, False otherwise
 
@@ -320,7 +319,7 @@ class Digraph(object):
             self.__adj__[i, j] = w
         return self
 
-    def to(self,*args,**kwargs):
+    def to(self, *args, **kwargs):
         """
         Calls the to method of all the contained tensors in the graph
 

@@ -45,33 +45,33 @@ class Mesh(object):
 
     Methods
     -------
-    nVertex()
+    num_vertices()
         Returns the number of vertices in the mesh
-    nEdge()
+    num_edges()
         Returns the number of edges in the mesh
-    nFace()
+    num_faces()
         Returns the number of faces in the mesh
-    nHedra()
+    num_hedras()
         Returns the number of volumes in the mesh
-    isempty()
+    is_empty()
         Returns wheter or not the mesh is empty
     recompute_normals()
         Recomputes the vertex normals
-    isSurfaceMesh()
+    is_surface_mesh()
         Returns True if the mesh has a surface
-    isTriMesh()
+    is_tri_mesh()
         Returns True if the mesh is a triangle mesh
-    isQuadMesh()
+    is_quad_mesh()
         Returns True if the mesh is a quad mesh
-    isPolygonMesh()
+    is_polygon_mesh()
         Returns True if the mesh is a generic polygonal mesh
-    isVolumetric()
+    is_volumetric_mesh()
         Returns True if the mesh has volumes
-    isTetMesh()
+    is_tet_mesh()
         Returns True if the mesh is a tetrahedral mesh
-    isHexMesh()
+    is_hex_mesh()
         Returns True if the mesh is an hexaedral mesh
-    isPolyhedralMesh()
+    is_polyhedral_mesh()
         Returns True if the mesh is a generic polyhedral mesh
     genus()
         Returns the genus of the mesh
@@ -113,16 +113,16 @@ class Mesh(object):
 
         self.Vertex = Vertex
         self.Normal = Normal
-        self.UV = UV
-        self.Edge = Edge
-        self.Face = Face
-        self.Hedra = Hedra
-        self.name = name
+        self.UV     = UV
+        self.Edge   = Edge
+        self.Face   = Face
+        self.Hedra  = Hedra
+        self.name   = name
         if isempty(self.Edge):
             self.__compute_edge()
         self.update_ext()
 
-    def nVertex(self):
+    def num_vertices(self):
         """
         Returns the number of vertices in the mesh
 
@@ -134,7 +134,7 @@ class Mesh(object):
 
         return row(self.Vertex)
 
-    def nEdge(self):
+    def num_edges(self):
         """
         Returns the number of edges in the mesh
 
@@ -146,7 +146,7 @@ class Mesh(object):
 
         return col(self.Edge)
 
-    def nFace(self):
+    def num_faces(self):
         """
         Returns the number of faces in the mesh
 
@@ -158,7 +158,7 @@ class Mesh(object):
 
         return col(self.Face)
 
-    def nHedra(self):
+    def num_hedras(self):
         """
         Returns the number of volumes in the mesh
 
@@ -170,7 +170,7 @@ class Mesh(object):
 
         return col(self.Hedra)
 
-    def isempty(self):
+    def is_empty(self):
         """
         Returns wheter or not the mesh is empty
 
@@ -187,7 +187,7 @@ class Mesh(object):
 
         self.Normal = vertex_normal(self.Vertex, self.Face)
 
-    def isSurfaceMesh(self):
+    def is_surface_mesh(self):
         """
         Returns whether the mesh has a surface or not
 
@@ -199,7 +199,7 @@ class Mesh(object):
 
         return not isempty(self.Face)
 
-    def isTriMesh(self):
+    def is_tri_mesh(self):
         """
         Returns whether the mesh is a triangle mesh or not
 
@@ -209,9 +209,9 @@ class Mesh(object):
             True if the mesh has triangle faces, False otherwise
         """
 
-        return self.isSurfaceMesh() and istri(self.Face)
+        return self.is_surface_mesh() and istri(self.Face)
 
-    def isQuadMesh(self):
+    def is_quad_mesh(self):
         """
         Returns whether the mesh is a quad mesh or not
 
@@ -221,9 +221,9 @@ class Mesh(object):
             True if the mesh has quad faces, False otherwise
         """
 
-        return self.isSurfaceMesh() and isquad(self.Face)
+        return self.is_surface_mesh() and isquad(self.Face)
 
-    def isPolygonMesh(self):
+    def is_polygon_mesh(self):
         """
         Returns whether the mesh is a polygonal mesh or not
 
@@ -233,9 +233,9 @@ class Mesh(object):
             True if the mesh has polygonal faces, False otherwise
         """
 
-        return self.isSurfaceMesh() and ispoly(self.Face)
+        return self.is_surface_mesh() and ispoly(self.Face)
 
-    def isVolumetricMesh(self):
+    def is_volumetric_mesh(self):
         """
         Returns whether the mesh has volumes or not
 
@@ -247,7 +247,7 @@ class Mesh(object):
 
         return not isempty(self.Hedra)
 
-    def isTetMesh(self):
+    def is_tet_mesh(self):
         """
         Returns whether the mesh is a tetrahedral mesh or not
 
@@ -257,9 +257,9 @@ class Mesh(object):
             True if the mesh has tetrahedral volumes, False otherwise
         """
 
-        return self.isVolumetricMesh() and isquad(self.Hedra)
+        return self.is_volumetric_mesh() and isquad(self.Hedra)
 
-    def isHexMesh(self):
+    def is_hex_mesh(self):
         """
         Returns whether the mesh is a haxaedral mesh or not
 
@@ -269,9 +269,9 @@ class Mesh(object):
             True if the mesh has hexaedral volumes, False otherwise
         """
 
-        return self.isVolumetricMesh() and ishex(self.Hedra)
+        return self.is_volumetric_mesh() and ishex(self.Hedra)
 
-    def isPolyhedralMesh(self):
+    def is_polyhedral_mesh(self):
         """
         Returns whether the mesh is a polyhedral mesh or not
 
@@ -281,7 +281,7 @@ class Mesh(object):
             True if the mesh has polyhedral volumes, False otherwise
         """
 
-        return self.isVolumetricMesh() and ispoly(self.Hedra)
+        return self.is_volumetric_mesh() and ispoly(self.Hedra)
 
     def genus(self):
         """
@@ -320,46 +320,43 @@ class Mesh(object):
 
         if isempty(self.Face):
             return
-        self.Edge = poly2edge(self.Face)[0]
-        self.Edge = torch.t(unique(torch.t(torch.sort(self.Edge, dim=0)[0]), ByRows=True)[0])
+        self.Edge = poly2unique(poly2edge(self.Face)[0])[0]
 
     def __compute_external_vertex(self):
         """Computes the external vertices flags"""
 
         self.ExternalVertex = FalseTensor(row(self.Vertex), device=self.Vertex.device)
-        if not self.isVolumetricMesh():
+        if not self.is_volumetric_mesh():
             self.ExternalVertex = TrueTensor(row(self.Vertex), device=self.Vertex.device)
             return
         J, I = poly2lin(self.Face)
-        self.ExternalVertex = accumarray(J, self.ExternalFace[I]) >= 1
-        self.ExternalVertex = self.ExternalVertex
+        self.ExternalVertex = (accumarray(J, self.ExternalFace[I]) >= 1).squeeze()
 
     def __compute_external_edge(self):
         """Computes the external edges flags"""
 
         self.ExternalEdge = FalseTensor(col(self.Edge), device=self.Vertex.device)
-        if not self.isVolumetricMesh():
+        if not self.is_volumetric_mesh():
             self.ExternalEdge = TrueTensor(col(self.Edge), device=self.Vertex.device)
             return
         self.ExternalEdge = self.ExternalVertex(self.Edge[0, :]) and self.ExternalVertex(self.Edge[1, :])
+        self.ExternalEdge = self.ExternalEdge.squeeze()
 
     def __compute_external_face(self):
         """Computes the external faces flags"""
 
         self.ExternalFace = FalseTensor(col(self.Face), device=self.Vertex.device)
-        if not self.isVolumetricMesh():
+        if not self.is_volumetric_mesh():
             self.ExternalFace = TrueTensor(col(self.Face), device=self.Vertex.device)
             return
         J = poly2lin(self.Hedra)[0]
-        self.ExternalFace = accumarray(J, 1) == 1
-        self.ExternalFace = self.ExternalFace
+        self.ExternalFace = (accumarray(J, 1) == 1).squeeze()
 
     def __compute_external_hedra(self):
         """Computes the external volumes flags"""
 
         self.ExternalHedra = FalseTensor(col(self.Hedra), device=self.Vertex.device)
-        if not self.isVolumetricMesh():
+        if not self.is_volumetric_mesh():
             return
         J, I = poly2ind(self.Hedra)
-        self.ExternalHedra = accumarray(I, self.ExternalFace[J]) >= 1
-        self.ExternalHedra = self.ExternalHedra
+        self.ExternalHedra = (accumarray(I, self.ExternalFace[J]) >= 1).suqeeze()

@@ -22,6 +22,5 @@ def equilateral_polygon(n, device='cuda:0'):
         the vertices of the n-gon
     """
 
-    t = linspace(0, PI2, n+1, device=device)
-    t = t[0:n].unsqueeze(1)
+    t = linspace(0, PI2, n+1, device=device)[:-1]
     return torch.cat((cos(t), sin(t), torch.zeros_like(t, device=device)), dim=1)

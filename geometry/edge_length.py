@@ -21,6 +21,6 @@ def edge_length(P, T, dim=1):
         the edge lenghts of the input topology
     """
 
-    E     = poly2edge(T)[0]
-    Pi,Pj = P[E]
+    E      = poly2edge(T)[0]
+    Pi, Pj = P[E]
     return distance(Pi, Pj, dim=dim)

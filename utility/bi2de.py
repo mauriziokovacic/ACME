@@ -7,6 +7,8 @@ from .isstring import *
 from .istensor import *
 from .isnumpy  import *
 from .istorch  import *
+from .sum      import *
+
 
 def bi2de(obj, dim=-1):
     """
@@ -36,9 +38,11 @@ def bi2de(obj, dim=-1):
         s      = [1, ]*ndim(obj)
         s[dim] = size(obj)[dim]
         if isnumpy(obj):
-            i      = numpy.array([2**i for i in range(size(obj)[dim]-1, -1, -1)])
+            i = numpy.array([2**i for i in range(size(obj)[dim])])
+            i = reshape(i, s)
+            return sum(obj * i, dim, keepdim=True)
         if istorch(obj):
-            i      = torch.tensor([2**i for i in range(size(obj)[dim]-1, -1, -1)], dtype=torch.uint8, device=obj.device)
-        i = reshape(i,s)
-        return sum(obj*i, dim, keepdim=True)
+            i = torch.tensor([2**i for i in range(size(obj)[dim])], dtype=torch.long, device=obj.device)
+            i = reshape(i, s)
+            return sum(obj.clone().to(dtype=torch.long)*i, dim, keepdim=True)
     assert False, 'Unknown data type'

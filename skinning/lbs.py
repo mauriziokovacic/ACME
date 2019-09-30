@@ -49,7 +49,7 @@ def transform(T, X, mode='point'):
         if strcmpi(mode, 'normal'):
             w = 0
     return torch.matmul(T,
-                        cart2affine(P, w=w).view(-1, X.size(1)+1, 1)
+                        cart2affine(X, w=w).view(-1, X.size(1)+1, 1)
                         )[:, :-1].view(*X.size())
 
 

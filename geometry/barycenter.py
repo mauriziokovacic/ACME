@@ -24,5 +24,4 @@ def barycenter(P, T=None, dim=0):
 
     if T is None:
         return torch.mean(P, dim, keepdim=True)
-    p = tuple(P[T])
-    return torch.div(reduce((lambda a, b: a + b), p), len(p))
+    return torch.mean(P[T].permute(1, 0, 2), dim=1)

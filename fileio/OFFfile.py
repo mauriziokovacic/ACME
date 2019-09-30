@@ -92,7 +92,7 @@ def import_OFF(filename, device='cuda:0', verbose=False):
         # delete comments
         content = list(x for x in content if x[0] != '#')
         # check header
-        if content[0] != 'OFF':
+        if not strcmpi(content[0], 'OFF'):
             warnings.warn('File {} is not a valid OFF.'.format(fileID.name()), RuntimeWarning)
             return
         # read data size

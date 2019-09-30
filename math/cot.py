@@ -21,4 +21,4 @@ def cot(A, B, dim=1):
         the tensor containing the cotangent values
     """
 
-    return dot(A, B, dim=dim)/norm(cross(A, B, dim=dim))
+    return dot(A, B, dim=dim)/norm(cross(A, B, dim=dim), dim=dim)
