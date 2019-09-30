@@ -166,6 +166,22 @@ def rgb_channel(I):
 
     return image_channel(I, (0, 1, 2))
 
+def all_channels(I):
+    """
+    Extracts the 5 channels from the input Neural Renderer image
+
+    Parameters
+    ----------
+    I : Tensor
+        the Neural Renderer image
+
+    Returns
+    -------
+    Tensor
+        the 5 channels
+    """
+    return image_channel(I, (0, 1, 2, 3, 4))
+
 
 def depth_channel(I):
     """
@@ -200,7 +216,7 @@ def rgbd_channel(I):
         the RGBD channels
     """
 
-    return image_channel(I, (0, 1, 2, 3, 4))
+    return image_channel(I, (0, 1, 2, 3))
 
 
 def alpha_channel(I):
