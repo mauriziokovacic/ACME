@@ -1,4 +1,4 @@
-from .range import *
+from .metric_range import *
 
 
 class Metric(object):
