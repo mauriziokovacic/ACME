@@ -1,7 +1,7 @@
 import torch
 
 
-class Batch_Flatten(torch.nn.Module):
+class BatchFlatten(torch.nn.Module):
     """
     A layer performing the flattening of the input batch
 
@@ -12,7 +12,7 @@ class Batch_Flatten(torch.nn.Module):
     """
 
     def __init__(self):
-        super(Batch_Flatten, self).__init__()
+        super(BatchFlatten, self).__init__()
 
     def forward(self, input):
         """
@@ -32,7 +32,7 @@ class Batch_Flatten(torch.nn.Module):
         return input.flatten()
 
 
-class Batch_Sum(torch.nn.Module):
+class BatchSum(torch.nn.Module):
     """
     A layer performing the sum of the input batch tensors
 
@@ -43,7 +43,7 @@ class Batch_Sum(torch.nn.Module):
     """
 
     def __init__(self):
-        super(Batch_Sum, self).__init__()
+        super(BatchSum, self).__init__()
 
     def forward(self, input):
         """
@@ -63,7 +63,7 @@ class Batch_Sum(torch.nn.Module):
         return torch.sum(input, 0)
 
 
-class Batch_Mean(torch.nn.Module):
+class BatchMean(torch.nn.Module):
     """
     A layer performing the mean of the input batch tensors
 
@@ -74,7 +74,7 @@ class Batch_Mean(torch.nn.Module):
     """
 
     def __init__(self):
-        super(Batch_Mean, self).__init__()
+        super(BatchMean, self).__init__()
 
     def forward(self, input):
         """
@@ -94,7 +94,7 @@ class Batch_Mean(torch.nn.Module):
         return torch.mean(input, 0)
 
 
-class Batch_Reshape(torch.nn.Module):
+class BatchReshape(torch.nn.Module):
     """
     A layer performing the reshape of the input batch
 
@@ -117,7 +117,7 @@ class Batch_Reshape(torch.nn.Module):
             the new shape of the tensor
         """
 
-        super(Batch_Reshape, self).__init__()
+        super(BatchReshape, self).__init__()
         self.dim = dim
 
     def forward(self, input):
@@ -138,7 +138,7 @@ class Batch_Reshape(torch.nn.Module):
         return torch.reshape(input, self.dim)
 
 
-class Batch_Permute(torch.nn.Module):
+class BatchPermute(torch.nn.Module):
     """
     A layer performing the permutation of the input batch
 
@@ -161,7 +161,7 @@ class Batch_Permute(torch.nn.Module):
             the new dimension order of the tensor
         """
 
-        super(Permute_Channel, self).__init__()
+        super(BatchPermute, self).__init__()
         self.dim = dim
 
     def forward(self, input):
