@@ -6,6 +6,7 @@ from .layer          import *
 from .linear_problem import *
 from .loss           import *
 from .math           import *
+from .model          import *
 from .render         import *
 from .skinning       import *
 from .topology       import *
