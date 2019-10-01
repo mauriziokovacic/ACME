@@ -1,5 +1,5 @@
-from ..math.unrooted_norm import *
-from ..topology.poly2edge import *
+from ..math.unrooted_norm  import *
+from ..geometry.poly_edges import *
 
 
 def edge_metric(P, T):
@@ -19,5 +19,4 @@ def edge_metric(P, T):
         the (1,) metric tensor
     """
 
-    Pi, Pj = P[poly2edge(T)[0]]
-    return torch.mean(sqdistance(Pi, Pj, dim=1))
+    return poly_edges_mean_length(P, T, distFcn=sqnorm)
