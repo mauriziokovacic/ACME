@@ -146,6 +146,16 @@ class DeferredHook(Hook):
 
     Attributes
     ----------
+     __handle : object
+        the hook handle
+    layerFcn : callable
+        a callable function to run over the hooked layer
+    inputFcn : callable
+        a callable function to run over the hooked layer input
+    outputFcn : callable
+        a callable function to run over the hooked layer output
+    name : str
+        a name for the hook
     input : object
         the input of the hooked layer (default is None)
     output : object
@@ -176,7 +186,7 @@ class DeferredHook(Hook):
         -------
         None
         """
-        
+
         super(DeferredHook, self).eval(layer, input, output)
         self.input  =  input
         self.output = output
