@@ -57,19 +57,18 @@ class Trainer(object):
                  device='cuda:0',
                  inputFcn=None,
                  outputFcn=None,
-                 trainstateFcn=None,
-                 teststateFcn=None):
-        self.model          = model
-        self.optimizer      = optimizer
-        self.scheduler      = scheduler
-        self.loss           = loss
-        self.device         = device
-        self.epoch          = 0
-        self.name           = name
-        self.inputFcn       = inputFcn
-        self.outputFcn      = outputFcn
-        self.trainstateFcn  = trainstateFcn
-        self.teststateFcn   = teststateFcn
+                 stateFcn=None,
+                 ):
+        self.model     = model
+        self.optimizer = optimizer
+        self.scheduler = scheduler
+        self.loss      = loss
+        self.device    = device
+        self.epoch     = 0
+        self.name      = name
+        self.inputFcn  = inputFcn
+        self.outputFcn = outputFcn
+        self.stateFcn  = stateFcn
         self.to(self.device)
 
 
@@ -144,8 +143,8 @@ class Trainer(object):
                         self.scheduler.step(loss)
                     else:
                         self.scheduler.step()
-                if self.trainstateFcn is not None:
-                    self.trainstateFcn(
+                if self.stateFcn is not None:
+                    self.stateFcn(
                         input=x,
                         output=y,
                         loss=self.loss.to_dict(),
@@ -172,7 +171,8 @@ class Trainer(object):
 
         Returns
         -------
-        None
+        list
+            a list containing a (input, output, loss) tuple for each dataset entry
         """
 
         if not self.is_ready():
@@ -187,6 +187,7 @@ class Trainer(object):
         if outputFcn is None:
             outputFcn = nop
 
+        out = []
         self.model.eval()
         if verbose:
             print('Starting test...')
@@ -196,21 +197,13 @@ class Trainer(object):
             t = time.time()
             x = inputFcn(input)
             y = outputFcn(self.model(x))
-            self.loss.eval(x, y)
-            if self.teststateFcn is not None:
-                self.teststateFcn(
-                    input=x,
-                    output=y,
-                    loss=self.loss.to_dict(),
-                    epoch=(0, 0, 1),
-                    iteration=(i, n),
-                    t=time.time() - t,
-                )
+            l = self.loss.eval(x, y)
+            out += [(x, y, l)]
             if verbose:
                 print('DONE')
         if verbose:
             print('TEST DONE')
-        return
+        return out
 
     def save_checkpoint(self, path=None):
         """
