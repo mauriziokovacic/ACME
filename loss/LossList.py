@@ -1,5 +1,4 @@
-import torch
-from functools import reduce
+import warnings
 from ..utility.islist import *
 from .Loss import *
 
@@ -12,6 +11,10 @@ class LossList(Loss):
     ----------
     alpha : float
         the weight of the loss (default is 1)
+    inputFcn : callable
+        a function to read correctly the input (default is nop)
+    outputFcn : callable
+        a function to read correctly the output (default is nop)
     name : str
         the loss name (default is 'List')
     enabled : bool
@@ -22,14 +25,12 @@ class LossList(Loss):
         a string indicating the device to use
     loss : list
         a list of the losses to be evaluated
-    compact : bool
-        if True returns a single entry dict, else lists every contained loss
 
     Methods
     -------
     size()
         returns the number of loss functions composing the loss
-    empty()
+    is_empty()
         returns whether or not there are loss functions to be evaluated
     insert(*losses)
         inserts the given list of losses to the evaluation
@@ -39,9 +40,11 @@ class LossList(Loss):
         Removes all contained loss functions and set the loss value to None
     to_dict()
         convert the loss into a dictionary {name:value}
+    to(device)
+        moves the loss (and its contained ones) to the given device
     """
 
-    def __init__(self, *losses, name='List', compact=True, **kwargs):
+    def __init__(self, *losses, name='List', **kwargs):
         """
         Parameters
         ----------
@@ -49,44 +52,39 @@ class LossList(Loss):
             a sequence of losses to be evaluated
         name : str (optional)
             the name of the loss (default is 'List')
-        compact : bool (optional)
-            if True returns a single entry dict, else lists every contained loss
         **kwargs : keyword arguments...
             any keyword argument from Loss class
         """
 
         super().__init__(name=name, **kwargs)
-        self.compact = compact
         self.reset()
         self.insert(*losses)
 
-    def eval(self, input, *output):
+    def eval(self, input, output):
         """
         Evaluate the loss for the given network input and output
 
         Parameters
         ----------
         input : Data
-            the given input to the net
+            the given input to the network
         output : Data
-            the produced output of the net
+            the produced output of the network
 
         Returns
         -------
         Tensor
             a single value Tensor representing the loss
-
-        Raises
-        ------
-        AssertionError
-            if object is empty
         """
 
-        assert not self.empty(), "LossList cannot be evaluated while empty."
-        #self.value = reduce((lambda a, b: a.eval(input, *output) + b.eval(input, *output)), self.loss)
         self.value = torch.zeros(1, dtype=torch.float, device=self.device)
-        for loss in self.loss:
-            self.value += loss.eval(input, *output)
+        if self.is_empty():
+            warnings.warn('LossList cannot be evaluated while empty. The returned tensor carries no gradient.',
+                          category=RuntimeWarning)
+        else:
+            for loss in self.loss:
+                self.value += loss.eval(input, output)
+            self.value = torch.mul(self.value, self.alpha if self.enabled else 0)
         return self.value
 
     def size(self):
@@ -101,7 +99,7 @@ class LossList(Loss):
 
         return len(self)
 
-    def empty(self):
+    def is_empty(self):
         """
         Returns whether or not there are losses to be evaluated
 
@@ -165,9 +163,14 @@ class LossList(Loss):
         self.loss  = []
         self.value = None
 
-    def to_dict(self):
+    def to_dict(self, compact=True):
         """
         Convert the loss into a dictionary
+
+        Parameters
+        ----------
+        compact : bool (optional)
+            if True returns a one-entry dictionary, otherwise an entry for each contained loss (default is True)
 
         Returns
         -------
@@ -176,11 +179,31 @@ class LossList(Loss):
         """
 
         d = Loss.to_dict(self)
-        if not self.compact:
-            if not self.empty():
+        if not compact:
+            if not self.is_empty():
                 for l in self.loss:
                     d.update(l.to_dict())
         return d
+
+    def to(self, device):
+        """
+        Moves the loss (and its contained ones) to the given device
+
+        Parameters
+        ----------
+        device : str or torch.device
+            the device to store the tensors to
+
+        Returns
+        -------
+        Loss
+            the loss itself
+        """
+
+        super(LossList, self).to(device)
+        for loss in self.loss:
+            loss.to(self.device)
+        return self
 
     def __getitem__(self, i):
         """Returns the loss function at the i-th index"""

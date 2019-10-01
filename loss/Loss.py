@@ -1,4 +1,5 @@
 import torch
+from ..utility.nop import *
 
 
 class Loss(object):
@@ -9,6 +10,10 @@ class Loss(object):
     ----------
     alpha : float
         the weight of the loss
+    inputFcn : callable
+        a function to read correctly the input (default is nop)
+    outputFcn : callable
+        a function to read correctly the output (default is nop)
     name : str
         the loss name
     enabled : bool
@@ -28,13 +33,15 @@ class Loss(object):
         Enable the loss evaluation. Equivalent to toggle(True).
     disable()
         Disable the loss evaluation. Equivalent to toggle(False).
-    isenabled()
+    is_enabled()
         Returns whether the loss evaluation is enabled or not.
     to_dict()
         Convert the loss into a dictionary entry {name : value}
+    to(device)
+        moves the loss to the given device
     """
 
-    def __init__(self, alpha=1, name='', enabled=True, device='cuda:0'):
+    def __init__(self, alpha=1, inputFcn=nop, outputFcn=nop, name='', enabled=True, device='cuda:0'):
         """
         Parameters
         ----------
@@ -48,22 +55,24 @@ class Loss(object):
             a string indicating the device to use (default is 'cuda:0')
         """
 
-        self.alpha   = alpha
-        self.name    = name
-        self.enabled = enabled
-        self.value   = None
-        self.device  = device
+        self.alpha     = alpha
+        self.inputFcn  = inputFcn
+        self.outputFcn = outputFcn
+        self.name      = name
+        self.enabled   = enabled
+        self.value     = None
+        self.device    = device
 
-    def eval(self, input, *output):
+    def eval(self, input, output):
         """
         Evaluate the loss for the given network input and output
 
         Parameters
         ----------
         input : Data
-            the given input to the net
+            the given input to the network
         output : Data
-            the produced output of the net
+            the produced output of the network
 
         Returns
         -------
@@ -71,10 +80,11 @@ class Loss(object):
             a single value Tensor representing the loss
         """
 
-        self.value = torch.mul(self.__eval__(input, *output), self.alpha if self.enabled else 0)
+        self.value = torch.mul(self.__eval__(self.inputFcn(input), self.outputFcn(output)),
+                               self.alpha if self.enabled else 0)
         return self.value
 
-    def __eval__(self, input, *output):
+    def __eval__(self, input, output):
         """
         Interface for computing the loss.
 
@@ -115,7 +125,7 @@ class Loss(object):
 
         self.toggle(False)
 
-    def isenabled(self):
+    def is_enabled(self):
         """
         Returns whether the loss evaluation is enabled or not.
 
@@ -127,7 +137,7 @@ class Loss(object):
 
         return self.enabled
 
-    def to_dict(self):
+    def to_dict(self, *args, **kwargs):
         """
         Convert the loss into a dictionary entry {name : value}
 
@@ -141,6 +151,26 @@ class Loss(object):
         if value is not None:
             value = value.item()
         return {self.name: value}
+
+    def to(self, device):
+        """
+        Moves the loss to the given device
+
+        Parameters
+        ----------
+        device : str or torch.device
+            the device to store the tensors to
+
+        Returns
+        -------
+        Loss
+            the loss itself
+        """
+
+        self.device = device
+        if self.value is not None:
+            self.value.to(device=self.device)
+        return self
 
     def __gt__(self, other):
         """Returns True if the current loss function evaluates more than the other, False otherwise."""
@@ -160,5 +190,5 @@ class Loss(object):
     def __repr__(self):
         return str(self.name) + " Loss"
 
-    def __call__(self, input, *output):
-        return self.eval(input, *output)
+    def __call__(self, input, output):
+        return self.eval(input, output)
