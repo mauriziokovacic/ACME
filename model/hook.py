@@ -1,65 +1,73 @@
-import warnings
-
-
 class Hook(object):
     """
     A class representing a hook for PyTorch modules
 
     Attributes
     ----------
-    inputFcn : callable (optional)
-        a callable function returning a bool if the layer input is ok (default is None)
-    outputFcn : callable (optional)
-        a callable function returning a bool if the layer output is ok (default is None)
-    name : str (optional)
+    __handle : object
+        the hook handle
+    layerFcn : callable
+        a callable function to run over the hooked layer
+    inputFcn : callable
+        a callable function to run over the hooked layer input
+    outputFcn : callable
+        a callable function to run over the hooked layer output
+    name : str
         a name for the hook
-    mode : str (optional)
-        either 'debug' or 'release' (default is 'debug'). In debug mode the hook will raise an error if checks on
-        either the input or the output of the layer fails. In release mode a warning will be issued instead.
-    value : object
-        the output of the bound layer
-
 
     Methods
     -------
-
+    is_bound()
+        returns True if the hood has been bound to a layer, False otherwise
+    bind(layer)
+        binds the hook to a given layer, unbinding it from the previous if needed
+    unbind()
+        unbinds the hook from the hooked layer
+    eval(layer, input, output)
+        evaluates layerFcn, inputFcn and outputFcn over the bound layer
     """
 
-    def __init__(self, layer=None, inputFcn=None, outputFcn=None, name='Hook', mode='debug'):
+    def __init__(self, layer=None, layerFcn=None, inputFcn=None, outputFcn=None, name='Hook'):
         """
         Parameters
         ----------
         layer : torch.nn.Module (optional)
             a layer to hook (default is None)
+        layerFcn : callable (optional)
+            a callable function to run over the hooked layer
         inputFcn : callable (optional)
-            a callable function returning a bool if the layer input is ok (default is None)
+            a callable function to run over the hooked layer input
         outputFcn : callable (optional)
-            a callable function returning a bool if the layer output is ok (default is None)
+            a callable function to run over the hooked layer output
         name : str (optional)
             a name for the hook
-        mode : str (optional)
-            either 'debug' or 'release' (default is 'debug'). In debug mode the hook will raise an error if checks on
-            either the input or the output of the layer fails. In release mode a warning will be issued instead.
-
         """
 
+        self.__handle  = None
+        self.bind(layer)
+        self.layerFcn  = layerFcn
         self.inputFcn  = inputFcn
         self.outputFcn = outputFcn
         self.name      = name
-        self.value     = None
-        self.__handle  = None
-        self.mode      = mode
-        self.bind(layer)
 
     def __del__(self):
         self.unbind()
 
     def is_bound(self):
+        """
+        Returns True if the hood has been bound to a layer, False otherwise
+
+        Returns
+        -------
+        bool
+            True if the hook has been bound, False otherwise
+        """
+
         return self.__handle is not None
 
     def bind(self, layer):
         """
-        Binds the hooks to the given layer (unbinding it from previous)
+        Binds a hook to a given layer, unbinding it from the previous if needed
 
         Parameters
         ----------
@@ -75,12 +83,12 @@ class Hook(object):
         if layer is not None:
             if self.is_bound():
                 self.unbind()
-            self.__handle = layer.register_forward_hook(self.__eval)
+            self.__handle = layer.register_forward_hook(self.eval)
         return self
 
     def unbind(self):
         """
-        Unbinds the hook from the bound layer
+        Unbinds the hook from the hooked layer
 
         Returns
         -------
@@ -93,34 +101,30 @@ class Hook(object):
         self.__handle = None
         return self
 
-    def __eval(self, source, input, output):
+    def eval(self, layer, input, output):
         """
-
+        Evaluates layerFcn, inputFcn and outputFcn over the bound layer
 
         Parameters
         ----------
-        source : torch.nn.Module
+        layer : torch.nn.Module
             the hooked layer
         input : object
             the layer input
         output : object
             the layer output
 
-        Raises
-        ------
-        RuntimError
-            if the hook is in debug mode and the input/output fails to pass the checks
+        Returns
+        -------
+        None
         """
-        self.value = output
+
+        if self.layerFcn is not None:
+            self.layerFcn(layer)
         if self.inputFcn is not None:
-            if not self.inputFcn(input):
-                if self.mode == 'debug':
-                    raise RuntimeError('Unexpected input value for Hook: {}'.format(self.name))
-                if self.mode == 'release':
-                    warnings.warn('Unexpected input value for Hook: {}'.format(self.name))
+            self.inputFcn(input)
         if self.outputFcn is not None:
-            if not self.outputFcn(output):
-                raise RuntimeError('Unexpected output value')
+            self.outputFcn(output)
 
     def __repr__(self):
         """
@@ -131,11 +135,49 @@ class Hook(object):
         str
             the hook name
         """
+
         return self.name
 
-    def __setattr__(self, key, value):
-        if key == 'mode':
-            value = value.lower()
-            if value not in ['debug', 'release']:
-                raise RuntimeError('mode should be either ''debug'' or ''release''')
-        self.__dict__[key] = value
+
+class DeferredHook(Hook):
+    """
+    A class representing a deferred hook. It will store both the input and the output of the hooked layer to be
+    processed at a different time. The standard behaviours of the base Hook are preserved
+
+    Attributes
+    ----------
+    input : object
+        the input of the hooked layer (default is None)
+    output : object
+        the output of the hooked layer (default is None)
+
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(DeferredHook, self).__init__(*args, **kwargs)
+        self.input  = None
+        self.output = None
+
+    def eval(self, layer, input, output):
+        """
+        Evaluates layerFcn, inputFcn and outputFcn over the bound layer, storing its input and output afterwards
+
+        Parameters
+        ----------
+        layer : torch.nn.Module
+            the hooked layer
+        input : object
+            the layer input
+        output : object
+            the layer output
+
+        Returns
+        -------
+        None
+        """
+        
+        super(DeferredHook, self).eval(layer, input, output)
+        self.input  =  input
+        self.output = output
+
