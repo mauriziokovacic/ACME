@@ -1,4 +1,3 @@
-import torch
 from ..math.knn           import *
 from ..math.unrooted_norm import *
 
