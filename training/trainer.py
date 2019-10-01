@@ -2,8 +2,7 @@ import os
 import time
 import torch
 import warnings
-from ..utility.istuple import *
-from ..utility.nop     import *
+from ..utility.nop import *
 
 
 class Trainer(object):
@@ -33,7 +32,7 @@ class Trainer(object):
 
     Methods
     -------
-    isready()
+    is_ready()
         returns whether or not the fundamentals attributes are set
     train(dataset,epochs,checkpoint,finalNetwork,path,verbose)
         trains the model using the given dataset for the specified number of epochs, storing checkpoints and final model into a given path
@@ -58,19 +57,23 @@ class Trainer(object):
                  device='cuda:0',
                  inputFcn=None,
                  outputFcn=None,
-                 stateFcn=None):
-        self.model     = model
-        self.optimizer = optimizer
-        self.scheduler = scheduler
-        self.loss      = loss
-        self.device    = device
-        self.epoch     = 0
-        self.name      = name
-        self.inputFcn  = inputFcn
-        self.outputFcn = outputFcn
-        self.stateFcn  = stateFcn
+                 trainstateFcn=None,
+                 teststateFcn=None):
+        self.model          = model
+        self.optimizer      = optimizer
+        self.scheduler      = scheduler
+        self.loss           = loss
+        self.device         = device
+        self.epoch          = 0
+        self.name           = name
+        self.inputFcn       = inputFcn
+        self.outputFcn      = outputFcn
+        self.trainstateFcn  = trainstateFcn
+        self.teststateFcn   = teststateFcn
+        self.to(self.device)
 
-    def isready(self):
+
+    def is_ready(self):
         """
         Returns whether or not the fundamentals attributes are set
 
@@ -83,13 +86,11 @@ class Trainer(object):
         return (self.model is not None) and\
                (self.optimizer is not None) and\
                (self.loss is not None)
-               #(self.scheduler is not None) and\
 
     def train(self,
               dataset,
               epochs=None,
               checkpoint=True,
-              finalNetwork=True,
               path=None,
               verbose=False):
         """
@@ -97,21 +98,19 @@ class Trainer(object):
 
         Parameters
         ----------
-        dataset :
+        dataset : DataLoader
             a dataloader object containing the dataset
         epochs : int (optional)
             the number of epochs to be performed. If None it will be automatically set to len(dataset) (default is None)
         checkpoint : bool (optional)
             if True stores a checkpoint of the training at the end of every epoch (default is True)
-        finalNetwork : bool (optional)
-            if True stores the final trained model (default is True)
         path : str (optional)
             the path where to store checkpoints and final model. If None it will be set to the current working directory (default is None)
         verbose : bool (optional)
             if True print debug messages to the console (default is False)
         """
 
-        if not self.isready():
+        if not self.is_ready():
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         n = len(dataset)
@@ -131,13 +130,12 @@ class Trainer(object):
         self.model.zero_grad()
         for self.epoch in range(e, epochs):
             if verbose:
-                print('Epoch:' + str(self.epoch) + '...', end='')
-            i = 0
-            for input in dataset:
+                print('Epoch: {}...'.format(self.epoch), end='')
+            for i, input in enumerate(dataset):
                 t    = time.time()
                 x    = inputFcn(input)
                 y    = outputFcn(self.model(x))
-                loss = self.loss.eval(x, *y if istuple(y) else y)
+                loss = self.loss.eval(x, y)
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
@@ -146,40 +144,42 @@ class Trainer(object):
                         self.scheduler.step(loss)
                     else:
                         self.scheduler.step()
-                if self.stateFcn is not None:
-                    self.stateFcn(x,
-                                  y,
-                                  self.loss.to_dict(),
-                                  epoch=(e, self.epoch, epochs),
-                                  iteration=(i, n),
-                                  t=time.time()-t)
-                i += 1
+                if self.trainstateFcn is not None:
+                    self.trainstateFcn(
+                        input=x,
+                        output=y,
+                        loss=self.loss.to_dict(),
+                        epoch=(e, self.epoch, epochs),
+                        iteration=(i, n),
+                        t=time.time()-t
+                    )
             if verbose:
                 print('DONE')
             if checkpoint:
                 self.save_checkpoint(path)
-        if finalNetwork:
-            self.save_model(path)
+        return
 
-    def test(self, input):
+    def test(self, dataset, verbose=False):
         """
         Tests an input against the current model
 
         Parameters
         ----------
-        input : object
-            an input object
+        dataset : DataLoader
+            a dataloader object containing the dataset
+        verbose : bool (optional)
+            if True print debug messages to the console (default is False)
 
         Returns
         -------
-        object
-            the model output
+        None
         """
 
-        if not self.isready():
+        if not self.is_ready():
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
 
+        n = len(dataset)
         inputFcn  = self.inputFcn
         if inputFcn is None:
             inputFcn = nop
@@ -188,8 +188,29 @@ class Trainer(object):
             outputFcn = nop
 
         self.model.eval()
-        output = outputFcn(self.model(inputFcn(input)))
-        return output
+        if verbose:
+            print('Starting test...')
+        for i, input in enumerate(dataset):
+            if verbose:
+                print('Object: {}...'.format(i), end='')
+            t = time.time()
+            x = inputFcn(input)
+            y = outputFcn(self.model(x))
+            self.loss.eval(x, y)
+            if self.teststateFcn is not None:
+                self.teststateFcn(
+                    input=x,
+                    output=y,
+                    loss=self.loss.to_dict(),
+                    epoch=(0, 0, 1),
+                    iteration=(i, n),
+                    t=time.time() - t,
+                )
+            if verbose:
+                print('DONE')
+        if verbose:
+            print('TEST DONE')
+        return
 
     def save_checkpoint(self, path=None):
         """
@@ -201,18 +222,18 @@ class Trainer(object):
             the path to store the data to. If None it will be set to the current working directory (default is None)
         """
 
-        if not self.isready():
+        if not self.is_ready():
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
             path = os.getcwd()
         torch.save({
-                    'model_state_dict': self.model.state_dict(),
-                    'optimizer_state_dict': self.optimizer.state_dict(),
-                    'scheduler_state_dict': self.scheduler.state_dict() if self.scheduler is not None else '',
-                    'loss': self.loss.value.item(),
-                    'epoch': self.epoch,
-                    }, path + '/' + self.name + '.tar')
+            'model_state_dict': self.model.state_dict(),
+            'optimizer_state_dict': self.optimizer.state_dict(),
+            'scheduler_state_dict': self.scheduler.state_dict() if self.scheduler is not None else None,
+            'loss': self.loss.value.item(),
+            'epoch': self.epoch,
+        }, path + '/' + self.name + '.tar')
 
     def load_checkpoint(self, path=None):
         """
@@ -224,7 +245,7 @@ class Trainer(object):
             the path to load the data from. If None it will be set to the current working directory (default is None)
         """
 
-        if not self.isready():
+        if not self.is_ready():
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
             return
         if path is None:
@@ -233,58 +254,41 @@ class Trainer(object):
             print('File ' + path + ' does not exists.')
             return
         checkpoint = torch.load(path)
-        self.model.load_state_dict(checkpoint['model_state_dict'])#,map_location=self.device)
+        self.model.load_state_dict(checkpoint['model_state_dict'], map_location=self.device)
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         if self.scheduler is not None:
             self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
         self.loss.value = checkpoint['loss']
         self.epoch      = checkpoint['epoch']
+        self.model.to(self.device)
         self.model.train()
 
-    def save_model(self, path=None):
+    def to(self, device):
         """
-        Stores the final model state in the given path
+        Moves the trainer to the given device
 
         Parameters
         ----------
-        path : str (optional)
-            the path to store the model to. If None it will be set to the current working directory (default is None)
+        device : str or torch.device
+            the device to store the tensors to
+
+        Returns
+        -------
+        Trainer
+            the trainer itself
         """
 
-        if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
-            return
-        if path is None:
-            path = os.getcwd()
-        self.model.eval()
-        torch.save(self.model, path + '/' + self.name + '.pth')
-
-    def load_model(self, path=None):
-        """
-        Loads a final model from the given path
-
-        Parameters
-        ----------
-        path : str (optional)
-            the path to load the model from. If None it will be set to the current working directory (default is None)
-        """
-
-        if not self.isready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
-            return
-        if path is None:
-            path = os.getcwd() + '/' + self.name + '.pth'
-        if not os.path.isfile(path):
-            print('File ' + path + ' does not exists.')
-            return
-        self.model = torch.load(path, map_location=self.device)
-        self.model.to(device=self.device)
-        self.model.eval()
+        self.device = device
+        if self.model is not None:
+            self.model.to(self.device)
+        if self.loss is not None:
+            self.loss.to(self.device)
+        return self
 
     def __call__(self,
                  dataset,
                  epochs=None,
                  checkpoint=True,
-                 finalNetwork=True,
-                 path=None):
-        self.train(dataset, epochs=epochs, checkpoint=checkpoint, finalNetwork=finalNetwork, path=path)
+                 path=None,
+                 verbose=False):
+        self.train(dataset, epochs=epochs, checkpoint=checkpoint, path=path, verbose=verbose)
