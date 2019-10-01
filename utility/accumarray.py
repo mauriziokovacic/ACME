@@ -16,8 +16,6 @@ def accumarray(I, V, size=None, default_value=0):
         the (M,F,) values tensor
     size : tuple (optional)
         the size of the output tensor. If None it will be automatically inferred (default is None)
-    dim : int (optional)
-        the dimension along the accumulation is performed (default is 0)
     default_value : float (optional)
         the default value of the output tensor (default is 0)
 
