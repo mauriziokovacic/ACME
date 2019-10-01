@@ -22,7 +22,7 @@ def poly_edges(P, T):
     return tuple(p[1:]-p[:-1])
 
 
-def poly_edges_length(P, T):
+def poly_edges_length(P, T, distFcn=norm):
     """
     Returns the per polygon edge lengths
 
@@ -40,10 +40,10 @@ def poly_edges_length(P, T):
     """
 
     E = poly_edges(P, T)
-    return torch.cat([norm(e) for e in E], dim=1)
+    return torch.cat([distFcn(e) for e in E], dim=1)
 
 
-def poly_edges_min_length(P, T):
+def poly_edges_min_length(P, T, distFcn=norm):
     """
     Returns the per polygon min edge length
 
@@ -60,10 +60,10 @@ def poly_edges_min_length(P, T):
         the (T, M,) min edge length tensor
     """
 
-    return torch.min(poly_edges_length(P, T), dim=1, keepdim=True)[0]
+    return torch.min(poly_edges_length(P, T, distFcn=distFcn), dim=1, keepdim=True)[0]
 
 
-def poly_edges_max_length(P, T):
+def poly_edges_max_length(P, T, distFcn=norm):
     """
     Returns the per polygon max edge length
 
@@ -80,10 +80,10 @@ def poly_edges_max_length(P, T):
         the (T, M,) max edge length tensor
     """
 
-    return torch.max(poly_edges_length(P, T), dim=1, keepdim=True)[0]
+    return torch.max(poly_edges_length(P, T, distFcn=distFcn), dim=1, keepdim=True)[0]
 
 
-def poly_edges_mean_length(P, T):
+def poly_edges_mean_length(P, T, distFcn=norm):
     """
     Returns the mean edge length of the input model
 
@@ -100,10 +100,10 @@ def poly_edges_mean_length(P, T):
         the (1,) mean edge length
     """
 
-    return torch.mean(poly_edges_length(P, T))
+    return torch.mean(poly_edges_length(P, T, distFcn=distFcn))
 
 
-def poly_edges_median_length(P, T):
+def poly_edges_median_length(P, T, distFcn=norm):
     """
     Returns the median edge length of the input model
 
@@ -120,4 +120,4 @@ def poly_edges_median_length(P, T):
         the (1,) median edge length tensor
     """
 
-    return torch.median(poly_edges_length(P, T))
+    return torch.median(poly_edges_length(P, T, distFcn=distFcn))
