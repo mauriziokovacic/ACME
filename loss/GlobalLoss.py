@@ -38,6 +38,26 @@ class GlobalLoss(LossList):
 
     def eval(self, input, output):
         """
+        Evaluate the loss for the given network input and output
+
+        Parameters
+        ----------
+        input : Data
+            the given input to the network
+        output : Data
+            the produced output of the network
+
+        Returns
+        -------
+        Tensor
+            a single value Tensor representing the loss
+        """
+
+        self.value = self.__eval__(input, output)
+        return self.value
+
+    def __eval__(self, input, output):
+        """
         Evaluate the global loss for the given network input and output
 
         Parameters
@@ -53,14 +73,14 @@ class GlobalLoss(LossList):
             a single value Tensor representing the loss
         """
 
-        self.value = torch.zeros(1, dtype=torch.float, device=self.device)
+        value = torch.zeros(1, dtype=torch.float, device=self.device)
         if self.is_empty():
             warnings.warn('Global Loss cannot be evaluated while empty. The returned tensor carries no gradient.',
                           category=RuntimeWarning)
         else:
             for loss in self.loss:
-                self.value += loss.eval(input, output)
-        return self.value
+                value += loss.eval(input, output)
+        return value
 
     def to_dict(self, *args, **kwargs):
         """

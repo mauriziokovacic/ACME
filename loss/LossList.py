@@ -56,7 +56,7 @@ class LossList(Loss):
             any keyword argument from Loss class
         """
 
-        super().__init__(name=name, **kwargs)
+        super(LossList, self).__init__(name=name, **kwargs)
         self.reset()
         self.insert(*losses)
 
@@ -77,15 +77,35 @@ class LossList(Loss):
             a single value Tensor representing the loss
         """
 
-        self.value = torch.zeros(1, dtype=torch.float, device=self.device)
+        self.value = torch.mul(self.__eval__(input, output),
+                               self.alpha if self.enabled else 0)
+        return self.value
+
+    def __eval__(self, input, output):
+        """
+        Evaluate the loss for the given network input and output
+
+        Parameters
+        ----------
+        input : Data
+            the given input to the network
+        output : Data
+            the produced output of the network
+
+        Returns
+        -------
+        Tensor
+            a single value Tensor representing the loss
+        """
+
+        value = torch.zeros(1, dtype=torch.float, device=self.device)
         if self.is_empty():
             warnings.warn('LossList cannot be evaluated while empty. The returned tensor carries no gradient.',
                           category=RuntimeWarning)
         else:
             for loss in self.loss:
-                self.value += loss.eval(input, output)
-            self.value = torch.mul(self.value, self.alpha if self.enabled else 0)
-        return self.value
+                value += loss.eval(input, output)
+        return value
 
     def size(self):
         """
