@@ -170,6 +170,6 @@ class Model(torch.nn.Module):
         return self
 
     def __setattr__(self, key, value):
+        self.__dict__[key] = value
         if key == 'device':
             self.to(device=value)
-        self.__dict__[key] = value

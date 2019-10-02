@@ -53,24 +53,23 @@ class Trainer(object):
                  optimizer=None,
                  scheduler=None,
                  loss=None,
-                 name='Model',
-                 device='cuda:0',
                  inputFcn=None,
                  outputFcn=None,
                  stateFcn=None,
+                 device='cuda:0',
+                 name='Model',
                  ):
         self.model     = model
         self.optimizer = optimizer
         self.scheduler = scheduler
         self.loss      = loss
-        self.device    = device
-        self.epoch     = 0
-        self.name      = name
         self.inputFcn  = inputFcn
         self.outputFcn = outputFcn
         self.stateFcn  = stateFcn
+        self.device    = device
+        self.name      = name
+        self.epoch     = 0
         self.to(self.device)
-
 
     def is_ready(self):
         """
@@ -82,8 +81,8 @@ class Trainer(object):
             the trainer state
         """
 
-        return (self.model is not None) and\
-               (self.optimizer is not None) and\
+        return (self.model is not None) and \
+               (self.optimizer is not None) and \
                (self.loss is not None)
 
     def train(self,
@@ -272,11 +271,15 @@ class Trainer(object):
         """
 
         self.device = device
-        if self.model is not None:
-            self.model.to(self.device)
-        if self.loss is not None:
-            self.loss.to(self.device)
         return self
+
+    def __setattr__(self, key, value):
+        self.__dict__[key] = value
+        if key == 'device':
+            if hasattr(self, 'model') and (self.model is not None):
+                self.model.to(self.device)
+            if hasattr(self, 'loss') and (self.loss is not None):
+                self.loss.to(self.device)
 
     def __call__(self,
                  dataset,
