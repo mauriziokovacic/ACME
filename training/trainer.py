@@ -27,25 +27,27 @@ class Trainer(object):
         a preprocessing function over the architecture input
     outputFcn : callable
         a postprocessing function over the architecture output
-    stateFcn : callable
-        a function called after a single training iteration, sending the current training state
+    stateFcn : list
+        a list of functions called after a single training iteration, sending the current training state
 
     Methods
     -------
     is_ready()
         returns whether or not the fundamentals attributes are set
-    train(dataset,epochs,checkpoint,finalNetwork,path,verbose)
-        trains the model using the given dataset for the specified number of epochs, storing checkpoints and final model into a given path
+    register_training_observer(observer)
+        registers an observer to this trainer
+    unregister_training_observer(observer)
+        unregisters an observer from this trainer
+    train(dataset,epochs,checkpoint,path,verbose)
+        trains the model using the given dataset for the specified number of epochs, storing checkpoints into the given path
     test(input)
         tests an input against the model
     save_checkpoint(path)
         stores a checkpoint to a given path
     load_checkpoint(path)
         loads a checkpoint from a given path
-    save_model(path)
-        stores the trained model to the given path
-    load_model(path)
-        loads the trained model from the given path
+    to(device)
+        moves the trainer to the given device
     """
 
     def __init__(self,
@@ -55,7 +57,6 @@ class Trainer(object):
                  loss=None,
                  inputFcn=None,
                  outputFcn=None,
-                 stateFcn=None,
                  device='cuda:0',
                  name='Model',
                  ):
@@ -65,7 +66,7 @@ class Trainer(object):
         self.loss      = loss
         self.inputFcn  = inputFcn
         self.outputFcn = outputFcn
-        self.stateFcn  = stateFcn
+        self.stateFcn  = []
         self.device    = device
         self.name      = name
         self.epoch     = 0
@@ -84,6 +85,42 @@ class Trainer(object):
         return (self.model is not None) and \
                (self.optimizer is not None) and \
                (self.loss is not None)
+
+    def register_training_observer(self, observer):
+        """
+        Registers an observer to this trainer
+
+        Parameters
+        ----------
+        observer : Training_Observer
+            a training observer
+
+        Returns
+        -------
+        Trainer
+            the trainer itself
+        """
+
+        self.stateFcn += [observer.stateFcn]
+        return self
+
+    def unregister_training_observer(self, observer):
+        """
+        Unregisters an observer from this trainer
+
+        Parameters
+        ----------
+        observer : Training_Observer
+            a training observer
+
+        Returns
+        -------
+        Trainer
+            the trainer itself
+        """
+
+        self.stateFcn.remove(observer.stateFcn)
+        return self
 
     def train(self,
               dataset,
@@ -142,8 +179,8 @@ class Trainer(object):
                         self.scheduler.step(loss)
                     else:
                         self.scheduler.step()
-                if self.stateFcn is not None:
-                    self.stateFcn(
+                for fcn in self.stateFcn:
+                    fcn(
                         input=x,
                         output=y,
                         loss=self.loss.to_dict(),

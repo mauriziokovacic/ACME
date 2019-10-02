@@ -13,7 +13,9 @@ class Training_Observer(object):
     -------
     bind(trainer)
         binds the Training Observer to a given trainer
-    __stateFcn(input,output,loss,epoch,iteration,t)
+    unbind(trainer)
+        unbinds the Training Observer to a given trainer
+    stateFcn(input,output,loss,epoch,iteration,t)
         Receives the trainer state and executes the routine functions
     iterationFcn(input,output,loss,epoch,iteration,t)
         Receives the trainer state at the end of each iteration
@@ -44,11 +46,35 @@ class Training_Observer(object):
         ----------
         Trainer
             a trainer object
+
+        Returns
+        -------
+        Training_Observer
+            the training observer itself
         """
 
-        trainer.stateFcn = self.__stateFcn
+        trainer.register_training_observer(self)
+        return self
 
-    def __stateFcn(self, input, output, loss, epoch, iteration, t):
+    def unbind(self, trainer):
+        """
+        Unbinds the Training Observer to a given trainer
+
+        Parameters
+        ----------
+        Trainer
+            a trainer object
+
+        Returns
+        -------
+        Training_Observer
+            the training observer itself
+        """
+
+        trainer.unregister_training_observer(self)
+        return self
+
+    def stateFcn(self, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state and executes the routine functions
 
