@@ -11,4 +11,5 @@ from .render         import *
 from .skinning       import *
 from .topology       import *
 from .training       import *
+from .transform      import *
 from .utility        import *
