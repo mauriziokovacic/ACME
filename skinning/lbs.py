@@ -1,7 +1,6 @@
-import torch
-from ..utility.strcmpi  import *
 from ..math.normvec     import *
 from ..math.cart2affine import *
+from ..utility.matmul   import *
 
 
 def blend_transform(W, T):
@@ -21,7 +20,7 @@ def blend_transform(W, T):
         a (N,R,C,) tensor representing the transform of every vertex
     """
 
-    return torch.matmul(W, T.view(T.size(0), -1)).view(-1, *T.size()[1:])
+    return matmul(W, T.view(T.size(0), -1)).view(-1, *T.size()[1:])
 
 
 def transform(T, X, mode='point'):
@@ -48,9 +47,9 @@ def transform(T, X, mode='point'):
     else:
         if strcmpi(mode, 'normal'):
             w = 0
-    return torch.matmul(T,
-                        cart2affine(X, w=w).view(-1, X.size(1)+1, 1)
-                        )[:, :-1].view(*X.size())
+    return matmul(T,
+                  cart2affine(X, w=w).view(-1, X.size(1)+1, 1)
+                  )[:, :-1].view(*X.size())
 
 
 def transform_point(T, P):

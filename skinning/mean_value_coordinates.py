@@ -1,4 +1,4 @@
-import torch
+from ..utility.matmul import *
 
 
 def cage_deformation(C, W):
@@ -18,4 +18,4 @@ def cage_deformation(C, W):
         a (N,3,) points set tensor
     """
 
-    return torch.matmul(W, C)
+    return matmul(W, C)

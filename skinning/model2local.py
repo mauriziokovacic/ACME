@@ -19,8 +19,14 @@ def model2local(graph, model_pose):
     -------
     Tensor
         a (N,K,K,) tensor representing the local space pose
+
+    Raises
+    ------
+    AssertionError
+        if graph is not a Digraph
     """
 
+    assert isinstance(graph, Digraph), 'graph should be a Digraph. Got {} instead.'.format(type(graph))
     local_pose = torch.zeros_like(model_pose)
     root = graph.roots()
     for r in root:
@@ -31,6 +37,6 @@ def model2local(graph, model_pose):
             n = n[1:]
             child = graph.successors(i)
             for j in child:
-                local_pose[j, :, :] = model_pose[i, :, :] * torch.inverse(model_pose[j, :, :])
+                local_pose[j, :, :] = torch.matmul(model_pose[i, :, :], torch.inverse(model_pose[j, :, :]))
                 n += [j]
     return local_pose
