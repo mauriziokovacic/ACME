@@ -21,7 +21,7 @@ class Cycle(Model):
         returns the cycle model outputs
     """
 
-    def __init__(self, f, g, name='Cycle'):
+    def __init__(self, f, g, name='Cycle', **kwargs):
         """
         Parameters
         ----------
@@ -33,7 +33,7 @@ class Cycle(Model):
             the name of the model
         """
 
-        super(Cycle, self).__init__(name=name)
+        super(Cycle, self).__init__(name=name, **kwargs)
         self.f = f
         self.g = g
         self.add_module('f', self.f)

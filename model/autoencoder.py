@@ -19,7 +19,7 @@ class AutoEncoder(Model):
         returns the autoencoder output
     """
 
-    def __init__(self, encoder, decoder, name='AutoEncoder'):
+    def __init__(self, encoder, decoder, name='AutoEncoder', **kwargs):
         """
         Parameters
         ----------
@@ -31,7 +31,7 @@ class AutoEncoder(Model):
             the name of the autoencoder (default is 'AutoEncoder')
         """
 
-        super(AutoEncoder, self).__init__(name=name)
+        super(AutoEncoder, self).__init__(name=name, **kwargs)
         self.encoder = encoder
         self.decoder = decoder
         self.add_module('encoder', self.encoder)
@@ -57,7 +57,7 @@ class AutoEncoder(Model):
         return x_hat, y
 
 
-class VariationalSampler(torch.nn.Module):
+class VariationalSampler(Model):
     """
     A class representing the sampler used in Variational AutoEncoders
 
@@ -76,7 +76,8 @@ class VariationalSampler(torch.nn.Module):
 
     def __init__(self,
                  mean_model=(lambda y: y[:, :y.size(1)//2]),
-                 sdev_model=(lambda y: y[:, y.size(1)//2:])):
+                 sdev_model=(lambda y: y[:, y.size(1)//2:]),
+                 name='VariationalSampler', **kwargs):
         """
         Parameters
         ----------
@@ -84,11 +85,17 @@ class VariationalSampler(torch.nn.Module):
             a function/torch.nn.Module used to compute the mean tensor (default is f(y)=y[:,:n/2])
         sdev_model : callable (optional)
             a function/torch.nn.Module used to compute the standard deviation tensor (default is f(y)=y[:,n/2:])
+        name : str (optional)
+            the name for the Variational Sampler (default is 'VariationalSampler')
         """
 
-        super(VariationalSampler, self).__init__()
+        super(VariationalSampler, self).__init__(name=name, **kwargs)
         self.mu    = mean_model
         self.sigma = sdev_model
+        if isinstance(self.mu, torch.nn.Module):
+            self.add_module('mu', self.mu)
+        if isinstance(self.sigma, torch.nn.Module):
+            self.add_module('sigma', self.sigma)
 
     def forward(self, y):
         """
@@ -107,7 +114,7 @@ class VariationalSampler(torch.nn.Module):
 
         mu    = self.mu(y)
         sigma = self.sigma(y)
-        eps   = torch.empty_like(mu, dtype=mu.dtype, device=mu.device).normal_()
+        eps   = torch.empty_like(mu, dtype=mu.dtype, device=self.device).normal_()
         z     = mu + torch.exp(sigma/2)*eps
         return z, mu, sigma
 
@@ -126,7 +133,7 @@ class VariationalAutoEncoder(AutoEncoder):
         returns the autoencoder output
     """
 
-    def __init__(self, encoder, decoder, z_sampler=VariationalSampler(), name='VariationalAutoEncoder'):
+    def __init__(self, encoder, decoder, z_sampler=VariationalSampler(), name='VariationalAutoEncoder', **kwargs):
         """
         Parameters
         ----------
@@ -140,7 +147,7 @@ class VariationalAutoEncoder(AutoEncoder):
             the name of the autoencoder (default is 'VariationalAutoEncoder')
         """
 
-        super(VariationalAutoEncoder, self).__init__(encoder, decoder, name=name)
+        super(VariationalAutoEncoder, self).__init__(encoder, decoder, name=name, **kwargs)
         self.z_sampler = z_sampler
         if isinstance(z_sampler, torch.nn.Module):
             self.add_module('z_sampler', self.z_sampler)
@@ -184,7 +191,7 @@ def reconstruction_loss(x, x_hat, *args, **kwargs):
     """
 
     return torch.nn.BCELoss()(x_hat, x)
-    return torch.mean(torch.sum(x * torch.log(x_hat) + (1-x) * torch.log(1-x_hat), 1))
+    #return torch.mean(torch.sum(x * torch.log(x_hat) + (1-x) * torch.log(1-x_hat), 1))
 
 
 def KL_divergence(mu, sigma, beta=1):
