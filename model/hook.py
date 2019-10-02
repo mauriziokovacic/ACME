@@ -160,8 +160,6 @@ class DeferredHook(Hook):
         the input of the hooked layer (default is None)
     output : object
         the output of the hooked layer (default is None)
-
-
     """
 
     def __init__(self, *args, **kwargs):
