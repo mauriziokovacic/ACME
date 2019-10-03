@@ -31,6 +31,7 @@ from .normalize          import *
 from .normvec            import *
 from .pol2cart           import *
 from .prepare_broadcast  import *
+from .quantize           import *
 from .rad2deg            import *
 from .randrotm           import *
 from .Range              import *

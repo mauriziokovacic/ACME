@@ -1,7 +1,7 @@
 from ..utility.clamp    import *
 from ..utility.isstring import *
 from ..math.normalize   import *
-from .color_gradient    import *
+from ..math.quantize    import *
 from .fetch_texture     import *
 from .palette           import *
 
@@ -48,6 +48,8 @@ class ColorMap(object):
             self.cdata = palette(cdata, device=device)
         else:
             self.cdata = cdata
+        self.cres   = cres
+        self.caxis  = caxis
         self.name   = name
         self.device = device
 
@@ -67,12 +69,10 @@ class ColorMap(object):
         """
 
         cdata = self.cdata
-        if self.cres != self.cdata.size(0):
-            cdata = color_gradient(cdata, self.cres)
         data = tensor.clone().to(self.device)
         if self.caxis is not None:
             data = clamp(data, inf=self.caxis[0], sup=self.caxis[1])
-        return fetch_texture1D(cdata, normalize(data))
+        return fetch_texture1D(cdata, quantize(normalize(data), self.cres))
 
     def to(self, device):
         """
