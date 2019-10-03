@@ -87,7 +87,7 @@ class ColorMap(object):
             the (N,3,) color tensor
         """
 
-        return self.fetch(linspace(0, 1, self.cres).suqeeze())
+        return self.fetch(linspace(0, 1, self.cres).squeeze())
 
     def to(self, device):
         """
