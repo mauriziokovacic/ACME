@@ -1,22 +1,12 @@
-import torch
-from ..utility.col              import *
-from ..utility.IntTensor        import *
-from ..utility.repmat           import *
-from ..utility.nop              import *
-from ..utility.isvector         import *
-from ..utility.strcmpi          import *
-from ..math.dot                 import *
-from ..math.normalize           import *
-from ..math.normvec             import *
+from ..color.colormap           import *
 from ..geometry.triangle_normal import *
-from ..topology.ispoly          import *
+from ..math.dot                 import *
 from ..topology.poly2poly       import *
-from ..color.fetch_texture      import *
-from ..color.palette            import *
+from ..utility.nop              import *
 from .color2nr                  import *
 
 
-def mesh2img(renderer, T, P, C=None, postFcn=nop):
+def mesh2img(renderer, T, P, C=None, postFcn=nop, colormap=ColorMap()):
     """
     Renders an input mesh with the given renderer.
 
@@ -62,7 +52,7 @@ def mesh2img(renderer, T, P, C=None, postFcn=nop):
         t = t[:,tf]
         i = i[tf]
     if ndim(c) == 1:
-        c = fetch_texture1D(palette('parula', device=T.device), normalize(c))
+        c = colormap.fetch(c)
     if col(T) == row(C):
         c = c[i]
 
@@ -166,6 +156,7 @@ def rgb_channel(I):
 
     return image_channel(I, (0, 1, 2))
 
+
 def all_channels(I):
     """
     Extracts the 5 channels from the input Neural Renderer image
@@ -237,7 +228,7 @@ def alpha_channel(I):
     return image_channel(I, 4)
 
 
-def mesh2rgb(renderer, T, P, C=None):
+def mesh2rgb(renderer, T, P, C=None, colormap=ColorMap()):
     """
     Renders the RGB channels of an input mesh with the given renderer
 
@@ -257,10 +248,10 @@ def mesh2rgb(renderer, T, P, C=None):
     Tensor
         the Neural Renderer image in RGB format
     """
-    return mesh2img(renderer, T, P, C=C, postFcn=rgb_channel)
+    return mesh2img(renderer, T, P, C=C, postFcn=rgb_channel, colormap=colormap)
 
 
-def mesh2depth(renderer, T, P, C=None):
+def mesh2depth(renderer, T, P, C=None, colormap=ColorMap()):
     """
     Renders the depth channel of an input mesh with the given renderer
 
@@ -280,10 +271,10 @@ def mesh2depth(renderer, T, P, C=None):
     Tensor
         the Neural Renderer image in D format
     """
-    return mesh2img(renderer, T, P, C=C, postFcn=depth_channel)
+    return mesh2img(renderer, T, P, C=C, postFcn=depth_channel, colormap=colormap)
 
 
-def mesh2rgbd(renderer, T, P, C=None):
+def mesh2rgbd(renderer, T, P, C=None, colormap=ColorMap()):
     """
     Renders the RGBD channels of an input mesh with the given renderer
 
@@ -303,7 +294,7 @@ def mesh2rgbd(renderer, T, P, C=None):
     Tensor
         the Neural Renderer image in RGBD format
     """
-    return mesh2img(renderer, T, P, C=C, postFcn=rgbd_channel)
+    return mesh2img(renderer, T, P, C=C, postFcn=rgbd_channel, colormap=colormap)
 
 
 def apply_background(I, background):
