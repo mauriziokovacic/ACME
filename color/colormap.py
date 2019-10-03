@@ -1,5 +1,6 @@
 from ..utility.clamp    import *
 from ..utility.isstring import *
+from ..utility.linspace import *
 from ..math.normalize   import *
 from ..math.quantize    import *
 from .fetch_texture     import *
@@ -23,6 +24,8 @@ class ColorMap(object):
     -------
     fetch(tensor, cres, casix)
         returns the colors for the given input data
+    real()
+        returns the real used color map
     to(device)
         moves the color map to the given device
     """
@@ -73,6 +76,18 @@ class ColorMap(object):
         if self.caxis is not None:
             data = clamp(data, inf=self.caxis[0], sup=self.caxis[1])
         return fetch_texture1D(cdata, quantize(normalize(data), self.cres))
+
+    def real(self):
+        """
+        Returns the real used color map
+
+        Returns
+        -------
+        Tensor
+            the (N,3,) color tensor
+        """
+
+        return self.fetch(linspace(0, 1, self.cres).suqeeze())
 
     def to(self, device):
         """
