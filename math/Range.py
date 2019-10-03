@@ -1,4 +1,4 @@
-from ...math.constant import *
+from .constant import *
 
 
 class Range(object):
@@ -22,7 +22,7 @@ class Range(object):
         merges two ranges together
     """
 
-    def __init__(self, inf=Inf, sup=-Inf):
+    def __init__(self, min=Inf, max=-Inf):
         """
         Parameters
         ----------
@@ -31,7 +31,7 @@ class Range(object):
         sup : int or float
             the superior of the range
         """
-        self.data = [float(inf), float(sup)]
+        self.data = [float(min), float(max)]
 
     def is_valid(self):
         """

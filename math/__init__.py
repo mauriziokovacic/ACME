@@ -33,6 +33,7 @@ from .pol2cart           import *
 from .prepare_broadcast  import *
 from .rad2deg            import *
 from .randrotm           import *
+from .Range              import *
 from .ratio              import *
 from .rescale            import *
 from .rot_x              import *
