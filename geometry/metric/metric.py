@@ -1,4 +1,4 @@
-from .metric_range import *
+from ...math.Range import *
 
 
 class Metric(object):
@@ -27,15 +27,26 @@ class Metric(object):
     def is_in_full_range(self, value):
         return self.full_range(value)
 
+    def __contains__(self, value):
+        return self.is_in_acceptable_range(value=value), \
+               self.is_in_normal_range(value=value), \
+               self.is_in_full_range(value=value)
+
     def __call__(self, *args, **kwargs):
         return self.eval(*args, **kwargs)
 
     def __repr__(self):
-        text = ''
-        text += self.name.upper() + '\n'
-        text += 'Dimension          : ' + str(self.dimension) + '\n'
-        text += 'Acceptable Range   : ' + str(self.acceptable_range) + '\n'
-        text += 'Normal Range       : ' + str(self.normal_range) + '\n'
-        text += 'Full Range         : ' + str(self.full_range) + '\n'
-        text += 'q for unit simplex : ' + str(self.q_for_unit)
-        return text
+        text = []
+        text += ['║ ' + self.name.upper()]
+        text += ['║ Dimension          : ' + str(self.dimension)]
+        text += ['║ Acceptable Range   : ' + str(self.acceptable_range)]
+        text += ['║ Normal Range       : ' + str(self.normal_range)]
+        text += ['║ Full Range         : ' + str(self.full_range)]
+        text += ['║ q for unit simplex : ' + str(self.q_for_unit)]
+        n = max([len(t) for t in text])
+        text = [t + ' ' * (n - len(t)) for t in text]
+        text = [t + ' ║' for t in text]
+        text.insert( 0, '╔' + '═' * n + '╗')
+        text.insert( 2, '╠' + '═' * n + '╣')
+        text.append('╚' + '═' * n + '╝')
+        return '\n'.join(text)
