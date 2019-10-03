@@ -1,7 +1,4 @@
-import torch
-from ....math.dot     import *
 from ....math.cross   import *
-from ....math.norm    import *
 from ....math.normvec import *
 from ..metric         import *
 
