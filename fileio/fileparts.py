@@ -3,7 +3,7 @@ import os
 
 def fileparts(filename):
     """
-    Splits the input file name string into path,name and extension
+    Splits the input file name string into path, name and extension
 
     Parameters
     ----------
