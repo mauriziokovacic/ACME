@@ -117,3 +117,7 @@ class ColorMap(object):
 
     def __repr__(self):
         return self.name
+
+
+def heat_diffusion_map(**kwargs):
+    return ColorMap(cdata='jet', name='HeatDiffusion', **kwargs)
