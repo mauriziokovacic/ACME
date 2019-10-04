@@ -24,7 +24,7 @@ class ColorMap(object):
     -------
     fetch(tensor, cres, casix)
         returns the colors for the given input data
-    real()
+    real_map()
         returns the real used color map
     to(device)
         moves the color map to the given device
@@ -71,13 +71,13 @@ class ColorMap(object):
             the (N,3,) color tensor
         """
 
-        cdata = self.cdata
-        data = tensor.clone().to(self.device)
+        cdata = self.real_map()
+        data  = tensor.clone().to(self.device)
         if self.caxis is not None:
             data = clamp(data, inf=self.caxis[0], sup=self.caxis[1])
-        return fetch_texture1D(cdata, quantize(normalize(data), self.cres))
+        return cdata[quantize(normalize(data), self.cres, dtype=torch.long)]
 
-    def real(self):
+    def real_map(self):
         """
         Returns the real used color map
 
@@ -87,7 +87,7 @@ class ColorMap(object):
             the (N,3,) color tensor
         """
 
-        return self.fetch(linspace(0, 1, self.cres).squeeze())
+        return fetch_texture1D(self.cdata, linspace(0, 1, self.cres).squeeze())
 
     def to(self, device):
         """
