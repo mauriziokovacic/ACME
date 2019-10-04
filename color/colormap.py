@@ -75,7 +75,7 @@ class ColorMap(object):
         data  = tensor.clone().to(self.device)
         if self.caxis is not None:
             data = clamp(data, inf=self.caxis[0], sup=self.caxis[1])
-        return cdata[quantize(normalize(data), self.cres, dtype=torch.long)]
+        return cdata[quantize(normalize(data), self.cres-1, dtype=torch.long)]
 
     def real_map(self):
         """
