@@ -2,6 +2,7 @@ from .adjacency               import *
 from .area                    import *
 from .barycenter              import *
 from .barycentric_coordinates import *
+from .BaryCoord               import *
 from .bounding_box            import *
 from .cube                    import *
 from .curvature               import *
