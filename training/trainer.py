@@ -15,8 +15,8 @@ class Trainer(object):
         an architecture to train
     optimizer : torch.optim
         an optimizer
-    loss : ACME.loss.GlobalLoss
-        a global loss function
+    loss : ACME.loss.Loss
+        a loss function
     device : str or torch.device
         the device the tensors will be stored to
     epoch : int
@@ -313,10 +313,12 @@ class Trainer(object):
     def __setattr__(self, key, value):
         self.__dict__[key] = value
         if key == 'device':
-            if hasattr(self, 'model') and (self.model is not None):
-                self.model.to(self.device)
-            if hasattr(self, 'loss') and (self.loss is not None):
-                self.loss.to(self.device)
+            if hasattr(self, 'model') :
+                if self.model is not None:
+                    self.model.to(self.device)
+            if hasattr(self, 'loss'):
+                if self.loss is not None:
+                    self.loss.to(self.device)
 
     def __call__(self,
                  dataset,
