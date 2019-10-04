@@ -20,6 +20,7 @@ from .flipfb         import *
 from .fliplr         import *
 from .flipud         import *
 from .FloatTensor    import *
+from .hasmethod      import *
 from .hex2bi         import *
 from .hex2de         import *
 from .indices        import *
