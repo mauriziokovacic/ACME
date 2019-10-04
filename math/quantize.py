@@ -22,4 +22,4 @@ def quantize(tensor, levels, dtype=torch.float):
 
     if dtype == torch.float:
         return torch.div(torch.round(torch.mul(tensor, levels)), levels)
-    return torch.round(torch.mul(tensor, levels)).to(dtype=torch.long)
+    return torch.round(torch.mul(tensor, levels)).to(dtype=dtype)
