@@ -1,5 +1,6 @@
 import torch
-from ..model.hook import *
+from ..utility.islist import *
+from ..model.hook     import *
 
 
 class HookLayer(torch.nn.Module):
@@ -21,23 +22,25 @@ class HookLayer(torch.nn.Module):
         binds the layer to the given one
     unbind()
         unbinds the layer from any hooked one
-    __outputFcn(output)
-        stores the output of the bound layer
     forward(*args, **kwargs)
         returns the output of the HookLayer
     """
 
-    def __init__(self, layer, hook_layer=None):
+    def __init__(self, layer, hook_layer=None, name='HookLayer'):
         """
         Parameters
         ----------
         layer : torch.nn.Module (optional)
             the layer to bind
+        hook_layer : torch.nn.Module or list (optional)
+            the layer(s) to hook (default is None)
         """
 
         super(HookLayer, self).__init__()
         self.layer  = layer
-        self.__hook = Hook(layer=hook_layer, outputFcn=self.__outputFcn)
+        self.__hook = {}
+        self.name   = name
+        self.bind(hook_layer)
         self.add_module('layer', self.layer)
 
     def is_bound(self):
@@ -50,7 +53,7 @@ class HookLayer(torch.nn.Module):
             True if the layer is bound to another layer, False otherwise
         """
 
-        return self.__hook.is_bound()
+        return all([h.is_bound() for h in self.__hook.values()])
 
     def bind(self, layer):
         """
@@ -67,12 +70,22 @@ class HookLayer(torch.nn.Module):
             the layer itself
         """
 
-        self.__hook.bind(layer)
+        hook = layer
+        if not islist(hook):
+            hook = [hook]
+        for h in hook:
+            name = 'hook_{}'.format(len(self.__hook))
+            self.__hook[name] = DeferredHook(layer=h, name=name)
         return self
 
-    def unbind(self):
+    def unbind(self, i=None):
         """
-        Unbinds the layer from any hooked one
+        Unbinds the layer from the specified hooked layer
+
+        Parameters
+        ----------
+        i : int (optional)
+            the index of the hook to remove. If None all the layers will be unbound (default is None)
 
         Returns
         -------
@@ -80,24 +93,13 @@ class HookLayer(torch.nn.Module):
             the layer itself
         """
 
-        self.__hook.unbind()
+        if i is None:
+            i = list(range(len(self.__hook)))
+        for ii in i:
+            key = 'hook_{}'.format(ii)
+            self.__hook[key].unbind()
+            del self.__hook[key]
         return self
-
-    def __outputFcn(self, output):
-        """
-        Stores the output of the bound layer
-
-        Parameters
-        ----------
-        output : Tensor
-            the output of the bound layer
-
-        Returns
-        -------
-        None
-        """
-
-        self.__output = output
 
     def forward(self, *args, **kwargs):
         """
@@ -116,4 +118,4 @@ class HookLayer(torch.nn.Module):
             the output of the HookLayer
         """
 
-        return self.layer(*args, self.__output, **kwargs)
+        return self.layer(*args, [h.output for h in self.__hook.values()], **kwargs)
