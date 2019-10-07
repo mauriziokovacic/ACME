@@ -159,15 +159,12 @@ class DeferredHook(Hook):
         a callable function to run over the hooked layer output
     name : str
         a name for the hook
-    input : object
-        the input of the hooked layer (default is None)
     output : object
         the output of the hooked layer (default is None)
     """
 
-    def __init__(self, *args, **kwargs):
-        super(DeferredHook, self).__init__(*args, **kwargs)
-        self.input  = None
+    def __init__(self, *args, name='DeferredHook', **kwargs):
+        super(DeferredHook, self).__init__(*args, name=name, **kwargs)
         self.output = None
 
     def eval(self, layer, input, output):
@@ -189,6 +186,4 @@ class DeferredHook(Hook):
         """
 
         super(DeferredHook, self).eval(layer, input, output)
-        self.input  =  input
         self.output = output
-
