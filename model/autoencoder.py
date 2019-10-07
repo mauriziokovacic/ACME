@@ -34,8 +34,8 @@ class AutoEncoder(Model):
         super(AutoEncoder, self).__init__(name=name, **kwargs)
         self.encoder = encoder
         self.decoder = decoder
-        self.add_module('encoder', self.encoder)
-        self.add_module('decoder', self.decoder)
+        # self.add_module('encoder', self.encoder)
+        # self.add_module('decoder', self.decoder)
 
     def forward(self, x):
         """
@@ -198,15 +198,15 @@ class U_Net(AutoEncoder):
             the encoder architecture
         decoder : torch.nn.Module
             the decoder architecture. Must contains HookLayers
-        connection : list
-            the indices of the connected layers in encoders and decoders
+        connection : LongTensor
+            the (N,2,) indices tensor of the connected layers in encoders and decoders
         name : str (optional)
             the name of the autoencoder (default is 'U-Net')
         """
 
         super(U_Net, self).__init__(encoder=encoder, decoder=decoder, name=name, **kwargs)
-        for i in connection:
-            self.decoder[i].bind(self.encoder[i])
+        for i, j in connection:
+            self.decoder[j].bind(self.encoder[i])
 
     def forward(self, x):
         """
