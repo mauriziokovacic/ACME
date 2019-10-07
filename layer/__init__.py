@@ -12,4 +12,5 @@ from .MoveLayer          import *
 from .RenderLayer        import *
 from .Reshape            import *
 from .Sampler            import *
+from .TLayer             import *
 from .VGGPerceptron      import *
