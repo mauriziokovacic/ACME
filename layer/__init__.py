@@ -3,11 +3,13 @@ from .BokehLayer    import *
 from .Bypass        import *
 from .Concatenate   import *
 from .ConstantLayer import *
-from .Conv2D        import *
+from .Conv          import *
 from .DecisionLayer import *
 from .Extract_Attr  import *
 from .Flatten       import *
 from .HookLayer     import *
+from .Layer         import *
+from .Linear        import *
 from .MLPLayer      import *
 from .MoveLayer     import *
 from .RenderLayer   import *
