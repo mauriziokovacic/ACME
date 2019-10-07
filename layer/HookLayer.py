@@ -8,6 +8,8 @@ class HookLayer(torch.nn.Module):
 
     Attributes
     ----------
+    layer : torch.nn.Module
+        the layer to evaluate
     __hook : Hook
         a hook to another layer
 
@@ -21,11 +23,11 @@ class HookLayer(torch.nn.Module):
         unbinds the layer from any hooked one
     __outputFcn(output)
         stores the output of the bound layer
-    forward(*args, z, **kwargs)
-        returns the output of this layer
+    forward(*args, **kwargs)
+        returns the output of the HookLayer
     """
 
-    def __init__(self, layer=None):
+    def __init__(self, layer, hook_layer=None):
         """
         Parameters
         ----------
@@ -34,7 +36,9 @@ class HookLayer(torch.nn.Module):
         """
 
         super(HookLayer, self).__init__()
-        self.__hook = Hook(layer=layer, outputFcn=self.__outputFcn)
+        self.layer  = layer
+        self.__hook = Hook(layer=hook_layer, outputFcn=self.__outputFcn)
+        self.add_module('layer', self.layer)
 
     def is_bound(self):
         """
@@ -95,7 +99,7 @@ class HookLayer(torch.nn.Module):
 
         self.__output = output
 
-    def forward(self, *args, z, **kwargs):
+    def forward(self, *args, **kwargs):
         """
         Returns the output of this layer
 
@@ -103,18 +107,13 @@ class HookLayer(torch.nn.Module):
         ----------
         args : ...
             the inputs of this layer
-        z : Tensor
-            the output of the bound layer
         kwargs : ...
             the keyword inputs of this layer
 
-        Raises
-        ------
-        NotImplementedError
-            if the layer does not implement this method
+        Returns
+        -------
+        Tensor
+            the output of the HookLayer
         """
 
-        raise NotImplementedError
-
-    def __call__(self, *args, **kwargs):
-        return self.forward(*args, self.__output, **kwargs)
+        return self.layer(*args, self.__output, **kwargs)
