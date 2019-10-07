@@ -173,6 +173,59 @@ class VariationalAutoEncoder(AutoEncoder):
         return x_hat, mu, sigma
 
 
+class U_Net(AutoEncoder):
+    """
+    A class representing a U-Net
+
+    Attributes
+    ----------
+    encoder : torch.nn.Module
+        the encoder architecture
+    decoder : torch.nn.Module
+        the decoder architecture
+
+    Methods
+    -------
+    forward(x)
+        returns the U-Net output
+    """
+
+    def __init__(self, encoder, decoder, connection, name='U-Net', **kwargs):
+        """
+        Parameters
+        ----------
+        encoder : torch.nn.Module
+            the encoder architecture
+        decoder : torch.nn.Module
+            the decoder architecture. Must contains HookLayers
+        connection : list
+            the indices of the connected layers in encoders and decoders
+        name : str (optional)
+            the name of the autoencoder (default is 'U-Net')
+        """
+
+        super(U_Net, self).__init__(encoder=encoder, decoder=decoder, name=name, **kwargs)
+        for i in connection:
+            self.decoder[i].bind(self.encoder[i])
+
+    def forward(self, x):
+        """
+        Returns the U-Net output
+
+        Parameters
+        ----------
+        x : Tensor
+            the U-Net input
+
+        Returns
+        -------
+        Tensor
+            the decoder output
+        """
+
+        return super(U_Net, self).forward(x)[0]
+
+
 def reconstruction_loss(x, x_hat, *args, **kwargs):
     """
     Returns the binary cross entropy loss
@@ -191,7 +244,6 @@ def reconstruction_loss(x, x_hat, *args, **kwargs):
     """
 
     return torch.nn.BCELoss()(x_hat, x)
-    #return torch.mean(torch.sum(x * torch.log(x_hat) + (1-x) * torch.log(1-x_hat), 1))
 
 
 def KL_divergence(mu, sigma, beta=1):

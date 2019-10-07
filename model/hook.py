@@ -45,6 +45,7 @@ class Hook(object):
 
         self.__handle  = None
         self.bind(layer)
+        self.layer     = layer
         self.layerFcn  = layerFcn
         self.inputFcn  = inputFcn
         self.outputFcn = outputFcn
@@ -83,6 +84,7 @@ class Hook(object):
         if layer is not None:
             if self.is_bound():
                 self.unbind()
+            self.layer    = layer
             self.__handle = layer.register_forward_hook(self.eval)
         return self
 
@@ -98,6 +100,7 @@ class Hook(object):
 
         if self.__handle is not None:
             self.__handle.remove()
+        self.layer    = None
         self.__handle = None
         return self
 
