@@ -11,7 +11,7 @@ class HookLayer(torch.nn.Module):
     ----------
     layer : torch.nn.Module
         the layer to evaluate
-    __hook : Hook
+    __hook : DeferredHook
         a hook to another layer
 
     Methods
