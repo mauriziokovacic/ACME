@@ -34,8 +34,8 @@ class AutoEncoder(Model):
         super(AutoEncoder, self).__init__(name=name, **kwargs)
         self.encoder = encoder
         self.decoder = decoder
-        # self.add_module('encoder', self.encoder)
-        # self.add_module('decoder', self.decoder)
+        self.add_module('encoder', self.encoder)
+        self.add_module('decoder', self.decoder)
 
     def forward(self, x):
         """
