@@ -315,7 +315,7 @@ class Trainer(object):
         if key == 'device':
             if hasattr(self, 'model') :
                 if self.model is not None:
-                    self.model.to(self.device)
+                    self.model = self.model.to(self.device)
             if hasattr(self, 'loss'):
                 if self.loss is not None:
                     self.loss.to(self.device)

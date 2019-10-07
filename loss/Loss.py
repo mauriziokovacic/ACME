@@ -169,7 +169,7 @@ class Loss(object):
 
         self.device = device
         if self.value is not None:
-            self.value.to(device=self.device)
+            self.value = self.value.to(device=self.device)
         return self
 
     def __gt__(self, other):
