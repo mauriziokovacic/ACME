@@ -6,3 +6,4 @@ from .normal_metric    import *
 from .HausdorffLoss    import *
 from .PixelLoss        import *
 from .so3_metric       import *
+from .SO3Loss          import *
