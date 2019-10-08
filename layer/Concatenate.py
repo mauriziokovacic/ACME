@@ -71,7 +71,7 @@ class AggregationLayer(Concatenate):
         """
 
         super(AggregationLayer, self).__init__(dim=dim)
-        self.models = torch.nn.ModuleList(*models)
+        self.add_module('models', torch.nn.ModuleList(*models))
 
     def forward(self, *inputs):
         """

@@ -34,10 +34,8 @@ class Cycle(Model):
         """
 
         super(Cycle, self).__init__(name=name, **kwargs)
-        self.f = f
-        self.g = g
-        self.add_module('f', self.f)
-        self.add_module('g', self.g)
+        self.add_module('f', f)
+        self.add_module('g', g)
 
     def forward(self, x, s, detach=False):
         """

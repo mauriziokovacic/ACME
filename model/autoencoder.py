@@ -32,10 +32,8 @@ class AutoEncoder(Model):
         """
 
         super(AutoEncoder, self).__init__(name=name, **kwargs)
-        self.encoder = encoder
-        self.decoder = decoder
-        self.add_module('encoder', self.encoder)
-        self.add_module('decoder', self.decoder)
+        self.add_module('encoder', encoder)
+        self.add_module('decoder', decoder)
 
     def forward(self, x):
         """
@@ -90,12 +88,14 @@ class VariationalSampler(Model):
         """
 
         super(VariationalSampler, self).__init__(name=name, **kwargs)
-        self.mu    = mean_model
-        self.sigma = sdev_model
-        if isinstance(self.mu, torch.nn.Module):
-            self.add_module('mu', self.mu)
-        if isinstance(self.sigma, torch.nn.Module):
-            self.add_module('sigma', self.sigma)
+        if isinstance(mean_model, torch.nn.Module):
+            self.add_module('mu', mean_model)
+        else:
+            self.mu = mean_model
+        if isinstance(sdev_model, torch.nn.Module):
+            self.add_module('sigma', sdev_model)
+        else:
+            self.sigma = sdev_model
 
     def forward(self, y):
         """
@@ -148,9 +148,10 @@ class VariationalAutoEncoder(AutoEncoder):
         """
 
         super(VariationalAutoEncoder, self).__init__(encoder, decoder, name=name, **kwargs)
-        self.z_sampler = z_sampler
         if isinstance(z_sampler, torch.nn.Module):
-            self.add_module('z_sampler', self.z_sampler)
+            self.add_module('z_sampler', z_sampler)
+        else:
+            self.z_sampler = z_sampler
 
     def forward(self, x):
         """
@@ -197,11 +198,11 @@ class U_Net(AutoEncoder):
         encoder : torch.nn.Module
             the encoder architecture
         decoder : torch.nn.Module
-            the decoder architecture. Must contains HookLayers
+            the decoder architecture. Must contains HookLayers and the specified connection indices
         connection : LongTensor
             the (N,2,) indices tensor of the connected layers in encoders and decoders
         name : str (optional)
-            the name of the autoencoder (default is 'U-Net')
+            the name of the U-Net (default is 'U-Net')
         """
 
         super(U_Net, self).__init__(encoder=encoder, decoder=decoder, name=name, **kwargs)

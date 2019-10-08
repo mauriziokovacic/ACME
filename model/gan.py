@@ -37,10 +37,8 @@ class GAN(Model):
         """
 
         super(GAN, self).__init__(name=name, **kwargs)
-        self.G = generator
-        self.D = discriminator
-        self.add_module('G', self.G)
-        self.add_module('D', self.D)
+        self.add_module('G', generator)
+        self.add_module('D', discriminator)
 
     def forward(self, x, y):
         """
@@ -99,10 +97,8 @@ class CycleGAN(Model):
         """
 
         super(CycleGAN, self).__init__(name=name, **kwargs)
-        self.F = F
-        self.G = G
-        self.add_module('F', self.F)
-        self.add_module('G', self.G)
+        self.add_module('F', F)
+        self.add_module('G', G)
 
     def forward(self, x, f, g):
         """
@@ -137,8 +133,8 @@ class CycleGAN(Model):
 #                  discriminator_i,
 #                  name='CycleGAN', **kwargs):
 #         super(CycleGAN, self).__init__(name=name, **kwargs)
-#         self.F = GAN(generator  , discriminator  , name='ForwardGAN', **kwargs)
-#         self.G = GAN(generator_i, discriminator_i, name='BackwardGAN', **kwargs)
+#         F = GAN(generator  , discriminator  , name='ForwardGAN', **kwargs)
+#         G = GAN(generator_i, discriminator_i, name='BackwardGAN', **kwargs)
 #         self.add_module('F', self.F)
 #         self.add_module('G', self.G)
 #

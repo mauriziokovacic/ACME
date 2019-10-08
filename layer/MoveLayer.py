@@ -3,7 +3,7 @@ import torch
 
 class MoveLayer(torch.nn.Module):
     """
-    A layer moving the input to a specifc device
+    A layer moving the input to a specific device
 
     Attributes
     ----------

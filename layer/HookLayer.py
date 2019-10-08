@@ -37,11 +37,10 @@ class HookLayer(torch.nn.Module):
         """
 
         super(HookLayer, self).__init__()
-        self.layer  = layer
+        self.add_module('layer', layer)
         self.__hook = {}
         self.name   = name
         self.bind(hook_layer)
-        self.add_module('layer', self.layer)
 
     def is_bound(self):
         """
