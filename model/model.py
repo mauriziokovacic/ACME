@@ -56,6 +56,7 @@ class Model(torch.nn.Module):
         
         for param in self.parameters():
             param.requires_grad = False
+        self.training = False
         return self
             
     def unfreeze(self):
@@ -70,6 +71,7 @@ class Model(torch.nn.Module):
         
         for param in self.parameters():
             param.requires_grad = True
+        self.training = True
         return self
 
     def save_model(self, filename):
