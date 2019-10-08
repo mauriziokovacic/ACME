@@ -118,4 +118,4 @@ class HookLayer(torch.nn.Module):
             the output of the HookLayer
         """
 
-        return self.layer(*args, [h.output for h in self.__hook.values()], **kwargs)
+        return self.layer(*args, *tuple(h.output for h in self.__hook.values()), **kwargs)
