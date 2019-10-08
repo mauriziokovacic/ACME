@@ -37,7 +37,7 @@ class Layer(torch.nn.Module):
             l += [batch_norm]
         if pooling is not None:
             l += [pooling]
-        self.layer = torch.nn.Sequential(l)
+        self.layer = torch.nn.Sequential(*l)
         self.add_module('layer', self.layer)
 
     def forward(self, *args, **kwargs):
