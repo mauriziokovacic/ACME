@@ -286,7 +286,7 @@ def camera_66(camera_distance=1, to_spherical=False, device='cuda:0'):
     return camera_from_polyhedron(Octahedron_3, camera_distance=camera_distance, to_spherical=to_spherical, device=device)
 
 
-def camera_n(n,camera_distance=1, to_spherical=False, device='cuda:0'):
+def camera_n(n, camera_distance=1, to_spherical=False, device='cuda:0'):
     """
     Returns the positions of a camera lying on the vertices of a equilateral polygon on the XY plane
 
