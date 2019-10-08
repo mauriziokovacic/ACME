@@ -20,7 +20,7 @@ class Layer(torch.nn.Module):
         unfreezes all the parameters in the layer
     """
 
-    def __init__(self, layer, activation=None, batch_norm=None, pooling=None):
+    def __init__(self, layer, activation=None, batch_norm=None, pooling=None, dropout=None):
         """
         Parameters
         ----------
@@ -42,6 +42,8 @@ class Layer(torch.nn.Module):
             l += [batch_norm]
         if pooling is not None:
             l += [pooling]
+        if dropout is not None:
+            l += [dropout]
         layer = torch.nn.Sequential(*l)
         self.add_module('layer', layer)
 

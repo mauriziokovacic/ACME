@@ -6,7 +6,7 @@ class Linear(Layer):
     A class representing a fully connected linear layer, followed by activation and batch normalization
     """
 
-    def __init__(self, *args, activation=None, batch_norm=None, **kwargs):
+    def __init__(self, *args, activation=None, batch_norm=None, dropout=None, **kwargs):
         """
         Parameters
         ----------
@@ -24,5 +24,6 @@ class Linear(Layer):
             torch.nn.Linear(*args, **kwargs),
             activation=activation,
             batch_norm=batch_norm,
-            pooling=None
+            pooling=None,
+            dropout=dropout,
         )

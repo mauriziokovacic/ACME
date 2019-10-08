@@ -27,5 +27,6 @@ class Conv(Layer):
             eval('torch.nn.Conv'+str(dim)+'d(*args, **kwargs)'),
             activation=activation,
             batch_norm=batch_norm,
-            pooling=pooling
+            pooling=pooling,
+            dropout=None,
         )
