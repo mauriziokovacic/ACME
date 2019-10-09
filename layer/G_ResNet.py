@@ -99,7 +99,7 @@ class G_ResNet(torch.nn.Module):
 
         y = x
         for layer in self.net:
-            y = layer(y, edge_index, **kwargs)
+            y = torch.nn.functional.relu(layer(y, edge_index, **kwargs), inplace=False)
         return y
 
     def is_empty(self):
