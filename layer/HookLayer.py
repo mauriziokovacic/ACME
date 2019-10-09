@@ -1,7 +1,8 @@
-import torch
 from ..utility.islist    import *
+from ..utility.isstring  import *
 from ..layer.Concatenate import *
 from ..model.hook        import *
+from ..utility.strrep    import *
 
 
 class HookLayer(torch.nn.Module):
@@ -27,7 +28,7 @@ class HookLayer(torch.nn.Module):
         returns the output of the HookLayer
     """
 
-    def __init__(self, layer, hook_layer=None, name='HookLayer'):
+    def __init__(self, layer, hook_layer=None):
         """
         Parameters
         ----------
@@ -40,7 +41,6 @@ class HookLayer(torch.nn.Module):
         super(HookLayer, self).__init__()
         self.add_module('layer', layer)
         self.__hook = {}
-        self.name   = name
         self.bind(hook_layer)
 
     def is_bound(self):
@@ -132,12 +132,13 @@ class ResidualLayer(HookLayer):
         ----------
         layer : torch.nn.Module
             the layer to evaluate
-        operation : str (optional)
-            the operation to perform. It must be one of the following:
-            'cat', 'add', 'mean', 'min', 'max' or 'std' (default is 'cat')
+        operation : str or callable (optional)
+            the operation to perform. It must be either one of the following:
+            'cat', 'add', 'mean', 'min', 'max', 'std', or a callable function (default is 'cat')
         dim : int (optional)
-            the dimension along the residual operation is performed (default is 0)
-        kwargs
+            the dimension along the residual operation is performed (default is 1)
+        kwargs : ...
+            the remaining keyword arguments from HookLayer
         """
 
         fun = {
@@ -149,9 +150,18 @@ class ResidualLayer(HookLayer):
             'std':  lambda x: torch.nn.Sequential(StdLayer(dim=dim), x),
         }
 
-        if operation.lower() in fun:
-            l = fun[operation.lower()](layer)
+        if isstring(operation):
+            if operation.lower() in fun:
+                l = fun[operation.lower()](layer)
+            else:
+                raise ValueError('Input operation must be one of the following:\n{}'.format('\n'.join(['cat', 'add', 'mean', 'min', 'max' or 'std'])))
         else:
-            raise ValueError('Input operation must be one of the following:\n{}'.format('\n'.join(['cat', 'add', 'mean', 'min', 'max' or 'std'])))
+            if callable(operation):
+                l = torch.nn.Sequential(Aggregation(operation, dim=dim), layer)
+            else:
+                raise ValueError('Input operation must be either a valid function or a string')
         super(ResidualLayer, self).__init__(l, **kwargs)
+
+    def __repr__(self):
+        return strrep(self.layer.__repr__(), 'Sequential', 'ResidualLayer')
 
