@@ -1,6 +1,7 @@
 import torch
-from ..utility.islist import *
-from ..model.hook     import *
+from ..utility.islist    import *
+from ..layer.Concatenate import *
+from ..model.hook        import *
 
 
 class HookLayer(torch.nn.Module):
@@ -30,8 +31,8 @@ class HookLayer(torch.nn.Module):
         """
         Parameters
         ----------
-        layer : torch.nn.Module (optional)
-            the layer to bind
+        layer : torch.nn.Module
+            the layer to evaluate
         hook_layer : torch.nn.Module or list (optional)
             the layer(s) to hook (default is None)
         """
@@ -118,3 +119,39 @@ class HookLayer(torch.nn.Module):
         """
 
         return self.layer(*args, *tuple(h.output for h in self.__hook.values()), **kwargs)
+
+
+class ResidualLayer(HookLayer):
+    """
+    A class representing a residual layer.
+    """
+
+    def __init__(self, layer, operation='cat', dim=1, **kwargs):
+        """
+        Parameters
+        ----------
+        layer : torch.nn.Module
+            the layer to evaluate
+        operation : str (optional)
+            the operation to perform. It must be one of the following:
+            'cat', 'add', 'mean', 'min', 'max' or 'std' (default is 'cat')
+        dim : int (optional)
+            the dimension along the residual operation is performed (default is 0)
+        kwargs
+        """
+
+        fun = {
+            'cat':  lambda x: torch.nn.Sequential(Concatenate(dim=dim), x),
+            'add':  lambda x: torch.nn.Sequential(AddLayer(dim=dim), x),
+            'mean': lambda x: torch.nn.Sequential(MeanLayer(dim=dim), x),
+            'min':  lambda x: torch.nn.Sequential(MinLayer(dim=dim), x),
+            'max':  lambda x: torch.nn.Sequential(MaxLayer(dim=dim), x),
+            'std':  lambda x: torch.nn.Sequential(StdLayer(dim=dim), x),
+        }
+
+        if operation.lower() in fun:
+            l = fun[operation.lower()](layer)
+        else:
+            raise ValueError('Input operation must be one of the following:\n{}'.format('\n'.join(['cat', 'add', 'mean', 'min', 'max' or 'std'])))
+        super(ResidualLayer, self).__init__(l, **kwargs)
+
