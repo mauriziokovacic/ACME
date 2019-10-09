@@ -30,7 +30,7 @@ class Model(torch.nn.Module):
         loads the model checkpoint from the given path
     """
 
-    def __init__(self, name='Model', device='cuda:0'):
+    def __init__(self, name='Model', device='cuda:0', **kwargs):
         """
         Parameters
         ----------
