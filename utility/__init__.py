@@ -28,10 +28,12 @@ from .interleave     import *
 from .IntTensor      import *
 from .isbool         import *
 from .iscomplex      import *
+from .isdict         import *
 from .isempty        import *
 from .isfat          import *
 from .isfinite       import *
 from .isfloat        import *
+from .isfunction     import *
 from .isinf          import *
 from .isint          import *
 from .islist         import *
