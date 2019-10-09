@@ -17,6 +17,8 @@ class G_ResNet(torch.nn.Module):
     ----------
     net : torch.nn.ModuleList
         the GCNConv layers composing the ResNet
+    activation : torch.nn.Module
+        the activation function to be applied to each layer
 
     Methods
     -------
@@ -24,7 +26,7 @@ class G_ResNet(torch.nn.Module):
         returns the G-ResNet output
     """
 
-    def __init__(self, in_channels, out_channels, adjacency, operation='cat', dim=1):
+    def __init__(self, in_channels, out_channels, adjacency, operation='cat', dim=1, activation=torch.nn.ReLU(inplace=False)):
         """
         Parameters
         ----------
@@ -39,6 +41,8 @@ class G_ResNet(torch.nn.Module):
             the residual operation to be performed on the i-th graph node (default is 'cat')
         dim : int or list or dict (optional)
             the dimension along the residual operation is performed on the i-th graph node (default is 1)
+        activation : torch.nn.Module (optional)
+            an activation module to be applied to all the layers (default is torch.nn.ReLU)
         """
 
         super(G_ResNet, self).__init__()
@@ -76,6 +80,7 @@ class G_ResNet(torch.nn.Module):
             else:
                 self.net.append(GCNConv(ic, out_channels[n]))
             ic = out_channels[n]
+        self.activation = activation
 
     def forward(self, x, edge_index, **kwargs):
         """
@@ -99,7 +104,7 @@ class G_ResNet(torch.nn.Module):
 
         y = x
         for layer in self.net:
-            y = torch.nn.functional.relu(layer(y, edge_index, **kwargs), inplace=False)
+            y = self.activation(layer(y, edge_index, **kwargs), inplace=False)
         return y
 
     def is_empty(self):
