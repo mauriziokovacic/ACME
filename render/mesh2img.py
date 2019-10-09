@@ -49,7 +49,7 @@ def mesh2img(renderer, T, P, C=None, postFcn=nop, colormap=ColorMap()):
             else:
                 assert False, 'Unknown culling type'
         tf = tf.squeeze()
-        t = t[:,tf]
+        t = t[:, tf]
         i = i[tf]
     if ndim(c) == 1:
         c = colormap.fetch(c)
