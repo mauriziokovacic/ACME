@@ -1,25 +1,14 @@
 import torch
-from ..utility.row                  import *
-from ..utility.nop                  import *
-from ..utility.indices              import *
-from ..math.constant                import *
-from ..math.cos                     import *
-from ..math.sin                     import *
 from ..math.tan                     import *
-from ..math.normvec                 import *
-from ..math.eye                     import *
-from ..math.cross                   import *
 from ..math.cart2sph                import *
 from ..math.sph2cart                import *
 from ..math.sph2rotm                import *
 from ..topology.ind2poly            import *
-from ..topology.poly2poly           import *
 from ..topology.poly2edge           import *
 from ..topology.poly2unique         import *
 from ..geometry.equilateral_polygon import *
 from ..geometry.octahedron          import *
 from ..geometry.icosahedron         import *
-from ..geometry.shape_scale         import *
 from ..geometry.sphere              import *
 from ..geometry.soup2mesh           import *
 
@@ -43,11 +32,11 @@ def view_matrix(cam, target, up):
         a (4,4,) view matrix
     """
 
-    M       = eye(4, device=cam.device)
-    dir     = normr(target-cam)
-    vr      = cross(dir, up)
-    vup     = cross(dir, vr)
-    M[:3,:] = torch.cat((vr.t(), vup.t(), dir.t(), cam.t()), dim=1)
+    M        = eye(4, device=cam.device)
+    dir      = normr(target-cam)
+    vr       = cross(dir, up)
+    vup      = cross(dir, vr)
+    M[:3, :] = torch.cat((vr.t(), vup.t(), dir.t(), cam.t()), dim=1)
     return M
 
 
@@ -74,7 +63,7 @@ def perspective_matrix(aspect, fov, near, far, device='cuda:0'):
         a (4,4,) projection matrix
     """
 
-    M = eye(4, device=device)
+    M       = eye(4, device=device)
     M[0, 0] = 1/(aspect*tan(fov/2))
     M[1, 1] = 1/tan(fov/2)
     M[2, 2] = -(far+near)/(far-near)
