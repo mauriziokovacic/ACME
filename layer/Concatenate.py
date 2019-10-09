@@ -42,7 +42,7 @@ class Concatenate(torch.nn.Module):
             the concatenated tensors
         """
 
-        return torch.cat(*inputs, dim=self.dim)
+        return torch.cat(inputs, dim=self.dim)
 
     def extra_repr(self):
         return 'dim={}'.format(self.dim)
@@ -94,7 +94,11 @@ class Aggregation(Concatenate):
         Tensor
             the aggregated Tensor
         """
-        return self.__aggregationFcn(super(Aggregation, self).forward(*inputs, **kwargs))
+        return self.__aggregationFcn(
+            super(Aggregation, self).forward(
+                *tuple([i.unsqueeze(self.dim) for i in inputs]),
+                **kwargs)
+        )
 
 
 class AddLayer(Aggregation):
@@ -103,7 +107,7 @@ class AddLayer(Aggregation):
     It performs the sum of all the elements of the input tensor along the specified dimension.
     """
 
-    def __init__(self, keepdim=True, dim=1):
+    def __init__(self, keepdim=False, dim=1):
         """
         Parameters
         ----------
@@ -122,7 +126,7 @@ class MeanLayer(Aggregation):
     It performs the mean of all the elements of the input tensor along the specified dimension.
     """
 
-    def __init__(self, keepdim=True, dim=1):
+    def __init__(self, keepdim=False, dim=1):
         """
         Parameters
         ----------
@@ -141,7 +145,7 @@ class MinLayer(Aggregation):
     It performs the min of all the elements of the input tensor along the specified dimension.
     """
 
-    def __init__(self, keepdim=True, dim=1):
+    def __init__(self, keepdim=False, dim=1):
         """
         Parameters
         ----------
@@ -160,7 +164,7 @@ class MaxLayer(Aggregation):
     It performs the max of all the elements of the input tensor along the specified dimension.
     """
 
-    def __init__(self, keepdim=True, dim=1):
+    def __init__(self, keepdim=False, dim=1):
         """
         Parameters
         ----------
@@ -179,7 +183,7 @@ class StdLayer(Aggregation):
     It performs the standard deviation of all the elements of the input tensor along the specified dimension.
     """
 
-    def __init__(self, keepdim=True, dim=1):
+    def __init__(self, keepdim=False, dim=1):
         """
         Parameters
         ----------
