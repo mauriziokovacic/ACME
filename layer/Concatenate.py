@@ -44,6 +44,9 @@ class Concatenate(torch.nn.Module):
 
         return torch.cat(*inputs, dim=self.dim)
 
+    def extra_repr(self):
+        return 'dim={}'.format(self.dim)
+
 
 class Aggregation(Concatenate):
     """
