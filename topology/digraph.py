@@ -330,7 +330,7 @@ class Digraph(object):
         """
 
         if not self.isempty():
-            self.__adj__.to(*args, **kwargs)
+            self.__adj__ = self.__adj__.to(*args, **kwargs)
         return self
 
     def __repr__(self):
