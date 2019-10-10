@@ -1,5 +1,6 @@
 import torch
 from ..math.tan                     import *
+from ..math.cart2affine             import *
 from ..math.cart2sph                import *
 from ..math.sph2cart                import *
 from ..math.sph2rotm                import *
@@ -13,63 +14,160 @@ from ..geometry.sphere              import *
 from ..geometry.soup2mesh           import *
 
 
-def view_matrix(cam, target, up):
-    """
-    Returns the view matrix from the camera position, target and up vector
+class CameraExtrinsic(object):
+    def __init__(self, position=(0, 0, -1), target=(0, 0, 0), up_vector=(0, 1, 0), device='cuda:0'):
+        self.position  = torch.tensor(position,  dtype=torch.float, device=device)
+        self.target    = torch.tensor(target,    dtype=torch.float, device=device)
+        self.up_vector = torch.tensor(up_vector, dtype=torch.float, device=device)
+        self.device    = device
 
-    Parameters
-    ----------
-    cam : Tensor
-        the (1,3,) camera position tensor
-    target : Tensor
-        the (1,3,) target position tensor
-    up : Tensor
-        the (1,3,) up tensor
+    def look_at(self, target):
+        self.target = target
+        return self
 
-    Returns
-    -------
-    Tensor
-        a (4,4,) view matrix
-    """
+    def look_from(self, position):
+        self.position = position
+        return self
 
-    M        = eye(4, device=cam.device)
-    dir      = normr(target-cam)
-    vr       = cross(dir, up)
-    vup      = cross(dir, vr)
-    M[:3, :] = torch.cat((vr.t(), vup.t(), dir.t(), cam.t()), dim=1)
-    return M
+    def direction(self):
+        return self.target - self.position
+
+    def view_matrix(self):
+        """
+        Returns the view matrix
+
+        Returns
+        -------
+        Tensor
+            a (4,4,) view matrix
+        """
+
+        z = normr(self.direction().unsqueeze(0))
+        x = normr(cross(self.up_vector.unsqueeze(0), z))
+        y = cross(z, x)
+        p = self.position.unsqueeze(0)
+        M = torch.cat((torch.cat((x.t(), y.t(), z.t(), -p.t()), dim=1),
+                       torch.tensor([[0, 0, 0, 1]], dtype=torch.float, device=self.device)),
+                      dim=0)
+        return M
+
+    def to(self, **kwargs):
+        if 'device' in kwargs:
+            self.device = kwargs['device']
+        self.position  = self.position.to(**kwargs)
+        self.target    = self.target.to(**kwargs)
+        self.up_vector = self.up_vector.to(**kwargs)
+        return self
+
+    def __setattr__(self, key, value):
+        self.__dict__[key] = value
+        if key == 'device':
+            self.position = self.position.to(self.device)
+            self.target = self.target.to(self.device)
+            self.up_vector = self.up_vector.to(self.device)
 
 
-def perspective_matrix(aspect, fov, near, far, device='cuda:0'):
-    """
-    Returns the perspective projection matrix from the camera settings
+class CameraIntrinsic(object):
+    def __init__(self, fov=30, near=0.1, far=10, image_size=(256, 256), projection='perspective', device='cuda:0'):
+        self.fov        = fov
+        self.near       = near
+        self.far        = far
+        self.image_size = image_size
+        self.projection = projection
+        self.device     = device
 
-    Parameters
-    ----------
-    aspect : float
-        the aspect ratio of the final image
-    fov : float
-        the lens angle aperture (in radians)
-    near : float
-        the distance of the near clipping plane
-    far : float
-        the distance of the far clipping plane
-    device : str or torch.device (optional)
-        the device the tensor will be stored to (default is 'cuda:0')
+    def aspect(self):
+        return self.image_size[0] / self.image_size[1]
 
-    Returns
-    -------
-    Tensor
-        a (4,4,) projection matrix
-    """
+    def projection_matrix(self):
+        if self.projection == 'orthographic':
+            return self.orthographic_matrix()
+        if self.projection == 'perspective':
+            return self.perspective_matrix()
+        raise ValueError('Unknown projection type.')
 
-    M       = eye(4, device=device)
-    M[0, 0] = 1/(aspect*tan(fov/2))
-    M[1, 1] = 1/tan(fov/2)
-    M[2, 2] = -(far+near)/(far-near)
-    M[2, 3] = -2 * (far * near) / (far-near)
-    M[3, 2] = -1
-    return M
+    def orthographic_matrix(self):
+        """
+        Returns the orthographic projection matrix
+
+        Returns
+        -------
+        Tensor
+            a (4,4,) projection matrix
+        """
+
+        M = torch.zeros(4, 4, device=self.device)
+        M[0, 0] = 1 / (self.aspect() * tan(self.fov / 2))
+        M[1, 1] = 1 / tan(self.fov / 2)
+        M[2, 2] = 2 / (self.far - self.near)
+        M[2, 3] = -(self.far + self.near) / (self.far - self.near)
+        M[3, 3] = 1
+        return M
+
+    def perspective_matrix(self):
+        """
+        Returns the perspective projection matrix
+
+        Returns
+        -------
+        Tensor
+            a (4,4,) projection matrix
+        """
+
+        M = torch.zeros(4, 4, device=self.device)
+        M[0, 0] = 1 / (self.aspect() * tan(self.fov / 2))
+        M[1, 1] = 1 / tan(self.fov / 2)
+        M[2, 2] = (self.far + self.near) / (self.far - self.near)
+        M[2, 3] = -2 * (self.far * self.near) / (self.far - self.near)
+        M[3, 2] = 1
+        return M
+
+    def to(self, **kwargs):
+        if 'device' in kwargs:
+            self.device = kwargs['device']
+        return self
+
+
+class Camera(object):
+    def __init__(self,
+                 extrinsic=CameraExtrinsic(),
+                 intrinsic=CameraIntrinsic(),
+                 name='Camera', device='cuda:0'):
+        self.extrinsic = extrinsic
+        self.intrinsic = intrinsic
+        self.name      = name
+        self.device    = device
+
+    def project(self, P):
+        w = self.intrinsic.image_size[0]
+        h = self.intrinsic.image_size[1]
+        v = torch.tensor([[w/2, h/2, 1/2]], dtype=torch.float, device=P.device)
+        Q = torch.matmul(cart2affine(P, w=1),
+                         torch.matmul(self.intrinsic.projection_matrix(),
+                                      self.extrinsic.view_matrix()).t())
+        return (Q[:, :3] / Q[:, 3]) * v + v
+
+    def unproject(self, Q):
+        w = self.intrinsic.image_size[0]
+        h = self.intrinsic.image_size[1]
+        v = torch.tensor([[2/w, 2/h, 2]], dtype=torch.float, device=Q.device)
+        P = torch.matmul(cart2affine(Q*v-1, w=1),
+                         torch.inverse(torch.matmul(self.intrinsic.projection_matrix(),
+                                                    self.extrinsic.view_matrix())).t())
+        return P[:, :3] / (1 / P[:, 3])
+
+    def to(self, **kwargs):
+        if 'device' in kwargs:
+            self.device = kwargs['device']
+        self.extrinsic.to(**kwargs)
+        self.intrinsic.to(**kwargs)
+        return self
+
+    def __setattr__(self, key, value):
+        self.__dict__[key] = value
+        if key == 'device':
+            self.extrinsic.to(device=self.device)
+            self.intrinsic.to(device=self.device)
 
 
 def bokeh_camera(P, n=4, aperture=PI_16):
