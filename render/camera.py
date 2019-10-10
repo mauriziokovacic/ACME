@@ -400,7 +400,7 @@ class Camera(object):
                          torch.inverse(torch.matmul(self.intrinsic.projection_matrix(),
                                                     self.extrinsic.view_matrix())).t())
         # Normalize the coordinates
-        return P[:, :3] / (1 / P[:, 3])
+        return P[:, :3] / P[:, 3]
 
     def to(self, **kwargs):
         """
