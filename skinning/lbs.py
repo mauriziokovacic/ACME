@@ -1,5 +1,5 @@
 from ..math.normvec     import *
-from ..math.cart2affine import *
+from ..math.cart2homo import *
 from ..utility.matmul   import *
 
 
@@ -48,7 +48,7 @@ def transform(T, X, mode='point'):
         if strcmpi(mode, 'normal'):
             w = 0
     return matmul(T,
-                  cart2affine(X, w=w).view(-1, X.size(1)+1, 1)
+                  cart2homo(X, w=w).view(-1, X.size(1) + 1, 1)
                   )[:, :-1].view(*X.size())
 
 

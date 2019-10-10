@@ -1,5 +1,4 @@
 from .acos               import *
-from .affine2cart        import *
 from .affine2linear      import *
 from .affine2rotation    import *
 from .affine2rotm        import *
@@ -9,7 +8,7 @@ from .angle              import *
 from .axang2rotm         import *
 from .axis               import *
 from .barrier_function   import *
-from .cart2affine        import *
+from .cart2homo          import *
 from .cart2pol           import *
 from .cart2sph           import *
 from .constant           import *
@@ -23,6 +22,7 @@ from .eul2rotm           import *
 from .eye                import *
 from .fibonacci          import *
 from .floor              import *
+from .homo2cart          import *
 from .knn                import *
 from .linear2affine      import *
 from .linint             import *

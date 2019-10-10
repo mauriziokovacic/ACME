@@ -1,6 +1,6 @@
-def affine2cart(P):
+def homo2cart(P):
     """
-    Converts a points set from affine coordinates to standard cartesian
+    Converts a points set from homogeneous coordinates to standard cartesian
 
     Parameters
     ----------

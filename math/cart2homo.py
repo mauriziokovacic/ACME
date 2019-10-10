@@ -3,21 +3,21 @@ from ..utility.row            import *
 from ..utility.ConstantTensor import *
 
 
-def cart2affine(P, w=1):
+def cart2homo(P, w=1):
     """
-    Converts a points set from cartersian to affine coordinates
+    Converts a points set from cartersian to homogeneous coordinates
 
     Parameters
     ----------
     P : Tensor
-        the affine coordinates
+        the cartesian coordinates
     w : float (optional)
         the fourth component
 
     Returns
     -------
     Tensor
-        the affine coorodinates
+        the homogeneous coorodinates
     """
 
     return torch.cat((P, ConstantTensor(w, row(P), 1, dtype=P.dtype, device=P.device)), dim=1)

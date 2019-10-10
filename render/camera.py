@@ -1,6 +1,6 @@
 import torch
 from ..math.tan                     import *
-from ..math.cart2affine             import *
+from ..math.cart2homo             import *
 from ..math.cart2sph                import *
 from ..math.deg2rad                 import *
 from ..math.sph2cart                import *
@@ -363,12 +363,16 @@ class Camera(object):
             a (N,3,) tensor containing u, v and depth
         """
 
+        # Image width and height
         w = self.intrinsic.image_size[0]
         h = self.intrinsic.image_size[1]
+        # Normalization factor (bring the coordinates from [-1,1] to [0, w], [0, h] and [0, 1] respectively)
         v = torch.tensor([[w/2, h/2, 1/2]], dtype=torch.float, device=P.device)
-        Q = torch.matmul(cart2affine(P, w=1),
+        # Transform the points into homogeneous coordinates, transform them into camera space and then project them
+        Q = torch.matmul(cart2homo(P, w=1),
                          torch.matmul(self.intrinsic.projection_matrix(),
                                       self.extrinsic.view_matrix()).t())
+        # Bring the points into normalized homogeneous coordinates and normalize their values
         return (Q[:, :3] / Q[:, 3]) * v + v
 
     def unproject(self, Q):
@@ -386,12 +390,16 @@ class Camera(object):
             a (N,3,) points set tensor
         """
 
+        # Image width and height
         w = self.intrinsic.image_size[0]
         h = self.intrinsic.image_size[1]
+        # Normalization factor (brings the coordinates to [-1, 1])
         v = torch.tensor([[2/w, 2/h, 2]], dtype=torch.float, device=Q.device)
-        P = torch.matmul(cart2affine(Q*v-1, w=1),
+        # Change the points domain, transform them into homogeneous, and invert the projection process
+        P = torch.matmul(cart2homo(Q * v - 1, w=1),
                          torch.inverse(torch.matmul(self.intrinsic.projection_matrix(),
                                                     self.extrinsic.view_matrix())).t())
+        # Normalize the coordinates
         return P[:, :3] / (1 / P[:, 3])
 
     def to(self, **kwargs):
@@ -407,7 +415,7 @@ class Camera(object):
         Camera
             the camera itself
         """
-        
+
         if 'device' in kwargs:
             self.device = kwargs['device']
         self.extrinsic.to(**kwargs)
