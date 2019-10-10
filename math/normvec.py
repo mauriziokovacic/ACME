@@ -33,7 +33,7 @@ def normr(tensor, p=2):
         exponent of the norm (default is 2)
     """
 
-    return normvec(tensor, p=p, dim=1)
+    return normvec(tensor, p=p, dim=-1)
 
 
 def normc(tensor, p=2):
@@ -48,7 +48,7 @@ def normc(tensor, p=2):
         exponent of the norm (default is 2)
     """
 
-    return normvec(tensor, p=p, dim=0)
+    return normvec(tensor, p=p, dim=-2)
 
 
 def normd(tensor, p=2):
