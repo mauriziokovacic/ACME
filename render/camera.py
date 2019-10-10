@@ -2,6 +2,7 @@ import torch
 from ..math.tan                     import *
 from ..math.cart2affine             import *
 from ..math.cart2sph                import *
+from ..math.deg2rad                 import *
 from ..math.sph2cart                import *
 from ..math.sph2rotm                import *
 from ..topology.ind2poly            import *
@@ -15,26 +16,104 @@ from ..geometry.soup2mesh           import *
 
 
 class CameraExtrinsic(object):
-    def __init__(self, position=(0, 0, -1), target=(0, 0, 0), up_vector=(0, 1, 0), device='cuda:0'):
+    """
+    A class representing the camera extrinsic properties
+
+    Attributes
+    ----------
+    position : Tensor
+        the camera position
+    target : Tensor
+        the camera target
+    up_vector : Tensor
+        the camera up vector
+    device : str or torch.device
+        the device to store the tensors to
+
+    Methods
+    -------
+    look_at(target)
+        sets the camera target
+    look_from(position)
+        sets the camera position
+    direction()
+        returns the camera direction
+    view_matrix()
+        returns the current view matrix
+    to(**kwargs)
+        changes extrinsic dtype and/or device
+    """
+
+    def __init__(self, position=(0, 0, 0), target=(0, 0, 1), up_vector=(0, 1, 0), device='cuda:0'):
+        """
+        Parameters
+        ----------
+        position : list or tuple (optional)
+            the camera position (default is (0, 0, 0))
+        target : list or tuple (optional)
+            the camera target (default is (0, 0, 1))
+        up_vector : list or tuple (optional)
+            the camera up vector (default is (0, 1, 0))
+        device : str or torch.device (optional)
+            the device to store the tensors to (default is 'cuda:0')
+        """
+
         self.position  = torch.tensor(position,  dtype=torch.float, device=device)
         self.target    = torch.tensor(target,    dtype=torch.float, device=device)
         self.up_vector = torch.tensor(up_vector, dtype=torch.float, device=device)
         self.device    = device
 
     def look_at(self, target):
+        """
+        Sets the camera target
+
+        Parameters
+        ----------
+        target : Tensor
+            the (3,) target tensor
+
+        Returns
+        -------
+        CameraExtrinsic
+            the extrinsic itself
+        """
+
         self.target = target
         return self
 
     def look_from(self, position):
+        """
+        Sets the camera position
+
+        Parameters
+        ----------
+        position : Tensor
+            the (3,) position tensor
+
+        Returns
+        -------
+        CameraExtrinsic
+            the extrinsic itself
+        """
+
         self.position = position
         return self
 
     def direction(self):
+        """
+        Returns the camera direction
+
+        Returns
+        -------
+        Tensor
+            the (3,) direction tensor
+        """
+
         return self.target - self.position
 
     def view_matrix(self):
         """
-        Returns the view matrix
+        Returns the current view matrix
 
         Returns
         -------
@@ -52,6 +131,19 @@ class CameraExtrinsic(object):
         return M
 
     def to(self, **kwargs):
+        """
+        Changes the extrinsic dtype and/or device
+
+        Parameters
+        ----------
+        kwargs : ...
+
+        Returns
+        -------
+        CameraExtrinsic
+            the extrinsic itself
+        """
+
         if 'device' in kwargs:
             self.device = kwargs['device']
         self.position  = self.position.to(**kwargs)
@@ -68,7 +160,56 @@ class CameraExtrinsic(object):
 
 
 class CameraIntrinsic(object):
+    """
+    A class representing the camera intrinsic
+
+    Attributes
+    ----------
+    fov : float
+        the camera field of view angle in degrees
+    near : float
+        the near clipping plane distance
+    far : float
+        the far clipping plane distance
+    image_size : tuple or list
+        the image width and height
+    projection : str
+        the camera projection type ('orthographic' or 'perspective')
+    device : str or torch.device
+        the device to store the tensors to
+
+    Methods
+    -------
+    aspect()
+        returns the aspect ratio of the image
+    projection_matrix()
+        returns the current projection matrix
+    orthographic_matrix()
+        returns the current orthographic matrix
+    perspective_matrix()
+        returns the current perspective matrix
+    to(**kwargs)
+        changes the intrinsic device
+    """
+
     def __init__(self, fov=30, near=0.1, far=10, image_size=(256, 256), projection='perspective', device='cuda:0'):
+        """
+        Parameters
+        ----------
+        fov : float (optional)
+            the camera field of view in degrees (default is 30)
+        near : float (optional)
+            the camera near clipping plane distance (default is 0.1)
+        far : float (optional)
+            the camera far clipping plane distance (default is 10)
+        image_size : list or tuple (optional)
+            the image width and height (default is (256, 256))
+        projection : str (optional)
+            the projection type (default is 'perspective')
+        device : str or torch.device (optional)
+            the device to store the tensors to (default is 'cuda:0')
+        """
+
         self.fov        = fov
         self.near       = near
         self.far        = far
@@ -77,9 +218,26 @@ class CameraIntrinsic(object):
         self.device     = device
 
     def aspect(self):
+        """
+        Returns the aspect ratio of the image
+
+        Returns
+        -------
+        float
+            the aspect ratio
+        """
         return self.image_size[0] / self.image_size[1]
 
     def projection_matrix(self):
+        """
+        Returns the current projection matrix
+
+        Returns
+        -------
+        Tensor
+            a (4,4,) projection matrix
+        """
+
         if self.projection == 'orthographic':
             return self.orthographic_matrix()
         if self.projection == 'perspective':
@@ -96,9 +254,10 @@ class CameraIntrinsic(object):
             a (4,4,) projection matrix
         """
 
+        fov = deg2rad(self.fov)
         M = torch.zeros(4, 4, device=self.device)
-        M[0, 0] = 1 / (self.aspect() * tan(self.fov / 2))
-        M[1, 1] = 1 / tan(self.fov / 2)
+        M[0, 0] = 1 / (self.aspect() * tan(fov / 2))
+        M[1, 1] = 1 / tan(fov / 2)
         M[2, 2] = 2 / (self.far - self.near)
         M[2, 3] = -(self.far + self.near) / (self.far - self.near)
         M[3, 3] = 1
@@ -114,31 +273,96 @@ class CameraIntrinsic(object):
             a (4,4,) projection matrix
         """
 
+        fov = deg2rad(self.fov)
         M = torch.zeros(4, 4, device=self.device)
-        M[0, 0] = 1 / (self.aspect() * tan(self.fov / 2))
-        M[1, 1] = 1 / tan(self.fov / 2)
+        M[0, 0] = 1 / (self.aspect() * tan(fov / 2))
+        M[1, 1] = 1 / tan(fov / 2)
         M[2, 2] = (self.far + self.near) / (self.far - self.near)
         M[2, 3] = -2 * (self.far * self.near) / (self.far - self.near)
         M[3, 2] = 1
         return M
 
     def to(self, **kwargs):
+        """
+        Changes the the intrinsic device
+
+        Parameters
+        ----------
+        kwargs : ...
+
+        Returns
+        -------
+        CameraIntrinsic
+            the intrinsic itself
+        """
+
         if 'device' in kwargs:
             self.device = kwargs['device']
         return self
 
 
 class Camera(object):
+    """
+    A class representing a camera
+
+    Attributes
+    ----------
+    extrinsic : CameraExtrinsic
+        the camera extrinsic
+    intrinsic : CameraIntrinsic
+        the camera intrinsic
+    name : str
+        the camera name
+    device : str or torch.device
+        the device to store the tensors to
+
+    Methods
+    -------
+    project(P)
+        projects the given 3D points into the 2D image
+    unproject(Q)
+        unprojects the given 2D points + depth to 3D space
+    to(**kwargs)
+        changes the camera dtype and/or device
+    """
+
     def __init__(self,
                  extrinsic=CameraExtrinsic(),
                  intrinsic=CameraIntrinsic(),
                  name='Camera', device='cuda:0'):
+        """
+        Parameters
+        ----------
+        extrinsic : CameraExtrinsic (optional)
+            the camera extrinsic (default is CameraExtrinsic())
+        intrinsic : CameraIntrinsic (optional)
+            the camera intrinsic (default is CameraIntrinsic())
+        name : str (optional)
+            the name of the camera (default is 'Camera')
+        device : str or torch.device (optional)
+            the device to store the tensors to
+        """
+
         self.extrinsic = extrinsic
         self.intrinsic = intrinsic
         self.name      = name
         self.device    = device
 
     def project(self, P):
+        """
+        Projects the given 3D points into the 2D image
+
+        Parameters
+        ----------
+        P : Tensor
+            a (N,3,) points set tensor
+
+        Returns
+        -------
+        Tensor
+            a (N,3,) tensor containing u, v and depth
+        """
+
         w = self.intrinsic.image_size[0]
         h = self.intrinsic.image_size[1]
         v = torch.tensor([[w/2, h/2, 1/2]], dtype=torch.float, device=P.device)
@@ -148,6 +372,20 @@ class Camera(object):
         return (Q[:, :3] / Q[:, 3]) * v + v
 
     def unproject(self, Q):
+        """
+        Unprojects the given 2D points + depth to 3D space
+
+        Parameters
+        ----------
+        Q : Tensor
+            a (N,3,) points set tensor consisting of u,v and depth values
+
+        Returns
+        -------
+        Tensor
+            a (N,3,) points set tensor
+        """
+
         w = self.intrinsic.image_size[0]
         h = self.intrinsic.image_size[1]
         v = torch.tensor([[2/w, 2/h, 2]], dtype=torch.float, device=Q.device)
@@ -157,6 +395,19 @@ class Camera(object):
         return P[:, :3] / (1 / P[:, 3])
 
     def to(self, **kwargs):
+        """
+        Changes the camera dtype and/or device
+
+        Parameters
+        ----------
+        kwargs : ...
+
+        Returns
+        -------
+        Camera
+            the camera itself
+        """
+        
         if 'device' in kwargs:
             self.device = kwargs['device']
         self.extrinsic.to(**kwargs)
