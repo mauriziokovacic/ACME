@@ -349,7 +349,7 @@ class Camera(object):
         self.name      = name
         self.device    = device
 
-    def project(self, P, pixels=True):
+    def project(self, P, pixels=True, dim=-1):
         """
         Projects the given 3D points into the 2D image
 
@@ -366,21 +366,25 @@ class Camera(object):
             a (N,3,) tensor containing UVs and depth
         """
 
-        s = torch.tensor([[1/2, 1/2, 1/2]], dtype=torch.float, device=self.device)
+        s = 0.5
         if pixels:
             # Image width and height
             w = self.intrinsic.image_size[0] - 1
             h = self.intrinsic.image_size[1] - 1
+            t = torch.ones(P.ndimension(), dtype=torch.long, device=P.device)
+            t[dim] = -1
             # Normalization factor (bring the coordinates from [-1,1] to [0, w], [0, h] and [0, 1] respectively)
-            s *= torch.tensor([[w, h, 1]], dtype=torch.float, device=self.device)
+            s *= torch.tensor([w, h, 1], dtype=torch.float, device=self.device).view(*t)
         # Transform the points into homogeneous coordinates, transform them into camera space and then project them
-        UVd = torch.matmul(cart2homo(P, w=1),
-                           torch.matmul(self.intrinsic.projection_matrix(),
-                                        self.extrinsic.view_matrix()).t())
+        UVd = torch.matmul(cart2homo(P, w=1, dim=dim),
+                           torch.transpose(torch.matmul(self.intrinsic.projection_matrix(),
+                                                        self.extrinsic.view_matrix()).t(),
+                                           -1, -2)
+                           )
         # Bring the points into normalized homogeneous coordinates and normalize their values
-        return homo2cart(UVd) * s + s
+        return homo2cart(UVd, dim=dim) * s + s
 
-    def unproject(self, UVd, pixels=True):
+    def unproject(self, UVd, pixels=True, dim=-1):
         """
         Unprojects the given 2D points + depth to 3D space
 
@@ -397,19 +401,21 @@ class Camera(object):
             a (N,3,) points set tensor
         """
 
-        s = torch.tensor([[2, 2, 2]], dtype=torch.float, device=self.device)
+        s = 2
         if pixels:
             # Image width and height
             w = self.intrinsic.image_size[0] - 1
             h = self.intrinsic.image_size[1] - 1
+            t = torch.ones(UVd.ndimension(), dtype=torch.long, device=P.device)
+            t[dim] = -1
             # Normalization factor (brings the coordinates to [-1, 1])
-            s /= torch.tensor([[w, h, 1]], dtype=torch.float, device=self.device)
+            s /= torch.tensor([w, h, 1], dtype=torch.float, device=self.device).view(*t)
         # Change the points domain, transform them into homogeneous, and invert the projection process
-        P = torch.matmul(cart2homo(UVd * s - 1, w=1),
+        P = torch.matmul(cart2homo(UVd * s - 1, w=1, dim=dim),
                          torch.inverse(torch.matmul(self.intrinsic.projection_matrix(),
                                                     self.extrinsic.view_matrix())).t())
         # Normalize the coordinates
-        return homo2cart(P)
+        return homo2cart(P, dim=dim)
 
     def to(self, **kwargs):
         """
