@@ -378,7 +378,7 @@ class Camera(object):
         # Transform the points into homogeneous coordinates, transform them into camera space and then project them
         UVd = torch.matmul(cart2homo(P, w=1, dim=dim),
                            torch.transpose(torch.matmul(self.intrinsic.projection_matrix(),
-                                                        self.extrinsic.view_matrix()).t(),
+                                                        self.extrinsic.view_matrix()),
                                            -1, -2)
                            )
         # Bring the points into normalized homogeneous coordinates and normalize their values
