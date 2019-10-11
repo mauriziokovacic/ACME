@@ -1,8 +1,9 @@
 import torch
 from ..math.tan                     import *
-from ..math.cart2homo             import *
+from ..math.cart2homo               import *
 from ..math.cart2sph                import *
 from ..math.deg2rad                 import *
+from ..math.homo2cart               import *
 from ..math.sph2cart                import *
 from ..math.sph2rotm                import *
 from ..topology.ind2poly            import *
@@ -348,7 +349,7 @@ class Camera(object):
         self.name      = name
         self.device    = device
 
-    def project(self, P):
+    def project(self, P, pixels=True):
         """
         Projects the given 3D points into the 2D image
 
@@ -356,33 +357,39 @@ class Camera(object):
         ----------
         P : Tensor
             a (N,3,) points set tensor
+        pixels : bool (optional)
+            if True the UVs are returned in floating point pixel coordinates
 
         Returns
         -------
         Tensor
-            a (N,3,) tensor containing u, v and depth
+            a (N,3,) tensor containing UVs and depth
         """
 
-        # Image width and height
-        w = self.intrinsic.image_size[0]
-        h = self.intrinsic.image_size[1]
-        # Normalization factor (bring the coordinates from [-1,1] to [0, w], [0, h] and [0, 1] respectively)
-        v = torch.tensor([[w/2, h/2, 1/2]], dtype=torch.float, device=P.device)
+        s = torch.tensor([[1/2, 1/2, 1/2]], dtype=torch.float, device=self.device)
+        if pixels:
+            # Image width and height
+            w = self.intrinsic.image_size[0] - 1
+            h = self.intrinsic.image_size[1] - 1
+            # Normalization factor (bring the coordinates from [-1,1] to [0, w], [0, h] and [0, 1] respectively)
+            s *= torch.tensor([[w, h, 1]], dtype=torch.float, device=self.device)
         # Transform the points into homogeneous coordinates, transform them into camera space and then project them
-        Q = torch.matmul(cart2homo(P, w=1),
-                         torch.matmul(self.intrinsic.projection_matrix(),
-                                      self.extrinsic.view_matrix()).t())
+        UVd = torch.matmul(cart2homo(P, w=1),
+                           torch.matmul(self.intrinsic.projection_matrix(),
+                                        self.extrinsic.view_matrix()).t())
         # Bring the points into normalized homogeneous coordinates and normalize their values
-        return (Q[:, :3] / Q[:, 3]) * v + v
+        return homo2cart(UVd) * s + s
 
-    def unproject(self, Q):
+    def unproject(self, UVd, pixels=True):
         """
         Unprojects the given 2D points + depth to 3D space
 
         Parameters
         ----------
-        Q : Tensor
-            a (N,3,) points set tensor consisting of u,v and depth values
+        UVd : Tensor
+            a (N,3,) points set tensor consisting of UVs and depth values
+        pixels : bool (optional)
+            if True, the UVs are treated as floating point pixel coordinates
 
         Returns
         -------
@@ -390,17 +397,19 @@ class Camera(object):
             a (N,3,) points set tensor
         """
 
-        # Image width and height
-        w = self.intrinsic.image_size[0]
-        h = self.intrinsic.image_size[1]
-        # Normalization factor (brings the coordinates to [-1, 1])
-        v = torch.tensor([[2/w, 2/h, 2]], dtype=torch.float, device=Q.device)
+        s = torch.tensor([[2, 2, 2]], dtype=torch.float, device=self.device)
+        if pixels:
+            # Image width and height
+            w = self.intrinsic.image_size[0] - 1
+            h = self.intrinsic.image_size[1] - 1
+            # Normalization factor (brings the coordinates to [-1, 1])
+            s /= torch.tensor([[w, h, 1]], dtype=torch.float, device=self.device)
         # Change the points domain, transform them into homogeneous, and invert the projection process
-        P = torch.matmul(cart2homo(Q * v - 1, w=1),
+        P = torch.matmul(cart2homo(UVd * s - 1, w=1),
                          torch.inverse(torch.matmul(self.intrinsic.projection_matrix(),
                                                     self.extrinsic.view_matrix())).t())
         # Normalize the coordinates
-        return P[:, :3] / P[:, 3]
+        return homo2cart(P)
 
     def to(self, **kwargs):
         """
