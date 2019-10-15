@@ -57,7 +57,7 @@ class GAN(Model):
             the discriminator classification and the output of the generator
         """
         y_hat = self.G(x)
-        c     = self.D(torch.cat((y_hat, y), dim=0))
+        c     = self.D(y, y_hat)
         return c, y_hat
 
 
