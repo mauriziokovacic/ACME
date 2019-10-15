@@ -77,7 +77,7 @@ def import_OBJ(filename, device='cuda:0', verbose=False):
     Returns
     -------
     (Tensor,Tensor,Tensor,LongTensor)
-        the mesh vertices, normals,uv and the topology tensor
+        the mesh vertices, normals, uv and the topology tensor
     """
 
     def readDataFcn(fileID):
