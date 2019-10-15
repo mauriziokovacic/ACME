@@ -20,11 +20,11 @@ def plot_grad(session, grad, win='Grad', **kwargs):
     object
         the plot object
     """
-    
+
     x = []
     y = []
     for i, value in grad.values():
-        x += [value]
+        x += [value[0]]
         y += [i]
     session.line(X=numpy.array(x),
                  Y=numpy.array(y),
