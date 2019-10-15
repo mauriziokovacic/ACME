@@ -23,7 +23,7 @@ def plot_grad(session, grad, win='Grad', **kwargs):
 
     x = []
     y = []
-    for i, value in grad.values():
+    for i, value in enumerate(grad.values()):
         x += [value[0]]
         y += [i]
     session.line(X=numpy.array(x),
