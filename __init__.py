@@ -13,3 +13,4 @@ from .topology       import *
 from .training       import *
 from .transform      import *
 from .utility        import *
+from .visdom         import *
