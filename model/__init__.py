@@ -1,6 +1,7 @@
 from .autoencoder  import *
 from .cycle        import *
 from .gan          import *
+from .grad_flow    import *
 from .hook         import *
 from .model        import *
 from .weight_init  import *
