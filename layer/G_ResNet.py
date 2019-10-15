@@ -5,7 +5,7 @@ from ..utility.isfunction import *
 from ..utility.islist     import *
 from ..utility.isstring   import *
 from ..utility.strrep     import *
-from .HookLayer           import ResidualLayer
+from .HookLayer           import GResidualLayer
 
 
 class G_ResNet(torch.nn.Module):
@@ -26,7 +26,13 @@ class G_ResNet(torch.nn.Module):
         returns the G-ResNet output
     """
 
-    def __init__(self, in_channels, out_channels, adjacency, operation='cat', dim=1, activation=torch.nn.ReLU(inplace=False)):
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 adjacency={},
+                 operation='cat',
+                 dim=1,
+                 activation=torch.nn.ReLU(inplace=False)):
         """
         Parameters
         ----------
@@ -34,9 +40,9 @@ class G_ResNet(torch.nn.Module):
             the number of input channels
         out_channels : list
             the output channels, one int for each layer
-        adjacency : dict
+        adjacency : dict (optional)
             the adjacency for residual layers.
-            The key is the index of the layer and the value is a list of indices of the connected layers
+            The key is the index of the layer and the value is a list of indices of the connected layers (default is {})
         operation : str or callable or list or dict (optional)
             the residual operation to be performed on the i-th graph node (default is 'cat')
         dim : int or list or dict (optional)
@@ -73,10 +79,10 @@ class G_ResNet(torch.nn.Module):
                 else:
                     ic = out_channels[p[0]]
                 # Add the new layer
-                self.net.append(ResidualLayer(GCNConv(ic, out_channels[n]),
-                                              operation=op,
-                                              dim=d,
-                                              hook_layer=[self.net[j] for j in p]))
+                self.net.append(GResidualLayer(GCNConv(ic, out_channels[n]),
+                                               operation=op,
+                                               dim=d,
+                                               hook_layer=[self.net[j] for j in p]))
             else:
                 self.net.append(GCNConv(ic, out_channels[n]))
             ic = out_channels[n]
@@ -104,7 +110,7 @@ class G_ResNet(torch.nn.Module):
 
         y = x
         for layer in self.net:
-            y = self.activation(layer(y, edge_index, **kwargs), inplace=False)
+            y = self.activation(layer(y, edge_index, **kwargs))
         return y
 
     def is_empty(self):
@@ -135,6 +141,6 @@ class G_ResNet(torch.nn.Module):
         return strrep(self.net.__repr__(), 'ModuleList', 'G-ResNet')
 
     def __getitem__(self, i):
-        if isinstance(self.net[i], ResidualLayer):
-            return self.net[i].layer[1]
+        if isinstance(self.net[i], GResidualLayer):
+            return self.net[i].layer
         return self.net[i]
