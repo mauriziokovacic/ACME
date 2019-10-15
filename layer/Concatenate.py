@@ -94,6 +94,7 @@ class Aggregation(Concatenate):
         Tensor
             the aggregated Tensor
         """
+
         return self.__aggregationFcn(
             super(Aggregation, self).forward(
                 *tuple([i.unsqueeze(self.dim) for i in inputs]),
