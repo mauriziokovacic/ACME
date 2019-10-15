@@ -118,7 +118,7 @@ class HookLayer(torch.nn.Module):
             the output of the HookLayer
         """
 
-        return self.layer(*args, *tuple(h.output for h in self.__hook.values()), **kwargs)
+        return self.layer(*tuple(h.output for h in self.__hook.values()), *args, **kwargs)
 
 
 class ResidualLayer(HookLayer):
@@ -164,4 +164,82 @@ class ResidualLayer(HookLayer):
 
     def __repr__(self):
         return strrep(self.layer.__repr__(), 'Sequential', 'ResidualLayer')
+
+
+class GResidualLayer(HookLayer):
+    """
+    A class representing a graph residual layer.
+
+    Attributes
+    ----------
+    aggr : torch.nn.Module
+        the aggregation module
+
+    Methods
+    -------
+    forward(x, *args, **kwargs)
+        computes the aggregation and then returns the layer output
+    """
+
+    def __init__(self, layer, operation='cat', dim=1, **kwargs):
+        """
+        Parameters
+        ----------
+        layer : torch.nn.Module
+            the layer to evaluate
+        operation : str or callable (optional)
+            the operation to perform. It must be either one of the following:
+            'cat', 'add', 'mean', 'min', 'max', 'std', or a callable function (default is 'cat')
+        dim : int (optional)
+            the dimension along the residual operation is performed (default is 1)
+        kwargs : ...
+            the remaining keyword arguments from HookLayer
+        """
+
+        super(GResidualLayer, self).__init__(layer, **kwargs)
+
+        fun = {
+            'cat' : lambda: Concatenate(dim=dim),
+            'add' : lambda: AddLayer(dim=dim),
+            'mean': lambda: MeanLayer(dim=dim),
+            'min' : lambda: MinLayer(dim=dim),
+            'max' : lambda: MaxLayer(dim=dim),
+            'std' : lambda: StdLayer(dim=dim),
+        }
+
+        if isstring(operation):
+            if operation.lower() in fun:
+                aggr = fun[operation.lower()]()
+            else:
+                raise ValueError('Input operation must be one of the following:\n{}'.format('\n'.join(['cat', 'add', 'mean', 'min', 'max' or 'std'])))
+        else:
+            if callable(operation):
+                aggr = Aggregation(operation, dim=dim)
+            else:
+                raise ValueError('Input operation must be either a valid function or a string')
+        self.add_module('aggr', aggr)
+
+    def forward(self, x, *args, **kwargs):
+        """
+        Computes the aggregation and then returns the layer output
+
+        Parameters
+        ----------
+        x : Tensor
+            the input tensor
+        args : ...
+        kwargs : ...
+
+        Returns
+        -------
+        ...
+            the layer output
+        """
+
+        y = self.aggr(*tuple(h.output for h in self.__hook.values()), x)
+        return self.layer(y, *args, **kwargs)
+
+    def __repr__(self):
+        return '[{}, {}]'.format(self.aggr, self.layer)
+
 
