@@ -1,1 +1,2 @@
-from .TextPlot import *
+from .TextPlot      import *
+from .TrainStatPlot import *

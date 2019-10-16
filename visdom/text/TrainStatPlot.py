@@ -1,4 +1,4 @@
-from datetime  import timedelta
+from datetime import timedelta
 from .TextPlot import *
 
 
@@ -19,7 +19,7 @@ class TrainStatPlot(TextPlot):
 
         super(TrainStatPlot, self).__init__(session, win=win)
 
-    def __update__(self, epoch, iteration, t):
+    def update(self, epoch, iteration, t):
         """
         Updates the figure content
 
@@ -39,12 +39,12 @@ class TrainStatPlot(TextPlot):
 
         e = epoch[1:3]
         i = iteration
-        g = (e[0]*i[1]+i[0], e[1]*i[1])
-        text = ['Iteration:\t {}/{} ({:.2f}%)\n'.format(i[0],i[1],i[0]/i[1]*100),
-                'Epoch:\t {}/{} ({:.2f}%)\n'.format(e[0],e[1],e[0]/e[1]*100),
-                'Total:\t {}/{} ({:.2f}%)'.format(g[0],g[1],g[0]/g[1]*100),
-                'Elapsed:\t {}'.format(timedelta(seconds=t*g[0])),
+        g = (e[0] * i[1] + i[0], e[1] * i[1])
+        text = ['Iteration:\t {}/{} \t({:.2f}%)\n'.format(i[0]+1, i[1], ((i[0] + 1) / i[1]) * 100),
+                'Epoch    :\t {}/{} \t({:.2f}%)\n'.format(e[0]+1, e[1], ((e[0] + 1) / e[1]) * 100),
+                'Total    :\t {}/{} \t({:.2f}%)'.format(g[0]+1, g[1], ((g[0] + 1) / g[1]) * 100),
+                'Elapsed  :\t {}'.format(timedelta(seconds=t * g[0])),
                 'ETA:\t {}'.format(timedelta(seconds=t)),
-                'ETA:\t {}'.format(timedelta(seconds=t*(i[1]-i[0]))),
-                'ETA:\t {}'.format(timedelta(seconds=t*(g[1]-g[0])))]
-        super(TrainStatPlot, self).__update__(text)
+                'ETA:\t {}'.format(timedelta(seconds=t * (i[1] - i[0]))),
+                'ETA:\t {}'.format(timedelta(seconds=t * (g[1] - g[0])))]
+        super(TrainStatPlot, self).update(text)
