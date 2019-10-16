@@ -1,7 +1,7 @@
 from visdom import Visdom
 
 
-def create_visdom_session(**kwargs):
+def create_session(**kwargs):
     """
     Creates a visdom session
 
