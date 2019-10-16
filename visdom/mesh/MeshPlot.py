@@ -45,6 +45,7 @@ class MeshPlot(PlotlyFigure):
         -------
         None
         """
+
         p = torch2numpy(P)
         t = torch2numpy(T.t())
         fig = FF.create_trisurf(x=p[:, 0], y=p[:, 1], z=p[:, 2], simplices=t,
