@@ -30,8 +30,8 @@ class GradientFlowPlot(PlotlyFigure):
         """
 
         g = grad_flow(model)
-        if self.fig.data:
-            self.fig.data = []
-        self.fig.add_bar(name='Min', x=list(g.keys()), y=[v[0] for v in g.values()])
-        self.fig.add_bar(name='Mean', x=list(g.keys()), y=[v[1] for v in g.values()])
-        self.fig.add_bar(name='Max', x=list(g.keys()), y=[v[2] for v in g.values()])
+        if self.__fig__.data:
+            self.__fig__.data = []
+        self.__fig__.add_bar(name='Min', x=list(g.keys()), y=[v[0] for v in g.values()])
+        self.__fig__.add_bar(name='Mean', x=list(g.keys()), y=[v[1] for v in g.values()])
+        self.__fig__.add_bar(name='Max', x=list(g.keys()), y=[v[2] for v in g.values()])
