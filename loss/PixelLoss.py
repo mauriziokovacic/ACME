@@ -2,6 +2,10 @@ from .Loss import *
 
 
 class PixelLoss(Loss):
+    """
+    A class defining the pixel metric loss
+    """
+
     def __init__(self, *args, **kwargs):
         super(PixelLoss, self).__init__(*args, name='Pixel', **kwargs)
 
