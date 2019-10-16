@@ -10,10 +10,10 @@ class GradientFlowPlot(PlotlyFigure):
 
     def __init__(self, session, win='GradientFlow'):
         super(GradientFlowPlot, self).__init__(session, win=win)
-        self.__fig__.update_layout(title={'text': 'Gradient Flow'},
-                                   xaxis_title='Layer',
-                                   yaxis_title='Norm',
-                                   yaxis_type='log')
+        self.__fig__ = go.Figure({'layout': {'title': {'text': 'Gradient Flow'}},
+                                  'xaxis_title': 'Layer',
+                                  'yaxis_title': 'Norm',
+                                  'yaxis_type': 'log'})
 
     def __update__(self, model):
         """
