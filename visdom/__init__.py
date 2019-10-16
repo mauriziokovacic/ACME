@@ -5,3 +5,4 @@ from .line           import *
 from .mesh           import *
 from .text           import *
 from .VisdomFigure   import *
+from .VisdomScene    import *
