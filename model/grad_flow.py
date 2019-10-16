@@ -17,5 +17,5 @@ def grad_flow(named_parameters):
     for n, p in named_parameters:
         if p.requires_grad and ("bias" not in n):
             g = p.grad.abs()
-            d[n] = [g.min(), g.mean(), g.max()]
+            d[n] = [g.min().item(), g.mean().item(), g.max().item()]
     return d
