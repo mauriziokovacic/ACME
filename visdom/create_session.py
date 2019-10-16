@@ -1,4 +1,4 @@
-import visdom
+from visdom import Visdom
 
 
 def create_visdom_session(**kwargs):
@@ -15,6 +15,6 @@ def create_visdom_session(**kwargs):
         a visdom session
     """
 
-    session = visdom.Visdom(**kwargs)
+    session = Visdom(**kwargs)
     session.close(None)
     return session
