@@ -35,8 +35,8 @@ class TextPlot(VisdomFigure):
         """
 
         if islist(text) or istuple(text):
-            h = self.session.text('', win=self.win, **kwargs)
+            h = self.session.text('', win=self.__win__, **kwargs)
             for t in text:
                 h = self.session.text(t, win=h, append=True)
             return h
-        return self.session.text(text, win=self.win, **kwargs)
+        return self.session.text(text, win=self.__win__, **kwargs)
