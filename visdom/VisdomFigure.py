@@ -1,4 +1,4 @@
-import plotly.graph_objects as go
+import plotly.graph_objs as go
 
 
 class VisdomFigure(object):
