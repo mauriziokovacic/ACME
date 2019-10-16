@@ -51,3 +51,4 @@ class MeshPlot(PlotlyFigure):
                                 show_colorbar=False, colormap=color)
         fig.data[0].flatshading = True
         fig.layout = {'title': {'text': self.__title}}
+        self.__fig__ = fig
