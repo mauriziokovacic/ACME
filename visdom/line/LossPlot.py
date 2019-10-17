@@ -1,5 +1,5 @@
-import numpy
-from .LineTracerPlot import *
+from ...utility.istorch import *
+from .LineTracerPlot    import *
 
 
 class LossPlot(LineTracerPlot):
@@ -44,5 +44,7 @@ class LossPlot(LineTracerPlot):
         if self.__fig__.data:
             x = len(self.__fig__.data[0].x)
         for n, v in loss_dict.items():
+            if istorch(v):
+                v = v.item()
             super(LossPlot, self).__update__(n, x, v)
 
