@@ -2,26 +2,28 @@ import numpy
 from ..VisdomFigure import *
 
 
-class LineTracer(PlotlyFigure):
+class LineTracerPlot(PlotlyFigure):
     """
-    A class representing a line tracer
+    A class representing a line tracer plot
 
     Attributes
     ----------
+    __line : dict
+        the contained lines dictionary
     limit : int
         the maximum number of samples to plot
     """
 
-    def __init__(self, session, win='LineTracer', title=None, limit=None, x_label='X', y_label='Y', **kwargs):
+    def __init__(self, session, win='LineTracerPlot', title=None, limit=None, x_label='X', y_label='Y', **kwargs):
         """
         Parameters
         ----------
         session : Visdom
             the visdom session
         win : str (optional)
-            the window id (default is 'LineTracer')
+            the window id (default is 'LineTracerPlot')
         title : str (optional)
-            the title of the plot (default is 'LineTracer')
+            the title of the plot (default is 'LineTracerPlot')
         limit : int (optional)
             the maximum number of samples to plot (default is None)
         x_label : str (optional)
@@ -31,7 +33,7 @@ class LineTracer(PlotlyFigure):
         kwargs : ...
         """
 
-        super(LineTracer, self).__init__(session, win=win)
+        super(LineTracerPlot, self).__init__(session, win=win)
         self.limit = limit if limit is None else -limit
         self.__line = {}
         self.__fig__.update_layout(title={'text': title if title is not None else win},

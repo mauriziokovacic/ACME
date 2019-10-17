@@ -1,6 +1,6 @@
 def grad_flow(model):
     """
-    Returns a dictionary containing the [min, mean, max] of each layer gradient
+    Returns a dictionary containing the mean of each layer gradient
 
     Parameters
     ----------
@@ -10,12 +10,15 @@ def grad_flow(model):
     Returns
     -------
     dict
-        a dictionary with the key being the layer name and its value being a [min, mean, max] list
+        a dictionary with the key being the layer name and its value being the layer gradient mean
     """
 
     d = {}
     for n, p in model.named_parameters():
         if p.requires_grad and ("bias" not in n):
-            g = p.grad.abs()
-            d[n] = [g.min().item(), g.mean().item(), g.max().item()]
+            g = p.grad
+            if g:
+                d[n] = g.abs().mean().item()
+            else:
+                d[n] = 0
     return d
