@@ -77,9 +77,9 @@ class LossList(Loss):
             a single value Tensor representing the loss
         """
 
-        self.value = torch.mul(self.__eval__(input, output),
-                               self.alpha if self.enabled else 0)
-        return self.value
+        value = torch.mul(self.__eval__(input, output), self.alpha if self.enabled else 0)
+        self.value = value.item()
+        return value
 
     def __eval__(self, input, output):
         """

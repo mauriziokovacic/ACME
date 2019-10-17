@@ -80,9 +80,10 @@ class Loss(object):
             a single value Tensor representing the loss
         """
 
-        self.value = torch.mul(self.__eval__(self.inputFcn(input), self.outputFcn(output)),
-                               self.alpha if self.enabled else 0)
-        return self.value
+        value = torch.mul(self.__eval__(self.inputFcn(input), self.outputFcn(output)),
+                          self.alpha if self.enabled else 0)
+        self.value = value.item()
+        return value
 
     def __eval__(self, input, output):
         """
@@ -147,9 +148,6 @@ class Loss(object):
             A single entry dictionary in the form {name : value}
         """
 
-        value = self.value
-        if value is not None:
-            value = value.item()
         return {self.name: value}
 
     def to(self, device):
@@ -168,8 +166,6 @@ class Loss(object):
         """
 
         self.device = device
-        if self.value is not None:
-            self.value = self.value.to(device=self.device)
         return self
 
     def __gt__(self, other):

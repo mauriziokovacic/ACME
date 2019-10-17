@@ -53,8 +53,9 @@ class GlobalLoss(LossList):
             a single value Tensor representing the loss
         """
 
-        self.value = self.__eval__(input, output)
-        return self.value
+        value = self.__eval__(input, output)
+        self.value = value
+        return value
 
     def __eval__(self, input, output):
         """
