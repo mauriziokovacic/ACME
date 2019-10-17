@@ -33,4 +33,4 @@ class ImagePlot(VisdomFigure):
         None
         """
 
-        self.session.images(images if isnumpy(images) else images.numpy(), win=self.win, **kwargs)
+        self.session.images(images if isnumpy(images) else images.numpy(), win=self.__win__, **kwargs)
