@@ -17,7 +17,7 @@ def grad_flow(model):
     for n, p in model.named_parameters():
         if p.requires_grad and ("bias" not in n):
             g = p.grad
-            if g:
+            if g is not None:
                 d[n] = g.abs().mean().item()
             else:
                 d[n] = 0
