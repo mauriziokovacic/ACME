@@ -1,5 +1,6 @@
 from ...model.grad_flow import *
-from .LinePlot import *
+from .LinePlot          import *
+
 
 class GradientFlowLinePlot(LinePlot):
     """
