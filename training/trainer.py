@@ -125,6 +125,7 @@ class Trainer(object):
     def train(self,
               dataset,
               epochs=None,
+              acc_grad=None,
               checkpoint=True,
               path=None,
               verbose=False):
@@ -137,6 +138,8 @@ class Trainer(object):
             a dataloader object containing the dataset
         epochs : int (optional)
             the number of epochs to be performed. If None it will be automatically set to len(dataset) (default is None)
+        acc_grad : int (optional)
+            the number of gradient accumulations. If None it will be automatically set to 1 (default is None)
         checkpoint : bool (optional)
             if True stores a checkpoint of the training at the end of every epoch (default is True)
         path : str (optional)
@@ -153,6 +156,8 @@ class Trainer(object):
             path = os.getcwd()
         if epochs is None:
             epochs = n
+        if (acc_grad is None) or (acc_grad <= 0):
+            acc_grad = 1
         e = self.epoch
 
         inputFcn  = self.inputFcn
@@ -161,6 +166,7 @@ class Trainer(object):
         outputFcn = self.outputFcn
         if outputFcn is None:
             outputFcn = nop
+        g = 0
         self.model.train()
         self.model.zero_grad()
         for self.epoch in range(e, epochs):
@@ -171,23 +177,27 @@ class Trainer(object):
                 x    = inputFcn(input)
                 y    = outputFcn(self.model(x))
                 loss = self.loss.eval(x, y)
-                self.optimizer.zero_grad()
                 loss.backward()
-                self.optimizer.step()
-                if self.scheduler is not None:
-                    if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                        self.scheduler.step(loss)
-                    else:
-                        self.scheduler.step()
-                for fcn in self.stateFcn:
-                    fcn(
-                        input=x,
-                        output=y,
-                        loss=self.loss.to_dict(),
-                        epoch=(e, self.epoch, epochs),
-                        iteration=(i, n),
-                        t=time.time()-t
-                    )
+                if g == (acc_grad - 1):
+                    g = 0
+                    self.optimizer.zero_grad()
+                    self.optimizer.step()
+                    if self.scheduler is not None:
+                        if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                            self.scheduler.step(loss)
+                        else:
+                            self.scheduler.step()
+                    for fcn in self.stateFcn:
+                        fcn(
+                            input=x,
+                            output=y,
+                            loss=self.loss.to_dict(),
+                            epoch=(self.epoch, epochs),
+                            iteration=(i, n),
+                            t=time.time()-t
+                        )
+                else:
+                    g += 1
             if verbose:
                 print('DONE')
             if checkpoint:
@@ -260,7 +270,7 @@ class Trainer(object):
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
             'scheduler_state_dict': self.scheduler.state_dict() if self.scheduler is not None else None,
-            'loss': self.loss.value.item(),
+            'loss': self.loss.value,
             'epoch': self.epoch,
         }, path + '/' + self.name + '.tar')
 
