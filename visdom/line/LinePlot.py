@@ -59,8 +59,8 @@ class LinePlot(PlotlyFigure):
             legend = name
         if name not in self.__line:
             self.__line[name] = len(self.__line)
-            self.__fig__.add_scatter(x=numpy.array([x]), y=numpy.array([y]), mode='lines', name=legend)
+            self.__fig__.add_scatter(x=numpy.array(x), y=numpy.array(y), mode='lines', name=legend)
         else:
             i = self.__line[name]
-            self.__fig__.data[i].x = numpy.array([x])
-            self.__fig__.data[i].y = numpy.array([y])
+            self.__fig__.data[i].x = numpy.array(x)
+            self.__fig__.data[i].y = numpy.array(y)

@@ -37,7 +37,7 @@ class TrainStatPlot(TextPlot):
         None
         """
 
-        e = epoch[1:3]
+        e = epoch
         i = iteration
         g = (e[0] * i[1] + i[0], e[1] * i[1])
         text = ['Iteration:\t {}/{} \t({:.2f}%)\n'.format(i[0]+1, i[1], ((i[0] + 1) / i[1]) * 100),
