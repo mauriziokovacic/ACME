@@ -74,12 +74,14 @@ class Training_Observer(object):
         trainer.unregister_training_observer(self)
         return self
 
-    def stateFcn(self, input, output, loss, epoch, iteration, t):
+    def stateFcn(self, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state and executes the routine functions
 
         Parameters
         ----------
+        model : torch.nn.Module
+            the training model
         input : object
             the architecture input
         output : object
@@ -98,25 +100,27 @@ class Training_Observer(object):
         None
         """
 
-        e = epoch[1:3]
+        e = epoch
         i = iteration
         g = (e[0]*i[1]+i[0], e[1]*i[1])
         if not e[0] == self.epoch:
             self.epoch = e[0]
-            self.epochFcn(input, output, loss, epoch, iteration, g[0]*t)
+            self.epochFcn(model, input, output, loss, epoch, iteration, t)
         if not i[0] == self.iter:
             self.iter = i[0]
-            self.iterationFcn(input, output, loss, epoch, iteration, t)
+            self.iterationFcn(model, input, output, loss, epoch, iteration, t)
         if g[0] == g[1]-1:
-            self.endFcn(input, output, loss, epoch, iteration, g[0]*t)
+            self.endFcn(model, input, output, loss, epoch, iteration, t)
         return
 
-    def iterationFcn(self, input, output, loss, epoch, iteration, t):
+    def iterationFcn(self, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at the end of each iteration
 
         Parameters
         ----------
+        model : torch.nn.Module
+            the training model
         input : object
             the architecture input
         output : object
@@ -137,12 +141,14 @@ class Training_Observer(object):
 
         return
 
-    def epochFcn(self, input, output, loss, epoch, iteration, t):
+    def epochFcn(self, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at end of each epoch
 
         Parameters
         ----------
+        model : torch.nn.Module
+            the training model
         input : object
             the architecture input
         output : object
@@ -163,12 +169,14 @@ class Training_Observer(object):
 
         return
 
-    def endFcn(self, input, output, loss, epoch, iteration, t):
+    def endFcn(self, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at end of the training
 
         Parameters
         ----------
+        model : torch.nn.Module
+            the training model
         input : object
             the architecture input
         output : object
