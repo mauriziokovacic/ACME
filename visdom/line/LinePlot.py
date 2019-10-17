@@ -2,30 +2,26 @@ import numpy
 from ..VisdomFigure import *
 
 
-class LineTracerPlot(PlotlyFigure):
+class LinePlot(PlotlyFigure):
     """
-    A class representing a line tracer plot
+    A class representing a line plot
 
     Attributes
     ----------
     __line : dict
         the contained lines dictionary
-    limit : int
-        the maximum number of samples to plot
     """
 
-    def __init__(self, session, win='LineTracer', title=None, limit=None, x_label='X', y_label='Y', **kwargs):
+    def __init__(self, session, win='Line', title=None, x_label='X', y_label='Y', **kwargs):
         """
         Parameters
         ----------
         session : Visdom
             the visdom session
         win : str (optional)
-            the window id (default is 'LineTracer')
+            the window id (default is 'Line')
         title : str (optional)
-            the title of the plot (default is 'LineTracer')
-        limit : int (optional)
-            the maximum number of samples to plot (default is None)
+            the title of the plot (default is 'Line')
         x_label : str (optional)
             the x axis label (default is 'X')
         y_label : str (optional)
@@ -33,8 +29,7 @@ class LineTracerPlot(PlotlyFigure):
         kwargs : ...
         """
 
-        super(LineTracerPlot, self).__init__(session, win=win)
-        self.limit = limit if limit is None else -limit
+        super(LinePlot, self).__init__(session, win=win)
         self.__line = {}
         self.__fig__.update_layout(title={'text': title if title is not None else win},
                                    xaxis_title=x_label,
@@ -49,9 +44,9 @@ class LineTracerPlot(PlotlyFigure):
         name : str
             the line name
         x : float
-            the x component of a sample
+            the line samples x components
         y : float
-            the y component of a sample
+            the line samples y components
         legend : str (optional)
             the legend name for the line
 
@@ -67,17 +62,5 @@ class LineTracerPlot(PlotlyFigure):
             self.__fig__.add_scatter(x=numpy.array([x]), y=numpy.array([y]), mode='lines', name=legend)
         else:
             i = self.__line[name]
-            self.__fig__.data[i].x = numpy.append(self.__fig__.data[i].x[self.limit:], x)
-            self.__fig__.data[i].y = numpy.append(self.__fig__.data[i].y[self.limit:], y)
-
-    def __getattr__(self, key):
-        value = self.__dict__[key]
-        if key == 'limit':
-            value = -value
-        return value
-
-    def __setattr__(self, key, value):
-        if key == 'limit':
-            if value is not None:
-                value = -value
-        self.__dict__[key] = value
+            self.__fig__.data[i].x = numpy.array([x])
+            self.__fig__.data[i].y = numpy.array([y])

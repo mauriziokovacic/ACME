@@ -1,8 +1,8 @@
 import numpy
-from .LineTracer import *
+from .LineTracerPlot import *
 
 
-class LossPlot(LineTracer):
+class LossPlot(LineTracerPlot):
     """
     A class representing a loss plot
     """

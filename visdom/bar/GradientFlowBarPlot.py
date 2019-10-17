@@ -8,7 +8,16 @@ class GradientFlowBarPlot(PlotlyFigure):
     A class representing a gradient flow plot
     """
 
-    def __init__(self, session, win='GradientFlow'):
+    def __init__(self, session, win='GradientFlowBarPlot'):
+        """
+        Parameters
+        ----------
+        session : Visdom
+            the visdom session
+        win : str (optional)
+            the window id (default is 'GradientFlowBarPlot')
+        """
+
         super(GradientFlowBarPlot, self).__init__(session, win=win)
         self.__fig__ = go.Figure({'layout': {'title': {'text': 'Gradient Flow'}},
                                   'xaxis_title': 'Layer',
