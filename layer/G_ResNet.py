@@ -104,10 +104,10 @@ class G_ResNet(torch.nn.Module):
         ----------
         x : Tensor
             the input tensor
-        edge_index : LongTensor
-            the (2,N,) edge tensor
+        args : ...
+            the arguments
         kwargs : ...
-            the GCNConv keyword arguments
+            the keyword arguments
 
         Returns
         -------
