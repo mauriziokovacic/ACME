@@ -1,5 +1,7 @@
 import torch
 from ..utility.ismatrix import *
+from ..utility.issparse import *
+from ..math.spdiag      import *
 
 
 def degree(A):
@@ -23,4 +25,6 @@ def degree(A):
     """
 
     assert ismatrix(A), 'Tensor must be a matrix'
-    return torch.diag(torch.sum(A, 1, keepdim=False))
+    if issparse(A):
+        return spdiag(torch.sparse.sum(A, dim=-1).squeeze().to_dense())
+    return torch.diag(torch.sum(A, -1, keepdim=False))
