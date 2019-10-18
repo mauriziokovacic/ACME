@@ -30,8 +30,8 @@ def SparseTensor(size=None, indices=None, values=None):
     if size is None:
         if indices is None:
             return torch.sparse.FloatTensor()
-        return torch.sparse.FloatTensor(indices, values)
+        return torch.sparse.FloatTensor(indices.t(), values)
     if indices is None:
         return torch.sparse.FloatTensor(*size)
-    return torch.sparse.FloatTensor(indices, values, size)
+    return torch.sparse.FloatTensor(indices.t(), values, size)
 
