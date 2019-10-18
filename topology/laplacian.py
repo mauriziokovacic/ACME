@@ -36,7 +36,7 @@ def symmetric_normalized_laplacian(A):
     """
 
     D = torch.diag(torch.reciprocal(torch.sqrt(torch.diag(degree(A)))))
-    return torch.mm(D, torch.mm(laplacian(A), D))
+    return torch.matmul(D, torch.matmul(laplacian(A), D))
 
 
 def random_walk_normalized_laplacian(A):
@@ -55,4 +55,4 @@ def random_walk_normalized_laplacian(A):
     """
 
     D = torch.diag(torch.reciprocal(torch.diag(degree(A))))
-    return torch.mm(D, laplacian(A))
+    return torch.matmul(D, laplacian(A))
