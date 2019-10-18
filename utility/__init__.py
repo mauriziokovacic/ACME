@@ -11,6 +11,7 @@ from .ConstantTensor import *
 from .de2bi          import *
 from .de2hex         import *
 from .debug_message  import *
+from .dense2sparse   import *
 from .depth          import *
 from .duplicated     import *
 from .FalseTensor    import *
