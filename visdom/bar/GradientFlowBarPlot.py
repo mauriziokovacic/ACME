@@ -1,4 +1,3 @@
-import numpy
 from ...model.grad_flow import *
 from ..VisdomFigure     import *
 
@@ -19,10 +18,10 @@ class GradientFlowBarPlot(PlotlyFigure):
         """
 
         super(GradientFlowBarPlot, self).__init__(session, win=win)
-        self.__fig__ = go.Figure({'layout': {'title': {'text': 'Gradient Flow'}},
-                                  'xaxis_title': 'Layer',
-                                  'yaxis_title': 'Norm',
-                                  'yaxis_type': 'log'})
+        self.__fig__.update_layout(title={'text': 'Gradient Flow'},
+                                   xaxis_title='Layer',
+                                   yaxis_title='Norm',
+                                   yaxis_type='log')
 
     def __update__(self, model):
         """
