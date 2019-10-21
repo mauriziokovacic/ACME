@@ -1,3 +1,4 @@
+import torch
 from ...model.grad_flow import *
 from ..VisdomFigure     import *
 
@@ -40,7 +41,10 @@ class GradientFlowBarPlot(PlotlyFigure):
         g = grad_flow(model)
         if self.__fig__.data:
             self.__fig__.data = []
-        self.__fig__.add_bar(name='Mean',
-                             x=list(g.keys()),
-                             y=[v if v > 0 else -100 for v in g.values()],
+        x = list(g.keys())
+        y = torch.tensor([v for v in g.values()], dtype=torch.float)
+        m = y.mean()
+        y[y == 0] = m
+        y = list(y)
+        self.__fig__.add_bar(name='Mean', x=x, y=y,
                              marker_color=['teal' if v > 0 else 'crimson' for v in g.values()])
