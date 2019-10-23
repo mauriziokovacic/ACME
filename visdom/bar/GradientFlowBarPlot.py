@@ -44,7 +44,10 @@ class GradientFlowBarPlot(PlotlyFigure):
         x = list(g.keys())
         y = torch.tensor([v for v in g.values()], dtype=torch.float)
         m = y.mean()
-        y[y == 0] = m
-        y = list(y)
+        if m > 0:
+            y[y == 0] = -m
+            y = list(y)
+        else:
+            y = [-1, ] * y.size(0)
         self.__fig__.add_bar(name='Mean', x=x, y=y,
-                             marker_color=['teal' if v > 0 else 'crimson' for v in g.values()])
+                             marker_color=['teal' if v > 0 else 'crimson' for v in y])
