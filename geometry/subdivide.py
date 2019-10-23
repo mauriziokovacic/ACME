@@ -29,7 +29,7 @@ def subdivide(P, T, iter=1):
         if isquad(T):
             fun = xquad
         else:
-            assert False,'Topology not supported yet'
+            assert False, 'Topology not supported yet'
     M, t    = fun(T, iter=iter)
     p       = torch.mm(M, P)
     p, t, I = soup2mesh(p, t)[0:3]
