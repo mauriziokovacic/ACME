@@ -1,11 +1,11 @@
 import torch
-from ..utility.nop   import *
+from ..utility.identity   import *
 from ..math.sph2rotm import *
 from .mesh2img       import *
 from .camera         import *
 
 
-def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=nop, pivoting=False):
+def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=identity, pivoting=False):
     """
     Renders a multi view stack of images of the input mesh with the given renderer
 
@@ -22,14 +22,14 @@ def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=nop, pivoting=False):
     Cam : Tensor (optional)
         the view points to render the mesh from. If None, 18 distribuited points will be choosen (default is None)
     postFcn : callable (optional)
-        a function to be applied to the Neural Renderer output (defalut is nop)
+        a function to be applied to the Neural Renderer output (defalut is identity)
     pivoting : bool (optional)
         if True rotates the mesh instead of moving the camera, False otherwise (default is False)
 
     Returns
     -------
     Tensor
-        the Neural Renderer image in RGBDA format if postFcn is nop
+        the Neural Renderer image in RGBDA format if postFcn is identity
     """
 
     if Cam is None:

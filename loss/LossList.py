@@ -12,9 +12,9 @@ class LossList(Loss):
     alpha : float
         the weight of the loss (default is 1)
     inputFcn : callable
-        a function to read correctly the input (default is nop)
+        a function to read correctly the input (default is identity)
     outputFcn : callable
-        a function to read correctly the output (default is nop)
+        a function to read correctly the output (default is identity)
     name : str
         the loss name (default is 'List')
     enabled : bool

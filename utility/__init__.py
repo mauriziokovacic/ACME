@@ -24,6 +24,7 @@ from .FloatTensor    import *
 from .hasmethod      import *
 from .hex2bi         import *
 from .hex2de         import *
+from .identity       import *
 from .indices        import *
 from .interleave     import *
 from .IntTensor      import *

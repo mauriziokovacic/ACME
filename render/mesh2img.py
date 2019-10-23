@@ -2,11 +2,11 @@ from ..color.colormap           import *
 from ..geometry.triangle_normal import *
 from ..math.dot                 import *
 from ..topology.poly2poly       import *
-from ..utility.nop              import *
+from ..utility.identity              import *
 from .color2nr                  import *
 
 
-def mesh2img(renderer, T, P, C=None, postFcn=nop, colormap=ColorMap()):
+def mesh2img(renderer, T, P, C=None, postFcn=identity, colormap=ColorMap()):
     """
     Renders an input mesh with the given renderer.
 
@@ -25,12 +25,12 @@ def mesh2img(renderer, T, P, C=None, postFcn=nop, colormap=ColorMap()):
     C : Tensor or Uint8Tensor (optional)
         the RGB color tensor. If None the mesh will be colored white (default is None)
     postFcn : callable (optional)
-        a function to be applied to the Neural Renderer output (defalut is nop)
+        a function to be applied to the Neural Renderer output (defalut is identity)
 
     Returns
     -------
     Tensor
-        the Neural Renderer image in RGBDA format, if postFcn is nop
+        the Neural Renderer image in RGBDA format, if postFcn is identity
     """
 
     t, i = poly2tri(T)

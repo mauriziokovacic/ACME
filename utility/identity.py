@@ -1,4 +1,4 @@
-def nop(obj):
+def identity(obj):
     """
     Identity function computing no operation
 

@@ -1,5 +1,5 @@
 import torch
-from ..utility.nop           import *
+from ..utility.identity           import *
 from ..encoding.color2normal import *
 from ..render.mesh2img       import *
 from .Loss                   import *
@@ -8,7 +8,7 @@ from .LossList               import *
 class RenderLoss(Loss):
     def __init__(self,name='Render',renderFcn=None,**kwargs):
         super().__init__(name=name,**kwargs)
-        self.renderFcn = renderFcn if renderFcn is not None else nop
+        self.renderFcn = renderFcn if renderFcn is not None else identity
 
     def __eval__(self, input, output):
         in_render  = self.renderFcn(input)
@@ -46,7 +46,7 @@ class MVSLoss(LossList):
         self.renderer  = renderer
         self.camera    = camera
         self.loss      = loss
-        self.renderFcn = renderFcn if renderFcn is not None else nop
+        self.renderFcn = renderFcn if renderFcn is not None else identity
 
     def __eval__(self,input,output):
         in_mvs  = self.renderFcn(input)

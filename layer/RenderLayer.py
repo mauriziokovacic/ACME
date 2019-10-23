@@ -1,5 +1,5 @@
 import torch
-from ..utility.nop              import *
+from ..utility.identity              import *
 from ..encoding.normal2color    import *
 from ..encoding.position2color  import *
 from ..render.mesh2img          import *
@@ -30,14 +30,14 @@ class RenderLayer(torch.nn.Module):
         returns the rendered input
     """
 
-    def __init__(self, renderer, postFcn=nop, keep_output=False, attr='img'):
+    def __init__(self, renderer, postFcn=identity, keep_output=False, attr='img'):
         """
         Parameters
         ----------
         renderer : Neural Renderer
             an instance of a Neural Renderer
         postFcn : callable (optional)
-            a post processing function applied to the output image (default is nop)
+            a post processing function applied to the output image (default is identity)
         keep_output : bool (optional)
             if True keeps the output in an attribute of the input data (default is False)
         attr : str (optional)

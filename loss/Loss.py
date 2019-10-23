@@ -1,5 +1,5 @@
 import torch
-from ..utility.nop import *
+from ..utility.identity import *
 
 
 class Loss(object):
@@ -11,9 +11,9 @@ class Loss(object):
     alpha : float
         the weight of the loss
     inputFcn : callable
-        a function to read correctly the input (default is nop)
+        a function to read correctly the input (default is identity)
     outputFcn : callable
-        a function to read correctly the output (default is nop)
+        a function to read correctly the output (default is identity)
     name : str
         the loss name
     enabled : bool
@@ -41,7 +41,7 @@ class Loss(object):
         moves the loss to the given device
     """
 
-    def __init__(self, alpha=1, inputFcn=nop, outputFcn=nop, name='', enabled=True, device='cuda:0'):
+    def __init__(self, alpha=1, inputFcn=identity, outputFcn=identity, name='', enabled=True, device='cuda:0'):
         """
         Parameters
         ----------
