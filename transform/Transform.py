@@ -3,7 +3,7 @@ class Transform(object):
         self.name = name
 
     def eval(self, x, *args, **kwargs):
-        self.__eval__(*args, **kwargs)
+        self.__eval__(x, *args, **kwargs)
         return x
 
     def __eval__(self, x, *args, **kwargs):
