@@ -14,7 +14,7 @@ def adjacency(E, W, size=None):
         the (2,N,) edge topology tensor
     W : Tensor
         the (N,) edges weights tensor
-    size : int (optional)
+    size : tuple (optional)
         the adjacency matrix size. If None it will be automatically computed (default is None)
 
     Returns
@@ -25,7 +25,9 @@ def adjacency(E, W, size=None):
 
     if size is None:
         size = E.max().item() + 1
-    A = torch.zeros(size, size, dtype=W.dtype, device=W.device)
+    if isscalar(size):
+        size = (size, ) * 2
+    A = torch.zeros(*size, dtype=W.dtype, device=W.device)
     # A[tuple(E)] = W
     for e, w in zip(torch.t(E), W.squeeze()):
         A[tuple(e)] += w
