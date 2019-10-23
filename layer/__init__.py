@@ -1,4 +1,5 @@
 from .Batch           import *
+from .BBoxAdapter     import *
 from .BokehLayer      import *
 from .Bypass          import *
 from .FixedGraphConv  import *
@@ -18,6 +19,7 @@ from .MoveLayer       import *
 from .RenderLayer     import *
 from .Reshape         import *
 from .Sampler         import *
+from .ShapeLayer      import *
 from .TLayer          import *
 from .VGGPerceptron   import *
 
