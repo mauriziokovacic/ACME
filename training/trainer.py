@@ -190,6 +190,7 @@ class Trainer(object):
                     self.optimizer.zero_grad()
                     for fcn in self.stateFcn:
                         fcn(
+                            model=self.model,
                             input=x,
                             output=y,
                             loss=self.loss.to_dict(),
