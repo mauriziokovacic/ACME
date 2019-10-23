@@ -75,7 +75,7 @@ class HookLayer(torch.nn.Module):
             hook = [hook]
         for h in hook:
             name = 'hook_{}'.format(len(self.__hook))
-            self.__hook[name] = DeferredHook(layer=h, name=name)
+            self.__hook__[name] = DeferredHook(layer=h, name=name)
         return self
 
     def unbind(self, i=None):
@@ -97,8 +97,8 @@ class HookLayer(torch.nn.Module):
             i = list(range(len(self.__hook)))
         for ii in i:
             key = 'hook_{}'.format(ii)
-            self.__hook[key].unbind()
-            del self.__hook[key]
+            self.__hook__[key].unbind()
+            del self.__hook__[key]
         return self
 
     def forward(self, *args, **kwargs):
