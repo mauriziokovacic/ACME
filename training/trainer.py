@@ -2,7 +2,7 @@ import os
 import time
 import torch
 import warnings
-from ..utility.nop import *
+from ..utility.identity import *
 
 
 class Trainer(object):
@@ -125,7 +125,7 @@ class Trainer(object):
     def train(self,
               dataset,
               epochs=None,
-              acc_grad=None,
+              num_acc=None,
               checkpoint=True,
               path=None,
               verbose=False):
@@ -138,7 +138,7 @@ class Trainer(object):
             a dataloader object containing the dataset
         epochs : int (optional)
             the number of epochs to be performed. If None it will be automatically set to len(dataset) (default is None)
-        acc_grad : int (optional)
+        num_acc : int (optional)
             the number of gradient accumulations. If None it will be automatically set to 1 (default is None)
         checkpoint : bool (optional)
             if True stores a checkpoint of the training at the end of every epoch (default is True)
@@ -156,19 +156,21 @@ class Trainer(object):
             path = os.getcwd()
         if epochs is None:
             epochs = n
-        if (acc_grad is None) or (acc_grad <= 0):
-            acc_grad = 1
+        if (num_acc is None) or (num_acc <= 0):
+            num_acc = 1
+        if num_acc > n:
+            num_acc = n
         e = self.epoch
 
         inputFcn  = self.inputFcn
         if inputFcn is None:
-            inputFcn = nop
+            inputFcn = identity
         outputFcn = self.outputFcn
         if outputFcn is None:
-            outputFcn = nop
-        g = 0
+            outputFcn = identity
         self.model.train()
         self.model.zero_grad()
+        self.optimizer.zero_grad()
         for self.epoch in range(e, epochs):
             if verbose:
                 print('Epoch: {}...'.format(self.epoch), end='')
@@ -178,15 +180,14 @@ class Trainer(object):
                 y    = outputFcn(self.model(x))
                 loss = self.loss.eval(x, y)
                 loss.backward()
-                if g == (acc_grad - 1):
-                    g = 0
-                    self.optimizer.zero_grad()
+                if ((i+1) % num_acc) == 0:
                     self.optimizer.step()
                     if self.scheduler is not None:
                         if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
                             self.scheduler.step(loss)
                         else:
                             self.scheduler.step()
+                    self.optimizer.zero_grad()
                     for fcn in self.stateFcn:
                         fcn(
                             input=x,
@@ -228,10 +229,10 @@ class Trainer(object):
         n = len(dataset)
         inputFcn  = self.inputFcn
         if inputFcn is None:
-            inputFcn = nop
+            inputFcn = identity
         outputFcn = self.outputFcn
         if outputFcn is None:
-            outputFcn = nop
+            outputFcn = identity
 
         out = []
         self.model.eval()
@@ -330,10 +331,5 @@ class Trainer(object):
                 if self.loss is not None:
                     self.loss.to(self.device)
 
-    def __call__(self,
-                 dataset,
-                 epochs=None,
-                 checkpoint=True,
-                 path=None,
-                 verbose=False):
-        self.train(dataset, epochs=epochs, checkpoint=checkpoint, path=path, verbose=verbose)
+    def __call__(self, *args, **kwargs):
+        return self.train(*args, **kwargs)
