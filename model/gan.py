@@ -20,6 +20,10 @@ class GAN(Model):
     -------
     forward(x, y)
         returns the discriminator results for a a pair of false and true tensors
+    generator_train_step()
+        sets the training only for the generator network
+    discriminator_train_step()
+        sets the training only for the discriminator network
     """
 
     def __init__(self, generator, discriminator, name='GAN', **kwargs):
@@ -59,6 +63,32 @@ class GAN(Model):
         y_hat = self.G(x)
         c     = self.D(y, y_hat)
         return c, y_hat
+
+    def generator_train_step(self):
+        """
+        Sets the training only for the generator network
+
+        Returns
+        -------
+        GAN
+            the gan itself
+        """
+
+        self.D.zero_grad()
+        return self
+
+    def discriminator_train_step(self):
+        """
+        Sets the training only for the discriminator network
+
+        Returns
+        -------
+        GAN
+            the gan itself
+        """
+
+        self.G.zero_grad()
+        return self
 
 
 class CycleGAN(Model):
