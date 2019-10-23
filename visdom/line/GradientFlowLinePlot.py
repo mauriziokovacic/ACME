@@ -39,5 +39,5 @@ class GradientFlowLinePlot(LinePlot):
         g = grad_flow(model)
         x = [i for i in range(len(g))]
         y = [v for v in g.values()]
-        super(GradientFlowLinePlot, self).__update__(name='grad', x=x, y=y, legend='Grad')
+        super(GradientFlowLinePlot, self).__update__(name='grad', x=x, y=y, legend='Grad', hovertext=list(g.keys()))
         return

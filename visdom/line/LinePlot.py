@@ -35,7 +35,7 @@ class LinePlot(PlotlyFigure):
                                    xaxis_title=x_label,
                                    yaxis_title=y_label)
 
-    def __update__(self, name, x, y, legend=None):
+    def __update__(self, name, x, y, legend=None, **kwargs):
         """
         Updates the figure content
 
@@ -59,7 +59,7 @@ class LinePlot(PlotlyFigure):
             legend = name
         if name not in self.__line:
             self.__line[name] = len(self.__line)
-            self.__fig__.add_scatter(x=numpy.array(x), y=numpy.array(y), mode='lines+markers', name=legend)
+            self.__fig__.add_scatter(x=numpy.array(x), y=numpy.array(y), mode='lines+markers', name=legend, **kwargs)
         else:
             i = self.__line[name]
             self.__fig__.data[i].x = numpy.array(x)
