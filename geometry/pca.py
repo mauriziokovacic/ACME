@@ -20,7 +20,7 @@ def pca(P, dim=0):
     """
 
     B       = barycenter(P, dim=dim)
-    P       = P-B
-    C       = torch.mm(torch.t(P), P)
+    p       = P-B
+    C       = torch.mm(torch.t(p), p)
     U, S, V = torch.svd(C)
     return B, torch.t(V)
