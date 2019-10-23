@@ -13,7 +13,7 @@ class HookLayer(torch.nn.Module):
     ----------
     layer : torch.nn.Module
         the layer to evaluate
-    __hook : DeferredHook
+    __hook__ : DeferredHook
         a hook to another layer
 
     Methods
@@ -40,7 +40,7 @@ class HookLayer(torch.nn.Module):
 
         super(HookLayer, self).__init__()
         self.add_module('layer', layer)
-        self.__hook = {}
+        self.__hook__ = {}
         self.bind(hook_layer)
 
     def is_bound(self):
@@ -53,7 +53,7 @@ class HookLayer(torch.nn.Module):
             True if the layer is bound to another layer, False otherwise
         """
 
-        return all([h.is_bound() for h in self.__hook.values()])
+        return all([h.is_bound() for h in self.__hook__.values()])
 
     def bind(self, layer):
         """
@@ -118,7 +118,7 @@ class HookLayer(torch.nn.Module):
             the output of the HookLayer
         """
 
-        return self.layer(*tuple(h.output for h in self.__hook.values()), *args, **kwargs)
+        return self.layer(*tuple(h.output for h in self.__hook__.values()), *args, **kwargs)
 
 
 class ResidualLayer(HookLayer):
@@ -236,7 +236,7 @@ class GResidualLayer(HookLayer):
             the layer output
         """
 
-        y = self.aggr(*tuple(h.output for h in self.__hook.values()), x)
+        y = self.aggr(*tuple(h.output for h in self.__hook__.values()), x)
         return self.layer(y, *args, **kwargs)
 
     def __repr__(self):
