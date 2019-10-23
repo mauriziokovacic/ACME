@@ -148,7 +148,7 @@ class Loss(object):
             A single entry dictionary in the form {name : value}
         """
 
-        return {self.name: value}
+        return {self.name: self.value}
 
     def to(self, device):
         """
