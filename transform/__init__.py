@@ -4,5 +4,6 @@ from .FaceNormal     import *
 from .Normalize      import *
 from .RandomRotation import *
 from .RandomScaling  import *
+from .Reorient       import *
 from .Transform      import *
 from .TransformList  import *
