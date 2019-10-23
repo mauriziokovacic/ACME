@@ -74,7 +74,7 @@ class HookLayer(torch.nn.Module):
         if not islist(hook):
             hook = [hook]
         for h in hook:
-            name = 'hook_{}'.format(len(self.__hook))
+            name = 'hook_{}'.format(len(self.__hook__))
             self.__hook__[name] = DeferredHook(layer=h, name=name)
         return self
 
@@ -94,7 +94,7 @@ class HookLayer(torch.nn.Module):
         """
 
         if i is None:
-            i = list(range(len(self.__hook)))
+            i = list(range(len(self.__hook__)))
         for ii in i:
             key = 'hook_{}'.format(ii)
             self.__hook__[key].unbind()
