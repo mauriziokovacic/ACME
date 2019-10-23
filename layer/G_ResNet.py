@@ -45,7 +45,8 @@ class G_ResNet(torch.nn.Module):
             the output channels, one int for each layer
         adjacency : dict (optional)
             the adjacency for residual layers.
-            The key is the index of the layer and the value is a list of indices of the connected layers (default is {})
+            The key is the index of the layer and the value is a list of indices of the connected layers,
+            but the previous (default is {})
         operation : str or callable or list or dict (optional)
             the residual operation to be performed on the i-th graph node (default is 'cat')
         dim : int or list or dict (optional)
@@ -80,7 +81,6 @@ class G_ResNet(torch.nn.Module):
                     d = dim
                 # Compute the input channels
                 if op == 'cat':
-                    ic = 0
                     for j in p:
                         ic += out_channels[j]
                 else:
