@@ -6,6 +6,7 @@ from .bitshift       import *
 from .circrepeat     import *
 from .circshift      import *
 from .clamp          import *
+from .class_name     import *
 from .col            import *
 from .ConstantTensor import *
 from .de2bi          import *
