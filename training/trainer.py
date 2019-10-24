@@ -182,7 +182,7 @@ class Trainer(object):
 
         if not self.is_ready():
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
-            return False, 0
+            return None
         if (num_acc is None) or (num_acc <= 0):
             num_acc = 1
         if num_acc > iters[1]:
@@ -195,8 +195,6 @@ class Trainer(object):
         x    = self.inputFcn(input)
         y    = self.outputFcn(self.model(x))
         loss = self.loss(x, y)
-        if isnan(loss):
-            return True, loss.item()
         loss.backward()
         if (((iters[0]+1) % num_acc) == 0) or ((iters[0]+1) == iters[1]):
             self.optimizer.step()
@@ -219,7 +217,7 @@ class Trainer(object):
             )
         if verbose:
             print('DONE')
-        return True, loss.item()
+        return loss.item()
 
     def test(self, dataset, verbose=False):
         """
