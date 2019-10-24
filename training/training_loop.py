@@ -35,11 +35,6 @@ class TrainingLoop(object):
                         iters=(i, len(dataset)),
                         num_acc=num_acc,
                         verbose=verbose)
-                    if not result[0]:
-                        raise RuntimeError('Something went wrong with Trainer {}'.format(trainer.name))
-                    else:
-                        if isnan(result[1]):
-                            raise RuntimeError('Trainer {} became NaN'.format(trainer.name))
                 if checkpoint:
                     trainer.save_checkpoint(path=path)
         return self
