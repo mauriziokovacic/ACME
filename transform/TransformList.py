@@ -25,7 +25,7 @@ class TransformList(Transform, list):
             assert isinstance(item, Transform), 'Expected item to be type Transform. Got {} instead.'.format(type(item))
         return list.extend(self, items)
 
-    def __extra_repr__(self):
+    def extra_repr(self):
         text = '[\n'
         for i, t in enumerate(self):
             text += '\t({}) : {}\n'.format(i, str(t))

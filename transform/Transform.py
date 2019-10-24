@@ -1,3 +1,6 @@
+from ..utility.hasmethod import *
+
+
 class Transform(object):
     """
     A proper abstract interface for the torch_geometric transforms
@@ -71,20 +74,18 @@ class Transform(object):
         raise NotImplementedError
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.__extra_repr__())
-
-    def __extra_repr__(self):
         """
-        Adds extra info to the standard repr
+        Returns the string representation of the Transform class.
 
-        By default the extra repr is an empty string
+        If the derived class has an 'extra_repr(self)' method, its returned string will be added within the parenthesis
 
         Returns
         -------
         str
-            the extra info
+            the string representation of the class
         """
-        return ''
+
+        return '{}({})'.format(self.__class__.__name__, self.extra_repr() if hasmethod(self, 'extra_repr') else '')
 
     def __call__(self, *args, **kwargs):
         return self.eval(*args, **kwargs)

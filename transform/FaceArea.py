@@ -10,7 +10,7 @@ class FaceArea(Transform):
     def __eval__(self, x, *args, **kwargs):
         setattr(x, self.attr, triangle_area(x.pos, T=x.face))
 
-    def __extra_repr__(self):
+    def extra_repr(self):
         return 'attr={}'.format(self.attr)
 
 
