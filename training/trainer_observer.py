@@ -1,4 +1,7 @@
-class Training_Observer(object):
+from ..utility.islist import *
+
+
+class TrainerObserver(object):
     """
     A class representing an object to observe the state of a trainer while training.
 
@@ -18,25 +21,25 @@ class Training_Observer(object):
         Receives the trainer state at the end of the training
     """
 
-    def __init__(self, trainer=None):
+    def __init__(self, trainers=None):
         """
         Parameters
         ----------
-        trainer : Trainer object (optional)
-            If not None, binds the Training State Manager to the given trainer (default is None)
+        trainers : Trainer object or list (optional)
+            If not None, binds the Training State Manager to the given trainer(s) (default is None)
         """
 
-        if trainer is not None:
-            self.bind(trainer)
+        if trainers is not None:
+            self.bind(trainers)
 
-    def bind(self, trainer):
+    def bind(self, trainers):
         """
         Binds the Training Observer to a given trainer
 
         Parameters
         ----------
-        Trainer
-            a trainer object
+        trainers : Trainer or list
+            a trainer object or list of trainer objects
 
         Returns
         -------
@@ -44,17 +47,21 @@ class Training_Observer(object):
             the training observer itself
         """
 
-        trainer.register_training_observer(self)
+        if islist(trainers):
+            for t in trainers:
+                t.register_training_observer(self)
+        else:
+            trainers.register_training_observer(self)
         return self
 
-    def unbind(self, trainer):
+    def unbind(self, trainers):
         """
         Unbinds the Training Observer to a given trainer
 
         Parameters
         ----------
-        Trainer
-            a trainer object
+        trainers : Trainer or list
+            a trainer object or list of trainer objects
 
         Returns
         -------
@@ -62,15 +69,21 @@ class Training_Observer(object):
             the training observer itself
         """
 
-        trainer.unregister_training_observer(self)
+        if islist(trainers):
+            for t in trainers:
+                t.unregister_training_observer(self)
+        else:
+            trainers.unregister_training_observer(self)
         return self
 
-    def stateFcn(self, model, input, output, loss, epoch, train, iteration, t):
+    def stateFcn(self, name, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state and executes the routine functions
 
         Parameters
         ----------
+        name : str
+            the trainer name
         model : torch.nn.Module
             the training model
         input : object
@@ -81,8 +94,6 @@ class Training_Observer(object):
             a dictionary containing the losses names and values
         epoch : tuple
             a tuple containing the current epoch and the max epoch
-        train : tuple
-            a tuple containing the current training setting and the max training setting within an epoch
         iteration : tuple
             a tuple containing the current iteration and the max iteration within an epoch
         t : float
@@ -94,22 +105,23 @@ class Training_Observer(object):
         """
 
         e = epoch
-        j = train
         i = iteration
-        g = (e[0] * j[0] * i[1] + i[0], e[1] * j[1]* i [1])
-        self.iterationFcn(model, input, output, loss, epoch, train, iteration, t)
-        if (g[0] % (j[1] * i[1])) == 0:
-            self.epochFcn(model, input, output, loss, epoch, train, iteration, t)
+        g = (e[0] * i[1] + i[0], e[1] * i[1])
+        self.iterationFcn(name, model, input, output, loss, epoch, iteration, t)
+        if ((g[0] + 1) % i[1]) == 0:
+            self.epochFcn(name, model, input, output, loss, epoch, iteration, t)
         if g[0] == (g[1] - 1):
-            self.endFcn(model, input, output, loss, epoch, train, iteration, t)
+            self.endFcn(name, model, input, output, loss, epoch, iteration, t)
         return
 
-    def iterationFcn(self, model, input, output, loss, epoch, train, iteration, t):
+    def iterationFcn(self, name, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at the end of each iteration
 
         Parameters
         ----------
+        name : str
+            the trainer name
         model : torch.nn.Module
             the training model
         input : object
@@ -120,8 +132,6 @@ class Training_Observer(object):
             a dictionary containing the losses names and values
         epoch : tuple
             a tuple containing the current epoch and the max epoch
-        train : tuple
-            a tuple containing the current training setting and the max training setting within an epoch
         iteration : tuple
             a tuple containing the current iteration and the max iteration within an epoch
         t : float
@@ -134,12 +144,14 @@ class Training_Observer(object):
 
         return
 
-    def epochFcn(self, model, input, output, loss, epoch, train, iteration, t):
+    def epochFcn(self, name, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at end of each epoch
 
         Parameters
         ----------
+        name : str
+            the trainer name
         model : torch.nn.Module
             the training model
         input : object
@@ -150,8 +162,6 @@ class Training_Observer(object):
             a dictionary containing the losses names and values
         epoch : tuple
             a tuple containing the current epoch and the max epoch
-        train : tuple
-            a tuple containing the current training setting and the max training setting within an epoch
         iteration : tuple
             a tuple containing the current iteration and the max iteration within an epoch
         t : float
@@ -164,12 +174,14 @@ class Training_Observer(object):
 
         return
 
-    def endFcn(self, model, input, output, loss, epoch, train, iteration, t):
+    def endFcn(self, name, model, input, output, loss, epoch, iteration, t):
         """
         Receives the trainer state at end of the training
 
         Parameters
         ----------
+        name : str
+            the trainer name
         model : torch.nn.Module
             the training model
         input : object
@@ -180,8 +192,6 @@ class Training_Observer(object):
             a dictionary containing the losses names and values
         epoch : tuple
             a tuple containing the current epoch and the max epoch
-        train : tuple
-            a tuple containing the current training setting and the max training setting within an epoch
         iteration : tuple
             a tuple containing the current iteration and the max iteration within an epoch
         t : float
