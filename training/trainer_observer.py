@@ -43,7 +43,7 @@ class TrainerObserver(object):
 
         Returns
         -------
-        Training_Observer
+        TrainingObserver
             the training observer itself
         """
 
@@ -65,7 +65,7 @@ class TrainerObserver(object):
 
         Returns
         -------
-        Training_Observer
+        TrainingObserver
             the training observer itself
         """
 

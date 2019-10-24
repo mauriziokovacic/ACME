@@ -334,11 +334,6 @@ class Trainer(object):
         if key in ['inputFcn', 'outputFcn']:
             if value is None:
                 value = identity
-        if key is 'optimizer':
-            if value is None:
-                value = []
-            if not islist(value):
-                value = [value]
         self.__dict__[key] = value
         if key == 'device':
             if hasattr(self, 'model'):

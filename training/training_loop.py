@@ -6,7 +6,7 @@ class TrainingLoop(object):
     A class representing the training loop
     """
 
-    def __init__(self, *trainers):
+    def __init__(self, trainers):
         self.trainers = trainers
 
     def insert(self, trainer):
