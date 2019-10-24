@@ -3,8 +3,8 @@ from .Transform         import *
 
 
 class RandomRotation(Transform):
-    def __init__(self, attr=['pos', 'norm'], name='RandomRotation'):
-        super(RandomRotation, self).__init__(name=name)
+    def __init__(self, attr=['pos', 'norm']):
+        super(RandomRotation, self).__init__()
         self.attr = attr if islist(attr) else [attr]
 
     def __eval__(self, x, *args, **kwargs):
@@ -14,3 +14,6 @@ class RandomRotation(Transform):
                 d = getattr(x, attr)
                 if d:
                     setattr(x, attr, torch.matmul(d, T))
+
+    def __extra_repr__(self):
+        return 'attr={}'.format(self.attr if len(self.attr) > 1 else self.attr[0])

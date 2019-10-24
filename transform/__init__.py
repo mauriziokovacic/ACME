@@ -7,3 +7,4 @@ from .RandomScaling  import *
 from .Reorient       import *
 from .Transform      import *
 from .TransformList  import *
+from .VertexNormal   import *

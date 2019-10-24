@@ -3,10 +3,13 @@ from .Transform            import *
 
 
 class FaceBarycenter(Transform):
-    def __init__(self, attr='fpos', name='FaceBarycenter'):
-        super(FaceBarycenter, self).__init__(name=name)
-        self.attr = 'fpos'
+    def __init__(self, attr='fpos'):
+        super(FaceBarycenter, self).__init__()
+        self.attr = attr
 
-    def eval(self, x, *args, **kwargs):
+    def __eval__(self, x, *args, **kwargs):
         setattr(x, self.attr, barycenter(x.pos, T=x.face))
+
+    def __extra_repr__(self):
+        return 'attr={}'.format(self.attr)
 
