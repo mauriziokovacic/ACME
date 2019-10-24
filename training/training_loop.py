@@ -34,7 +34,6 @@ class TrainingLoop(object):
                         epochs=(epoch, epochs),
                         iters=(i, len(dataset)),
                         num_acc=num_acc,
-                        path=path,
                         verbose=verbose)
                     if not result[0]:
                         raise RuntimeError('Something went wrong with Trainer {}'.format(trainer.name))
