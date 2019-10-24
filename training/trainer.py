@@ -3,6 +3,8 @@ import time
 import torch
 import warnings
 from ..utility.identity import *
+from ..utility.islist   import *
+from ..utility.nop      import *
 
 
 class Trainer(object):
@@ -15,6 +17,8 @@ class Trainer(object):
         an architecture to train
     optimizer : torch.optim
         an optimizer
+    scheduler : torch.optim
+        an optimization scheduler
     loss : ACME.loss.Loss
         a loss function
     device : str or torch.device
@@ -22,7 +26,9 @@ class Trainer(object):
     epoch : int
         the current training epoch
     name : str
-        the model name
+        the trainer name
+    initFcn : list
+        a list of callables setting to run on the model before the epoch beginning
     inputFcn : callable
         a preprocessing function over the architecture input
     outputFcn : callable
@@ -38,7 +44,7 @@ class Trainer(object):
         registers an observer to this trainer
     unregister_training_observer(observer)
         unregisters an observer from this trainer
-    train(dataset,epochs,checkpoint,path,verbose)
+    train(dataset, epochs, checkpoint, path, verbose)
         trains the model using the given dataset for the specified number of epochs, storing checkpoints into the given path
     test(input)
         tests an input against the model
@@ -55,15 +61,40 @@ class Trainer(object):
                  optimizer=None,
                  scheduler=None,
                  loss=None,
+                 initFcn=None,
                  inputFcn=None,
                  outputFcn=None,
                  device='cuda:0',
-                 name='Model',
+                 name='Trainer',
                  ):
+        """
+        Parameters
+        ----------
+        model : torch.nn.Module (optional)
+            an architecture to train (default is None)
+        optimizer : torch.optim (optional)
+            an optimizer (default is None)
+        scheduler : torch.optim (optional)
+            an optimization scheduler (default is None)
+        loss : ACME.loss.Loss (optional)
+            a loss function (default is None)
+        initFcn : list (optional)
+            a list of callables setting to run on the model before the epoch beginning (default is None)
+        inputFcn : callable (optional)
+            a preprocessing function over the architecture input (default is None)
+        outputFcn : callable (optional)
+            a postprocessing function over the architecture output (default is None)
+        device : str or torch.device (optional)
+            the device to store the tensors to (default is 'cuda:0')
+        name : str (optional)
+            the trainer name (default is 'Trainer')
+        """
+
         self.model     = model
         self.optimizer = optimizer
         self.scheduler = scheduler
         self.loss      = loss
+        self.initFcn   = initFcn
         self.inputFcn  = inputFcn
         self.outputFcn = outputFcn
         self.stateFcn  = []
@@ -146,11 +177,21 @@ class Trainer(object):
             the path where to store checkpoints and final model. If None it will be set to the current working directory (default is None)
         verbose : bool (optional)
             if True print debug messages to the console (default is False)
+
+        Returns
+        -------
+        Trainer
+            the trainer itself
+
+        Warnings
+        --------
+        RuntimeWarning
+            if trainer is not ready
         """
 
         if not self.is_ready():
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
-            return
+            return self
         n = len(dataset)
         if path is None:
             path = os.getcwd()
@@ -162,32 +203,28 @@ class Trainer(object):
             num_acc = n
         e = self.epoch
 
-        inputFcn  = self.inputFcn
-        if inputFcn is None:
-            inputFcn = identity
-        outputFcn = self.outputFcn
-        if outputFcn is None:
-            outputFcn = identity
         self.model.train()
         self.model.zero_grad()
         self.optimizer.zero_grad()
         for self.epoch in range(e, epochs):
             if verbose:
                 print('Epoch: {}...'.format(self.epoch), end='')
-            for i, input in enumerate(dataset):
-                t    = time.time()
-                x    = inputFcn(input)
-                y    = outputFcn(self.model(x))
-                loss = self.loss.eval(x, y)
-                loss.backward()
-                if ((i+1) % num_acc) == 0:
-                    self.optimizer.step()
-                    if self.scheduler is not None:
-                        if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                            self.scheduler.step(loss)
-                        else:
-                            self.scheduler.step()
-                    self.optimizer.zero_grad()
+            for j, init in enumerate(self.initFcn):
+                init(self.model)
+                for i, input in enumerate(dataset):
+                    t    = time.time()
+                    x    = self.inputFcn(input)
+                    y    = self.outputFcn(self.model(x))
+                    loss = self.loss.eval(x, y)
+                    loss.backward()
+                    if ((i+1) % num_acc) == 0:
+                        self.optimizer.step()
+                        if self.scheduler is not None:
+                            if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                                self.scheduler.step(loss)
+                            else:
+                                self.scheduler.step()
+                        self.optimizer.zero_grad()
                     for fcn in self.stateFcn:
                         fcn(
                             model=self.model,
@@ -195,16 +232,15 @@ class Trainer(object):
                             output=y,
                             loss=self.loss.to_dict(),
                             epoch=(self.epoch, epochs),
+                            train=(j, len(self.initFcn)),
                             iteration=(i, n),
                             t=time.time()-t
                         )
-                else:
-                    g += 1
+                if checkpoint:
+                    self.save_checkpoint(path)
             if verbose:
                 print('DONE')
-            if checkpoint:
-                self.save_checkpoint(path)
-        return
+        return self
 
     def test(self, dataset, verbose=False):
         """
@@ -228,13 +264,6 @@ class Trainer(object):
             return
 
         n = len(dataset)
-        inputFcn  = self.inputFcn
-        if inputFcn is None:
-            inputFcn = identity
-        outputFcn = self.outputFcn
-        if outputFcn is None:
-            outputFcn = identity
-
         out = []
         self.model.eval()
         if verbose:
@@ -243,8 +272,8 @@ class Trainer(object):
             if verbose:
                 print('Object: {}...'.format(i), end='')
             t = time.time()
-            x = inputFcn(input)
-            y = outputFcn(self.model(x))
+            x = self.inputFcn(input)
+            y = self.outputFcn(self.model(x))
             l = self.loss.eval(x, y)
             out += [(x, y, l)]
             if verbose:
@@ -323,9 +352,17 @@ class Trainer(object):
         return self
 
     def __setattr__(self, key, value):
+        if key in ['inputFcn', 'outputFcn']:
+            if value is None:
+                value = identity
+        if key is 'initFcn':
+            if value is None:
+                value = nop
+            if not islist(value):
+                value = [value]
         self.__dict__[key] = value
         if key == 'device':
-            if hasattr(self, 'model') :
+            if hasattr(self, 'model'):
                 if self.model is not None:
                     self.model = self.model.to(self.device)
             if hasattr(self, 'loss'):
@@ -334,3 +371,11 @@ class Trainer(object):
 
     def __call__(self, *args, **kwargs):
         return self.train(*args, **kwargs)
+
+
+def GAN_trainer(*args, **kwargs):
+    return Trainer(*args,
+                   name='GAN',
+                   initFcn=[lambda f: f.generator_train_step(),
+                            lambda f: f.discriminator_train_step()],
+                   **kwargs)

@@ -2,13 +2,6 @@ class Training_Observer(object):
     """
     A class representing an object to observe the state of a trainer while training.
 
-    Attributes
-    ----------
-    epoch : int
-        the last epoch processed
-    iter : int
-        the last iteration processed
-
     Methods
     -------
     bind(trainer)
@@ -33,8 +26,6 @@ class Training_Observer(object):
             If not None, binds the Training State Manager to the given trainer (default is None)
         """
 
-        self.epoch = None
-        self.iter  = None
         if trainer is not None:
             self.bind(trainer)
 
@@ -74,7 +65,7 @@ class Training_Observer(object):
         trainer.unregister_training_observer(self)
         return self
 
-    def stateFcn(self, model, input, output, loss, epoch, iteration, t):
+    def stateFcn(self, model, input, output, loss, epoch, train, iteration, t):
         """
         Receives the trainer state and executes the routine functions
 
@@ -88,10 +79,12 @@ class Training_Observer(object):
             the architecture output
         loss : dict
             a dictionary containing the losses names and values
-        epoch : list
-            a list containing the starting epoch, the current epoch and the max epoch
-        iteration : list
-            a list containing the current iteration and the max iteration within an epoch
+        epoch : tuple
+            a tuple containing the current epoch and the max epoch
+        train : tuple
+            a tuple containing the current training setting and the max training setting within an epoch
+        iteration : tuple
+            a tuple containing the current iteration and the max iteration within an epoch
         t : float
             the execution time of last iteration
 
@@ -101,16 +94,17 @@ class Training_Observer(object):
         """
 
         e = epoch
+        j = train
         i = iteration
-        g = (e[0]*i[1]+i[0], e[1]*i[1])
-        self.iterationFcn(model, input, output, loss, epoch, iteration, t)
-        if (g[0] % i[1]) == 0:
-            self.epochFcn(model, input, output, loss, epoch, iteration, t)
+        g = (e[0] * j[0] * i[1] + i[0], e[1] * j[1]* i [1])
+        self.iterationFcn(model, input, output, loss, epoch, train, iteration, t)
+        if (g[0] % (j[1] * i[1])) == 0:
+            self.epochFcn(model, input, output, loss, epoch, train, iteration, t)
         if g[0] == (g[1] - 1):
-            self.endFcn(model, input, output, loss, epoch, iteration, t)
+            self.endFcn(model, input, output, loss, epoch, train, iteration, t)
         return
 
-    def iterationFcn(self, model, input, output, loss, epoch, iteration, t):
+    def iterationFcn(self, model, input, output, loss, epoch, train, iteration, t):
         """
         Receives the trainer state at the end of each iteration
 
@@ -124,10 +118,12 @@ class Training_Observer(object):
             the architecture output
         loss : dict
             a dictionary containing the losses names and values
-        epoch : list
-            a list containing the starting epoch, the current epoch and the max epoch
-        iteration : list
-            a list containing the current iteration and the max iteration within an epoch
+        epoch : tuple
+            a tuple containing the current epoch and the max epoch
+        train : tuple
+            a tuple containing the current training setting and the max training setting within an epoch
+        iteration : tuple
+            a tuple containing the current iteration and the max iteration within an epoch
         t : float
             the execution time of last iteration
 
@@ -138,7 +134,7 @@ class Training_Observer(object):
 
         return
 
-    def epochFcn(self, model, input, output, loss, epoch, iteration, t):
+    def epochFcn(self, model, input, output, loss, epoch, train, iteration, t):
         """
         Receives the trainer state at end of each epoch
 
@@ -152,10 +148,12 @@ class Training_Observer(object):
             the architecture output
         loss : dict
             a dictionary containing the losses names and values
-        epoch : list
-            a list containing the starting epoch, the current epoch and the max epoch
-        iteration : list
-            a list containing the current iteration and the max iteration within an epoch
+        epoch : tuple
+            a tuple containing the current epoch and the max epoch
+        train : tuple
+            a tuple containing the current training setting and the max training setting within an epoch
+        iteration : tuple
+            a tuple containing the current iteration and the max iteration within an epoch
         t : float
             the execution time of last iteration
 
@@ -166,7 +164,7 @@ class Training_Observer(object):
 
         return
 
-    def endFcn(self, model, input, output, loss, epoch, iteration, t):
+    def endFcn(self, model, input, output, loss, epoch, train, iteration, t):
         """
         Receives the trainer state at end of the training
 
@@ -180,10 +178,12 @@ class Training_Observer(object):
             the architecture output
         loss : dict
             a dictionary containing the losses names and values
-        epoch : list
-            a list containing the starting epoch, the current epoch and the max epoch
-        iteration : list
-            a list containing the current iteration and the max iteration within an epoch
+        epoch : tuple
+            a tuple containing the current epoch and the max epoch
+        train : tuple
+            a tuple containing the current training setting and the max training setting within an epoch
+        iteration : tuple
+            a tuple containing the current iteration and the max iteration within an epoch
         t : float
             the execution time of last iteration
 

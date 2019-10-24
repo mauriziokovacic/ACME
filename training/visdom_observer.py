@@ -33,7 +33,7 @@ class VisdomObserver(Training_Observer):
         self.scene.insert_plot(name='loss', cls=LossPlot)
         self.scene.insert_plot(name='grad', cls=GradientFlowLinePlot)
 
-    def stateFcn(self, model, input, output, loss, epoch, iteration, t):
+    def stateFcn(self, model, input, output, loss, epoch, train, iteration, t):
         """
         Receives the trainer state and executes the routine functions
 
@@ -47,10 +47,12 @@ class VisdomObserver(Training_Observer):
             the architecture output
         loss : dict
             a dictionary containing the losses names and values
-        epoch : list
-            a list containing the starting epoch, the current epoch and the max epoch
-        iteration : list
-            a list containing the current iteration and the max iteration within an epoch
+        epoch : tuple
+            a tuple containing the current epoch and the max epoch
+        train : tuple
+            a tuple containing the current training setting and the max training setting within an epoch
+        iteration : tuple
+            a tuple containing the current iteration and the max iteration within an epoch
         t : float
             the execution time of last iteration
 
@@ -59,7 +61,7 @@ class VisdomObserver(Training_Observer):
         None
         """
 
-        self.scene.update_plot('proc', epoch, iteration, t)
+        self.scene.update_plot('proc', epoch, train, iteration, t)
         self.scene.update_plot('loss', loss)
         self.scene.update_plot('grad', model)
         super(VisdomObserver, self).stateFcn(model, input, output, loss, epoch, iteration, t)
