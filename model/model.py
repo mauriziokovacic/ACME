@@ -43,36 +43,6 @@ class Model(torch.nn.Module):
         super(Model, self).__init__()
         self.name   = name
         self.device = device
-        
-    def freeze(self):
-        """
-        Freezes all the parameters in the model
-        
-        Returns
-        -------
-        Model
-            the model itself
-        """
-        
-        for param in self.parameters():
-            param.requires_grad = False
-        self.training = False
-        return self
-            
-    def unfreeze(self):
-        """
-        Unfreezes all the parameters in the model
-        
-        Returns
-        -------
-        Model
-            the model itself
-        """
-        
-        for param in self.parameters():
-            param.requires_grad = True
-        self.training = True
-        return self
 
     def save_model(self, filename):
         """

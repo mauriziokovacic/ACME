@@ -1,4 +1,6 @@
-from .model import *
+from .model    import *
+from .freeze   import *
+from .unfreeze import *
 
 
 class GAN(Model):
@@ -74,7 +76,8 @@ class GAN(Model):
             the gan itself
         """
 
-        self.D.zero_grad()
+        unfreeze(self.G)
+        freeze(self.D)
         return self
 
     def discriminator_train_step(self):
@@ -87,7 +90,8 @@ class GAN(Model):
             the gan itself
         """
 
-        self.G.zero_grad()
+        unfreeze(self.D)
+        freeze(self.G)
         return self
 
 
