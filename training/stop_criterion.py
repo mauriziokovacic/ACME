@@ -50,10 +50,13 @@ class StopCriterion(object):
         """
 
         if self.attr in kwargs:
-            if self.__eval__(**kwargs):
+            if self.__eval__(kwargs[self.attr]):
                 warnings.warn('{} has been evaluated positively'.format(str(self)), RuntimeWarning)
                 return True
         return False
+
+    def __eval__(self, x):
+        raise NotImplementedError
 
     def __repr__(self):
         """
@@ -98,8 +101,8 @@ class VanishingGradientCriterion(StopCriterion):
         super(VanishingGradientCriterion, self).__init__(attr='grad')
         self.tol = tol
 
-    def __eval__(self, **kwargs):
-        return kwargs['grad'] < self.tol
+    def __eval__(self, x):
+        return x < self.tol
 
     def extra_repr(self):
         return ', tol={}'.format(self.tol)
@@ -115,8 +118,8 @@ class FrozenModelCriterion(StopCriterion):
     def __init__(self):
         super(FrozenModelCriterion, self).__init__(attr='model')
 
-    def eval(self, **kwargs):
-        return is_frozen(kwargs['model'])
+    def __eval__(self, x):
+        return is_frozen(x)
 
 
 class NaNLossCriterion(StopCriterion):
@@ -129,5 +132,13 @@ class NaNLossCriterion(StopCriterion):
     def __init__(self):
         super(NaNLossCriterion, self).__init__(attr='loss')
 
-    def eval(self, *args, **kwargs):
-        return isnan(kwargs['loss'])
+    def __eval__(self, x):
+        return isnan(x)
+
+
+class NoneCriterion(StopCriterion):
+    def __init__(self):
+        super(NoneCriterion, self).__init__(attr='train')
+
+    def __eval__(self, x):
+        return x is None
