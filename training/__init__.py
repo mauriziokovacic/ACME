@@ -1,3 +1,4 @@
-from .trainer           import *
-from .training_observer import *
-from .visdom_observer   import *
+from .trainer          import *
+from .trainer_observer import *
+from .training_loop    import *
+from .visdom_observer  import *

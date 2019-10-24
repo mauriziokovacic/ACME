@@ -4,7 +4,7 @@ import torch
 import warnings
 from ..utility.identity import *
 from ..utility.islist   import *
-from ..utility.nop      import *
+from ..utility.isnan    import *
 
 
 class Trainer(object):
@@ -27,8 +27,6 @@ class Trainer(object):
         the current training epoch
     name : str
         the trainer name
-    initFcn : list
-        a list of callables setting to run on the model before the epoch beginning
     inputFcn : callable
         a preprocessing function over the architecture input
     outputFcn : callable
@@ -61,7 +59,6 @@ class Trainer(object):
                  optimizer=None,
                  scheduler=None,
                  loss=None,
-                 initFcn=None,
                  inputFcn=None,
                  outputFcn=None,
                  device='cuda:0',
@@ -78,8 +75,6 @@ class Trainer(object):
             an optimization scheduler (default is None)
         loss : ACME.loss.Loss (optional)
             a loss function (default is None)
-        initFcn : list (optional)
-            a list of callables setting to run on the model before the epoch beginning (default is None)
         inputFcn : callable (optional)
             a preprocessing function over the architecture input (default is None)
         outputFcn : callable (optional)
@@ -94,7 +89,6 @@ class Trainer(object):
         self.optimizer = optimizer
         self.scheduler = scheduler
         self.loss      = loss
-        self.initFcn   = initFcn
         self.inputFcn  = inputFcn
         self.outputFcn = outputFcn
         self.stateFcn  = []
@@ -154,34 +148,31 @@ class Trainer(object):
         return self
 
     def train(self,
-              dataset,
-              epochs=None,
+              input,
+              epochs,
+              iters,
               num_acc=None,
-              checkpoint=True,
-              path=None,
               verbose=False):
         """
         Trains the model with the input dataset for a given number of epochs
 
         Parameters
         ----------
-        dataset : DataLoader
-            a dataloader object containing the dataset
-        epochs : int (optional)
-            the number of epochs to be performed. If None it will be automatically set to len(dataset) (default is None)
+        input : object
+            the input of the model
+        epochs : tuple
+            the (current, end) epoch
+        iters : tuple
+            the (current, end) iteration
         num_acc : int (optional)
             the number of gradient accumulations. If None it will be automatically set to 1 (default is None)
-        checkpoint : bool (optional)
-            if True stores a checkpoint of the training at the end of every epoch (default is True)
-        path : str (optional)
-            the path where to store checkpoints and final model. If None it will be set to the current working directory (default is None)
         verbose : bool (optional)
             if True print debug messages to the console (default is False)
 
         Returns
         -------
-        Trainer
-            the trainer itself
+        bool, float
+            a boolean stating if the training step finished correctly and the loss value
 
         Warnings
         --------
@@ -191,56 +182,44 @@ class Trainer(object):
 
         if not self.is_ready():
             warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
-            return self
-        n = len(dataset)
-        if path is None:
-            path = os.getcwd()
-        if epochs is None:
-            epochs = n
+            return False, 0
         if (num_acc is None) or (num_acc <= 0):
             num_acc = 1
-        if num_acc > n:
-            num_acc = n
-        e = self.epoch
+        if num_acc > iters[1]:
+            num_acc = iters[1]
+        self.epoch = epochs[0]
+        if verbose:
+            print('Epoch: {}...'.format(self.epoch), end='')
 
-        self.model.train()
-        self.model.zero_grad()
-        self.optimizer.zero_grad()
-        for self.epoch in range(e, epochs):
-            if verbose:
-                print('Epoch: {}...'.format(self.epoch), end='')
-            for j, init in enumerate(self.initFcn):
-                init(self.model)
-                for i, input in enumerate(dataset):
-                    t    = time.time()
-                    x    = self.inputFcn(input)
-                    y    = self.outputFcn(self.model(x))
-                    loss = self.loss.eval(x, y)
-                    loss.backward()
-                    if ((i+1) % num_acc) == 0:
-                        self.optimizer.step()
-                        if self.scheduler is not None:
-                            if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
-                                self.scheduler.step(loss)
-                            else:
-                                self.scheduler.step()
-                        self.optimizer.zero_grad()
-                    for fcn in self.stateFcn:
-                        fcn(
-                            model=self.model,
-                            input=x,
-                            output=y,
-                            loss=self.loss.to_dict(),
-                            epoch=(self.epoch, epochs),
-                            train=(j, len(self.initFcn)),
-                            iteration=(i, n),
-                            t=time.time()-t
-                        )
-                if checkpoint:
-                    self.save_checkpoint(path)
-            if verbose:
-                print('DONE')
-        return self
+        t    = time.time()
+        x    = self.inputFcn(input)
+        y    = self.outputFcn(self.model(x))
+        loss = self.loss(x, y)
+        if isnan(loss):
+            return True, loss.item()
+        loss.backward()
+        if (((iters[0]+1) % num_acc) == 0) or ((iters[0]+1) == iters[1]):
+            self.optimizer.step()
+            if self.scheduler is not None:
+                if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                    self.scheduler.step(loss)
+                else:
+                    self.scheduler.step()
+            self.optimizer.zero_grad()
+        for fcn in self.stateFcn:
+            fcn(
+                name=self.name,
+                model=self.model,
+                input=x,
+                output=y,
+                loss=self.loss.to_dict(),
+                epoch=epochs,
+                iteration=iters,
+                t=time.time()-t,
+            )
+        if verbose:
+            print('DONE')
+        return True, loss.item()
 
     def test(self, dataset, verbose=False):
         """
@@ -355,9 +334,9 @@ class Trainer(object):
         if key in ['inputFcn', 'outputFcn']:
             if value is None:
                 value = identity
-        if key is 'initFcn':
+        if key is 'optimizer':
             if value is None:
-                value = nop
+                value = []
             if not islist(value):
                 value = [value]
         self.__dict__[key] = value
@@ -371,11 +350,3 @@ class Trainer(object):
 
     def __call__(self, *args, **kwargs):
         return self.train(*args, **kwargs)
-
-
-def GAN_trainer(*args, **kwargs):
-    return Trainer(*args,
-                   name='GAN',
-                   initFcn=[lambda f: f.generator_train_step(),
-                            lambda f: f.discriminator_train_step()],
-                   **kwargs)
