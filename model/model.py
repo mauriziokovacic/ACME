@@ -1,6 +1,8 @@
 import warnings
 import torch
 from ..fileio.fileparts import *
+from .freeze            import *
+from .unfreeze          import *
 
 
 class Model(torch.nn.Module):
@@ -17,9 +19,9 @@ class Model(torch.nn.Module):
     Methods
     -------
     freeze()
-        freezes all the parameters in the model
+        freezes all the model parameters
     unfreeze()
-        unfreezes all the parameters in the model
+        unfreezes all the model parameters
     save_model(path)
         stores the model state in the given path
     load_model(path)
@@ -43,6 +45,32 @@ class Model(torch.nn.Module):
         super(Model, self).__init__()
         self.name   = name
         self.device = device
+
+    def freeze(self):
+        """
+        Freezes all the model parameters
+
+        Returns
+        -------
+        Model
+            the model itself
+        """
+
+        freeze(self)
+        return self
+
+    def unfreeze(self):
+        """
+        Unfreezes all the model parameters
+
+        Returns
+        -------
+        Model
+            the model itself
+        """
+
+        unfreeze(self)
+        return self
 
     def save_model(self, filename):
         """

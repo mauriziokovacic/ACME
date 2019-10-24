@@ -1,7 +1,4 @@
 from .model     import *
-from .freeze    import *
-from .is_frozen import *
-from .unfreeze  import *
 
 
 class GAN(Model):
@@ -23,11 +20,6 @@ class GAN(Model):
     -------
     forward(x, y)
         returns the discriminator results for a a pair of false and true tensors
-    is_genetarot_train_step()
-    set_generator_train_step()
-        sets the training only for the generator network
-    set_discriminator_train_step()
-        sets the training only for the discriminator network
     """
 
     def __init__(self, generator, discriminator, name='GAN', **kwargs):
@@ -68,58 +60,6 @@ class GAN(Model):
         y_hat = self.G(x)
         c     = self.D(y, y_hat)
         return c, y_hat
-
-    def is_generator_train_step(self):
-        """
-        Returns True if the model is training the generator net, False otherwise
-
-        Returns
-        -------
-        bool
-            True if the model is training the generator net, False otherwise
-        """
-
-        return (not is_frozen(self.G)) and is_frozen(self.D)
-
-    def is_discriminator_train_step(self):
-        """
-        Returns True if the model is training the discriminator net, False otherwise
-
-        Returns
-        -------
-        bool
-            True if the model is training the discriminator net, False otherwise
-        """
-
-        return (not is_frozen(self.D)) and is_frozen(self.G)
-
-    def set_generator_train_step(self):
-        """
-        Sets the training only for the generator network
-
-        Returns
-        -------
-        GAN
-            the gan itself
-        """
-
-        unfreeze(self.G)
-        freeze(self.D)
-        return self
-
-    def set_discriminator_train_step(self):
-        """
-        Sets the training only for the discriminator network
-
-        Returns
-        -------
-        GAN
-            the gan itself
-        """
-
-        unfreeze(self.D)
-        freeze(self.G)
-        return self
 
 
 class CycleGAN(Model):
