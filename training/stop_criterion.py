@@ -27,6 +27,9 @@ class StopCriterion(object):
             the name of the attribute to check
         """
 
+        if not hasmethod(self, '__eval__'):
+            raise NotImplementedError('The derived class should implement the method:\n'
+                                      ' __eval__(self, x: object) -> bool ')
         self.attr = attr
 
     def eval(self, **kwargs):
@@ -54,9 +57,6 @@ class StopCriterion(object):
                 warnings.warn('{} has been evaluated positively'.format(str(self)), RuntimeWarning)
                 return True
         return False
-
-    def __eval__(self, x):
-        raise NotImplementedError
 
     def __repr__(self):
         """
@@ -102,6 +102,19 @@ class VanishingGradientCriterion(StopCriterion):
         self.tol = tol
 
     def __eval__(self, x):
+        """
+        Evaluates the stop criterion
+
+        Parameters
+        ----------
+        x : float or Tensor
+            the mean gradient of the model
+
+        Returns
+        -------
+        bool
+            True if the gradient is below the tolerance, False otherwise
+        """
         return x < self.tol
 
     def extra_repr(self):
@@ -118,7 +131,22 @@ class FrozenModelCriterion(StopCriterion):
     def __init__(self):
         super(FrozenModelCriterion, self).__init__(attr='model')
 
-    def __eval__(self, x):
+    @staticmethod
+    def __eval__(x):
+        """
+        Evaluates the stop criterion
+
+        Parameters
+        ----------
+        x : torch.nn.Module
+            the parameter value to check
+
+        Returns
+        -------
+        bool
+            True if the model is frozen, False otherwise
+        """
+
         return is_frozen(x)
 
 
@@ -132,13 +160,53 @@ class NaNLossCriterion(StopCriterion):
     def __init__(self):
         super(NaNLossCriterion, self).__init__(attr='loss')
 
+    @staticmethod
     def __eval__(self, x):
+        """
+        Evaluates the stop criterion
+
+        Parameters
+        ----------
+        x : object
+            the parameter value to check
+
+        Returns
+        -------
+        bool
+            True if the object is NaN, False otherwise
+        """
         return isnan(x)
 
 
 class NoneCriterion(StopCriterion):
-    def __init__(self):
-        super(NoneCriterion, self).__init__(attr='train')
+    """
+    A criterion that checks if a specific attribute is None
+    """
 
+    def __init__(self, attr):
+        """
+        Parameters
+        ----------
+        attr : str
+            the name of the attribute to check
+        """
+
+        super(NoneCriterion, self).__init__(attr=attr)
+
+    @staticmethod
     def __eval__(self, x):
+        """
+        Evaluates the stop criterion
+
+        Parameters
+        ----------
+        x : object
+            the parameter value to check
+
+        Returns
+        -------
+        bool
+            True if the object is None, False otherwise
+        """
+
         return x is None
