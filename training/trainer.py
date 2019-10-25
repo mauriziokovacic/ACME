@@ -3,8 +3,7 @@ import time
 import torch
 import warnings
 from ..utility.identity import *
-from ..utility.islist   import *
-from ..utility.isnan    import *
+from ..model.mean_grad  import *
 
 
 class Trainer(object):
@@ -147,19 +146,14 @@ class Trainer(object):
         self.stateFcn.remove(observer.stateFcn)
         return self
 
-    def train(self,
-              input,
-              epochs,
-              iters,
-              num_acc=None,
-              verbose=False):
+    def train(self, data, epochs, iters, num_acc=None, verbose=False):
         """
         Trains the model with the input dataset for a given number of epochs
 
         Parameters
         ----------
-        input : object
-            the input of the model
+        data : object
+            the model input
         epochs : tuple
             the (current, end) epoch
         iters : tuple
@@ -171,39 +165,38 @@ class Trainer(object):
 
         Returns
         -------
-        bool, float
-            a boolean stating if the training step finished correctly and the loss value
-
-        Warnings
-        --------
-        RuntimeWarning
-            if trainer is not ready
+        dict
+            a dictionary containing loss, mean grad and model reference
         """
 
-        if not self.is_ready():
-            warnings.warn('Trainer is not ready. Set properly model, optimizer and loss.', RuntimeWarning)
-            return None
-        if (num_acc is None) or (num_acc <= 0):
-            num_acc = 1
-        if num_acc > iters[1]:
-            num_acc = iters[1]
         self.epoch = epochs[0]
         if verbose:
-            print('Epoch: {}...'.format(self.epoch), end='')
+            print('Iter: {}...'.format(iters[0]))
 
-        t    = time.time()
-        x    = self.inputFcn(input)
-        y    = self.outputFcn(self.model(x))
+        t = time.time()
+        if verbose:
+            print('- Processing input')
+        x = self.inputFcn(data)
+        if verbose:
+            print('- Evaluating model')
+        y = self.outputFcn(self.model(x))
+        if verbose:
+            print('- Computing loss function')
         loss = self.loss(x, y)
+        if verbose:
+            print('- Gradient back propagation')
         loss.backward()
-        if (((iters[0]+1) % num_acc) == 0) or ((iters[0]+1) == iters[1]):
+        grad = mean_grad(self.model)
+        step = (((iters[0]+1) % num_acc) == 0) or ((iters[0]+1) == iters[1])
+        if step:
+            if verbose:
+                print('- Optimizing')
             self.optimizer.step()
             if self.scheduler is not None:
                 if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
                     self.scheduler.step(loss)
                 else:
                     self.scheduler.step()
-            self.optimizer.zero_grad()
         for fcn in self.stateFcn:
             fcn(
                 name=self.name,
@@ -215,9 +208,11 @@ class Trainer(object):
                 iteration=iters,
                 t=time.time()-t,
             )
+        if step:
+            self.optimizer.zero_grad()
         if verbose:
             print('DONE')
-        return loss.item()
+        return {'loss': loss.item(), 'grad': grad, 'model': self.model}
 
     def test(self, dataset, verbose=False):
         """
