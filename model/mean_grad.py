@@ -18,8 +18,8 @@ def mean_grad(model):
 
     g = []
     for p in model.parameters():
-        if p.grad:
-            g += [p.grad.abs().mean()]
-        else:
+        if p.grad is None:
             g += [0]
+        else:
+            g += [p.grad.abs().mean()]
     return torch.tensor(g, dtype=torch.float, device='cpu').mean()
