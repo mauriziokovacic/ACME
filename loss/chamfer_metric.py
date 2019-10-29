@@ -1,6 +1,5 @@
-import torch
-from ..math.norm import *
-from ..math.knn  import *
+from ..math.unrooted_norm import *
+from ..math.knn           import *
 
 
 def chamfer_metric(A, B, alpha=1, beta=1):
@@ -23,8 +22,8 @@ def chamfer_metric(A, B, alpha=1, beta=1):
     Tensor
         the (1,) metric tensor
     """
-    return alpha * torch.mean(knn(A, B, 1, distFcn=distance)[1]) +\
-           beta  * torch.mean(knn(B, A, 1, distFcn=distance)[1])
+    return alpha * torch.mean(knn(A, B, 1, distFcn=sqdistance)[1]) +\
+           beta  * torch.mean(knn(B, A, 1, distFcn=sqdistance)[1])
 
 
 def pixel2mesh_chamfer(A, B):
