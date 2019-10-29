@@ -36,3 +36,6 @@ class ShapeLayer(torch.nn.Module):
             the given shape
         """
         return self.shape.clone()
+
+    def extra_repr(self):
+        return 'shape={}'.format(str(self.shape))
