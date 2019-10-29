@@ -7,7 +7,7 @@ class TrainingLoop(object):
     A class representing the training loop
     """
 
-    def __init__(self, trainers, criteria=(FrozenModelCriterion(), NaNLossCriterion())):
+    def __init__(self, trainers, criteria=[FrozenModelCriterion(), NaNLossCriterion()]):
         self.trainers = trainers
         self.criteria = criteria
 
@@ -16,7 +16,7 @@ class TrainingLoop(object):
         return self
 
     def remove(self, trainer):
-        self.trainer.remove(trainer)
+        self.trainers.remove(trainer)
         return self
 
     def train(self, dataset, epochs=None, num_acc=None, checkpoint=True, path=None, verbose=False):
@@ -55,7 +55,7 @@ class TrainingLoop(object):
         return self
 
     def __setattr__(self, key, value):
-        if key is 'criteria':
+        if key in ['trainers', 'criteria']:
             if (value is not None) and (not islist(value)):
                 value = [value]
         self.__dict__[key] = value
