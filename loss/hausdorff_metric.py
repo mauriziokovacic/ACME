@@ -10,7 +10,7 @@ def hausdorff_metric(A, B):
     ----------
     A : Tensor
         a (M,F,) tensor
-    B : Tesnor
+    B : Tensor
         a (N,F,) tensor
 
     Returns
