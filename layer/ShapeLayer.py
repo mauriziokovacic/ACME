@@ -19,6 +19,7 @@ class ShapeLayer(torch.nn.Module):
             the shape to return
         """
 
+        super(ShapeLayer, self).__init__()
         self.shape = shape
 
     def forward(self, *args, **kwargs):
