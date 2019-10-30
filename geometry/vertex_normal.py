@@ -43,7 +43,6 @@ def vertex_normal(P, T, type=None):
             Ni = normr(Ni) * Ai
             Nj = normr(Nj) * Aj
             Nk = normr(Nk) * Ak
-    I = torch.cat(tuple(T)).squeeze()
     V = torch.cat((Ni, Nj, Nk), dim=0)
-    N = accumarray(I, V, size=P.size())
+    N = accumarray(T.view(-1), V, size=P.size())
     return normr(N)
