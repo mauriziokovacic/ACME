@@ -50,6 +50,7 @@ from .spdiag             import *
 from .speye              import *
 from .sph2cart           import *
 from .sph2rotm           import *
+from .spzeros            import *
 from .tan                import *
 from .tra3               import *
 from .unitvec            import *
