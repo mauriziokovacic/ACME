@@ -42,6 +42,7 @@ from .isfloat           import *
 from .isfunction        import *
 from .isinf             import *
 from .isint             import *
+from .isiterable        import *
 from .islist            import *
 from .ismatrix          import *
 from .isnan             import *
