@@ -32,6 +32,7 @@ from .interleave        import *
 from .IntTensor         import *
 from .isbool            import *
 from .iscomplex         import *
+from .isdense           import *
 from .isdict            import *
 from .isempty           import *
 from .isfat             import *
