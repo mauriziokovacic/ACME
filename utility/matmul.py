@@ -25,7 +25,9 @@ def matmul(tensor_a, tensor_b):
     if isnumpy(tensor_a, tensor_b):
         return numpy.matmul(tensor_a, tensor_b)
     if istorch(tensor_a, tensor_b):
-        if issparse(tensor_a):
-            return torch.sparse.mm(tensor_a, tensor_b)
-        return torch.mm(tensor_a, tensor_b)
+        if issparse(tensor_a, tensor_b):
+            return torch.matmul(tensor_a, tensor_b.to_dense())
+        if issparse(tensor_b):
+            return torch.matmul(tensor_b.t(), tensor_a).t()
+        return torch.matmul(tensor_a, tensor_b)
     assert False, 'Unknown data type'
