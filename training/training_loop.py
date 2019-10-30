@@ -48,7 +48,7 @@ class TrainingLoop(object):
                     )
                     if self.criteria is not None:
                         for c in self.criteria:
-                            if c(result):
+                            if c(**result):
                                 raise RuntimeError('Stop criterion met')
                 if checkpoint:
                     trainer.save_checkpoint(path=path)

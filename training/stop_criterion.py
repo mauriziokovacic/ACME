@@ -131,8 +131,7 @@ class FrozenModelCriterion(StopCriterion):
     def __init__(self):
         super(FrozenModelCriterion, self).__init__(attr='model')
 
-    @staticmethod
-    def __eval__(x):
+    def __eval__(self, x):
         """
         Evaluates the stop criterion
 
@@ -160,7 +159,6 @@ class NaNLossCriterion(StopCriterion):
     def __init__(self):
         super(NaNLossCriterion, self).__init__(attr='loss')
 
-    @staticmethod
     def __eval__(self, x):
         """
         Evaluates the stop criterion
@@ -193,7 +191,6 @@ class NoneCriterion(StopCriterion):
 
         super(NoneCriterion, self).__init__(attr=attr)
 
-    @staticmethod
     def __eval__(self, x):
         """
         Evaluates the stop criterion
