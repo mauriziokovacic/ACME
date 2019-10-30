@@ -19,7 +19,7 @@ def normvec(tensor, p=2, dim=1):
     n = pnorm(tensor, p=p, dim=dim)
     n[n == 0] = 1
     return tensor / n
-    return tensor/(n+torch.eq(n, 0).to(dtype=torch.float, device=tensor.device))
+    # return tensor/(n+torch.eq(n, 0).to(dtype=torch.float, device=tensor.device))
 
 
 
