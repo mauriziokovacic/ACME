@@ -27,7 +27,7 @@ def unitvec(size, i, sparse=False, dtype=torch.float, device='cuda:0'):
     """
 
     n = numel(i)
-    j = indices(0, n-1, device=device).squeeze()
+    j = indices(0, n-1, device=device).squeeze(-1)
     if sparse:
         e = SparseTensor(size=(n, size),
                          indices=torch.cat((j.unsqueeze(1), i.unsqueeze(1)), dim=1),
