@@ -24,11 +24,11 @@ def spdiag(tensor, rows=None, cols=None):
         a sparse diagonal matrix with the given entries on the diagonal
     """
 
+    n = numel(tensor)
     if rows is None:
-        rows = numel(tensor)
+        rows = n
     if cols is None:
         cols = rows
-    n = min(rows, cols)
-    v = torch.cat((tensor.flatten(), torch.zeros(n-numel(tensor), dtype=tensor.dtype, device=tensor.device)))
-    E = torch.t(indices(0, n-1, device=tensor.device))
-    return SparseTensor(size=(rows, cols), indices=torch.cat((E, E), dim=0), values=v)
+    return SparseTensor(size=(rows, cols),
+                        indices=indices(0, n-1, device=tensor.device).expand(-1, 2),
+                        values=tensor.view(-1))
