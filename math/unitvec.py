@@ -1,9 +1,11 @@
-import torch
+from ..utility.indices      import *
+from ..utility.numel        import *
+from ..utility.SparseTensor import *
 
 
-def unitvec(size, i, dtype=torch.float, device='cuda:0'):
+def unitvec(size, i, sparse=False, dtype=torch.float, device='cuda:0'):
     """
-    Creates a 1xn zero tensor with a single 1 in the specified position
+    Creates a (|i|,size,) tensor with a single 1 in the specified positions
 
     Parameters
     ----------
@@ -11,6 +13,8 @@ def unitvec(size, i, dtype=torch.float, device='cuda:0'):
         number of elements in the tensor
     i : int
         position of the 1 in the tensor
+    sparse : bool (optional)
+        if True returns a sparse tensor, a dense tensor otherwise (default is False)
     dtype : type (optional)
         type of the tensor (default is torch.float)
     device : str or torch.device (optional)
@@ -22,6 +26,13 @@ def unitvec(size, i, dtype=torch.float, device='cuda:0'):
         a 1xn tensor
     """
 
-    e = torch.zeros(size, dtype=dtype, device=device)
-    e[i] = 1
-    return e.unsqueeze(0)
+    n = numel(i)
+    j = indices(0, n-1, device=device).squeeze()
+    if sparse:
+        e = SparseTensor(size=(n, size),
+                         indices=torch.cat((j.unsqueeze(1), i.unsqueeze(1)), dim=1),
+                         values=torch.ones(n, dtype=torch.float, device=device))
+    else:
+        e = torch.zeros(n, size, dtype=dtype, device=device)
+        e[j, i] = 1
+    return e
