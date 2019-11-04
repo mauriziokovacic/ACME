@@ -1,9 +1,12 @@
-from .camera      import *
-from .color2nr    import *
-from .mesh2img    import *
-from .mesh2mvs    import *
-from .mvs2texture import *
-from .nr2img      import *
+from .camera            import *
+from .cameras           import *
+from .camera_intrinsics import *
+from .camera_extrinsics import *
+from .color2nr          import *
+from .mesh2img          import *
+from .mesh2mvs          import *
+from .mvs2texture       import *
+from .nr2img            import *
 try:
     from .renderer import *
 except ImportError:
