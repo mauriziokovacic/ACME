@@ -49,7 +49,7 @@ class CameraExtrinsic(object):
         self.position  = torch.tensor(position,  dtype=torch.float, device=device)
         self.target    = torch.tensor(target,    dtype=torch.float, device=device)
         self.up_vector = torch.tensor(up_vector, dtype=torch.float, device=device)
-        self.device    = device
+        self._device   = device
 
     def look_at(self, target):
         """
@@ -133,7 +133,7 @@ class CameraExtrinsic(object):
         """
 
         if 'device' in kwargs:
-            self.device = kwargs['device']
+            self._device = kwargs['device']
         self.position  = self.position.to(**kwargs)
         self.target    = self.target.to(**kwargs)
         self.up_vector = self.up_vector.to(**kwargs)
@@ -141,11 +141,11 @@ class CameraExtrinsic(object):
 
     @property
     def device(self):
-        return self.device
+        return self._device
 
     @device.setter
     def device(self, value):
-        self.device    = value
+        self._device    = value
         self.position  = self.position.to(self.device)
         self.target    = self.target.to(self.device)
         self.up_vector = self.up_vector.to(self.device)

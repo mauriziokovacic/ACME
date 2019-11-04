@@ -1,8 +1,9 @@
 import torch
-from ..utility.identity   import *
-from ..math.sph2rotm import *
-from .mesh2img       import *
-from .camera         import *
+from ..utility.identity     import *
+from ..geometry.shape_scale import *
+from ..math.sph2rotm        import *
+from .mesh2img              import *
+from .cameras               import *
 
 
 def mesh2mvs(renderer, T, P, C=None, Cam=None, postFcn=identity, pivoting=False):

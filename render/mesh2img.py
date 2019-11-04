@@ -2,7 +2,7 @@ from ..color.colormap           import *
 from ..geometry.triangle_normal import *
 from ..math.dot                 import *
 from ..topology.poly2poly       import *
-from ..utility.identity              import *
+from ..utility.identity         import *
 from .color2nr                  import *
 
 
