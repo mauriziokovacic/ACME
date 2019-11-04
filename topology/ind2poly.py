@@ -26,8 +26,7 @@ def ind2poly(*I):
     return torch.cat(tuple(to_row(*I)), dim=0)
 
 
-
-def ind2edge(I,J):
+def ind2edge(I, J):
     """
     Creates the 2xn edge tensor from the inputs
 
@@ -44,11 +43,10 @@ def ind2edge(I,J):
         the 2xn edge tensor
     """
 
-    return ind2poly(I,J)
+    return ind2poly(I, J)
 
 
-
-def ind2tri(I,J,K):
+def ind2tri(I, J, K):
     """
     Creates the 3xn triangle tensor from the inputs
 
@@ -67,11 +65,10 @@ def ind2tri(I,J,K):
         the 3xn triangle tensor
     """
 
-    return ind2poly(I,J,K)
+    return ind2poly(I, J, K)
 
 
-
-def ind2quad(I,J,K,L):
+def ind2quad(I, J, K, L):
     """
     Creates the 4xn quad tensor from the inputs
 
@@ -92,4 +89,4 @@ def ind2quad(I,J,K,L):
         the 4xn quad tensor
     """
 
-    return ind2poly(I,J,K,L)
+    return ind2poly(I, J, K, L)
