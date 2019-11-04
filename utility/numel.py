@@ -19,5 +19,5 @@ def numel(A):
 
     s = size(A)
     if isscalar(s):
-        return s
+        return 1
     return prod(s)
