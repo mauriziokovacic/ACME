@@ -32,6 +32,5 @@ def tan(A, B=None, dim=1):
             return numpy.tan(A)
         if istorch(A):
             return torch.tan(A)
-        if isscalar(A):
-            return math.tan(A)
+        return math.tan(A)
     return norm(cross(A, B, dim=dim))/dot(A, B, dim=dim)
