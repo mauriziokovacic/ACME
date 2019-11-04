@@ -1,5 +1,3 @@
-import torch
-from ..utility.row     import *
 from ..utility.indices import *
 from ..utility.repmat  import *
 from ..utility.unique  import *
@@ -23,12 +21,12 @@ def poly2poly(T, n):
         the new topology tensor
     """
 
-    t = repmat(T, n//row(T)+1, 1)
-    t = t[:-(row(T)-n % row(T))]
+    t = repmat(T, n // row(T) + 1, 1)
+    t = t[:-(row(T) - n % row(T))]
     return t
 
 
-def edge2poly(E,n):
+def edge2poly(E, n):
     """
     Reshapes the input edge tensor into n-gons
 
@@ -68,7 +66,7 @@ def tri2poly(T, n):
     return poly2poly(T, n)
 
 
-def quad2poly(T,n):
+def quad2poly(T, n):
     """
     Reshapes the input quad tensor into n-gons
 
@@ -141,12 +139,12 @@ def poly2tri(P):
         the triangle tensor and the index of the polygon generating it
     """
 
-    i = torch.zeros(row(P)-2, 1, dtype=P.dtype, device=P.device)
-    j = indices(1, row(P)-2, device=P.device)
-    k = (j+1) % row(P)
+    i = torch.zeros(row(P) - 2, 1, dtype=P.dtype, device=P.device)
+    j = indices(1, row(P) - 2, device=P.device)
+    k = (j + 1) % row(P)
     t = torch.cat((i, j, k), dim=1)
     T = tuple(P[t])
-    I = repmat(indices(0, col(P)-1, device=P.device), (len(T), 1))
+    I = repmat(indices(0, col(P) - 1, device=P.device), (len(T), 1))
     T = torch.cat(T, dim=1)
     return T, I
 
