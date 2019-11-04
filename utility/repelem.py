@@ -27,13 +27,12 @@ def repelem(tensor, *size):
     """
 
     out = tensor
-    if istorch(out):
-        out = torch2numpy(out)
-    if isnumpy(out):
+    if isnumpy(tensor):
         for d in range(0, len(size)):
             out = numpy.repeat(out, size[d], axis=d)
+        return out
     if istorch(tensor):
-        return numpy2torch(out, dtype=tensor.dtype, device=tensor.device)
-    if isnumpy(tensor):
+        for d in range(0, len(size)):
+            out = torch.repeat_interleave(out, size[d], dim=d)
         return out
     assert False, 'Unknown data type'
