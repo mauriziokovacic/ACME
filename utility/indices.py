@@ -26,4 +26,4 @@ def indices(min, max, dtype=torch.long, device='cuda:0'):
     """
     min = round(min)
     max = round(max)
-    return torch.arange(start=min, end=max+1, dtype=dtype, device=device).unsqueeze(1)
+    return torch.arange(start=min, end=max+1, step=-1**(min > max), dtype=dtype, device=device).unsqueeze(1)
