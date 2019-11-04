@@ -14,6 +14,8 @@ from .HookLayer       import *
 from .init            import *
 from .Layer           import *
 from .Linear          import *
+from .MeshPooling     import *
+from .MeshUnpooling   import *
 from .MLPLayer        import *
 from .MoveLayer       import *
 from .RenderLayer     import *
