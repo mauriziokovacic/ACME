@@ -26,5 +26,4 @@ def indices(min, max, dtype=torch.long, device='cuda:0'):
     """
     min = round(min)
     max = round(max)
-    s   = (-1)**(min > max)
-    return torch.arange(start=min, end=max+s, step=s, dtype=dtype, device=device).unsqueeze(1)
+    return linspace(min=min, max=max, n=abs(max-min)+1, dtype=dtype, device=device)
