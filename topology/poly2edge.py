@@ -28,9 +28,9 @@ def poly2edge(T):
     """
 
     assert row(T) > 1, "Topology matrix should be at least of size 2xt"
-    E = torch.cat((torch.cat(tuple(T),                     ).unsqueeze(0),
+    E = torch.cat((T.contiguous().view(-1).unsqueeze(0),
                    torch.cat(tuple(circshift(T, -1, dim=0))).unsqueeze(0)), dim=0)
-    F = repmat(indices(0, col(T)-1, device=T.device), row(T), 1)
+    F = repmat(indices(0, T.shape[1]-1, device=T.device), T.shape[0], 1)
     return E, F
 
 
