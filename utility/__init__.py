@@ -15,6 +15,7 @@ from .de2hex            import *
 from .debug_message     import *
 from .dense2sparse      import *
 from .depth             import *
+from .diff              import *
 from .duplicated        import *
 from .emplace_directory import *
 from .FalseTensor       import *
