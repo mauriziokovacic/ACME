@@ -31,6 +31,6 @@ def subdivide(P, T, iter=1):
         else:
             assert False, 'Topology not supported yet'
     M, t    = fun(T, iter=iter)
-    p       = torch.mm(M, P)
+    p       = torch.matmul(M, P)
     p, t, I = soup2mesh(p, t)[0:3]
     return p, t, M[I]
