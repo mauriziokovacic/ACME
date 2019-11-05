@@ -202,11 +202,12 @@ def hex2tet(T):
         the new (4,M,) topology tensor
     """
 
-    i = LongTensor([[0, 1, 3, 4],
-                    [2, 6, 3, 1],
-                    [3, 6, 7, 4],
-                    [1, 6, 3, 4],
-                    [5, 4, 6, 1]], device=T.device).t()
+    i = LongTensor([[0, 1, 4, 3],
+                    [2, 6, 1, 3],
+                    [3, 4, 7, 6],
+                    [1, 4, 3, 6],
+                    [5, 1, 6, 4],
+                    ], device=T.device).t()
     return T[i].contiguous().view(4, -1)
 
 
