@@ -1,7 +1,8 @@
-from ..utility.indices import *
-from ..utility.repmat  import *
-from ..utility.unique  import *
-from .poly2ind         import *
+from ..utility.LongTensor import *
+from ..utility.indices    import *
+from ..utility.repmat     import *
+from ..utility.unique     import *
+from .poly2ind            import *
 
 
 def poly2poly(T, n):
@@ -164,9 +165,8 @@ def quad2tri(T):
         the new triangle tensor
     """
 
-    I = poly2ind(T)
-    return torch.cat((torch.cat((I[0].unsqueeze(0), I[1].unsqueeze(0), I[2].unsqueeze(0)), dim=0),
-                      torch.cat((I[0].unsqueeze(0), I[2].unsqueeze(0), I[3].unsqueeze(0)), dim=0)), dim=1)
+    i = LongTensor([[0, 1, 2], [0, 2, 3]], device=T.device).t()
+    return T[i].contiguous().view(3, -1)
 
 
 def poly2node(T):
@@ -185,3 +185,72 @@ def poly2node(T):
     """
 
     return unique(T.flatten())[0]
+
+
+def hex2tet(T):
+    """
+    Converts the input hexaedra into a tetrahedra topology
+
+    Parameters
+    ----------
+    T : LongTensor
+        the (8,N,) topology tensor
+
+    Returns
+    -------
+    LongTensor
+        the new (4,M,) topology tensor
+    """
+
+    i = LongTensor([[0, 1, 3, 4],
+                    [2, 6, 3, 1],
+                    [3, 6, 7, 4],
+                    [1, 6, 3, 4],
+                    [5, 4, 6, 1]], device=T.device).t()
+    return T[i].contiguous().view(4, -1)
+
+
+def tet2tri(T):
+    """
+    Converts the input tetrahedra into triangular faces
+
+    Parameters
+    ----------
+    T : LongTensor
+        the (4,N,) topology tensor
+
+    Returns
+    -------
+    LongTensor
+        the new (3,M,) topology tensor
+    """
+
+    i = LongTensor([[0, 2, 1],
+                    [1, 2, 3],
+                    [3, 2, 0],
+                    [0, 1, 3]], device=T.device).t()
+    return T[i].contiguous().view(3, -1)
+
+
+def hex2quad(T):
+    """
+    Converts the input hexaedra into quad faces
+
+    Parameters
+    ----------
+    T : LongTensor
+        the (8,N,) topology tensor
+
+    Returns
+    -------
+    LongTensor
+        the new (4,M,) topology tensor
+    """
+
+    i = LongTensor([[0, 1, 2, 3],
+                    [4, 0, 3, 7],
+                    [5, 4, 7, 6],
+                    [1, 5, 6, 2],
+                    [3, 2, 6, 7],
+                    [4, 5, 1, 0]], device=T.device).t()
+    return T[i].contiguous().view(4, -1)
