@@ -1,10 +1,15 @@
-import torch
-from ..topology.ispoly      import *
+from ..utility.static_vars  import *
 from ..topology.subdivision import *
 from .soup2mesh             import *
 
 
-def subdivide(P, T, iter=1):
+@static_vars(type={'tri': xtri,
+                   'quad': xquad,
+                   't2q': xtri2quad,
+                   'tet': xtet,
+                   'hex': xhex,
+                   't2h': xtet2hex})
+def subdivide(P, T, iter=1, type='tri'):
     """
     Subdivides the given mesh n times
 
@@ -23,13 +28,10 @@ def subdivide(P, T, iter=1):
         the new points set, the new topology and the subdivision matrix
     """
 
-    if istri(T):
-        fun = xtri
+    if type in subdivide.type:
+        fun = subdivide.type[type]
     else:
-        if isquad(T):
-            fun = xquad
-        else:
-            assert False, 'Topology not supported yet'
+        raise RuntimeError('Unknown subdivision type. Please choose among:\n{}'.format('\n'.join(subdivide.type.keys())))
     M, t    = fun(T, iter=iter)
     p       = torch.matmul(M, P)
     p, t, I = soup2mesh(p, t)[0:3]
