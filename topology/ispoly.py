@@ -25,7 +25,6 @@ def ispoly(T, n=None):
     return row(T) == n
 
 
-
 def isedge(T):
     """
     Returns whether or not the input topology is an edge tensor
@@ -41,8 +40,7 @@ def isedge(T):
         True if topology is an edge tensor, False otherwise
     """
 
-    return ispoly(T,2)
-
+    return ispoly(T, 2)
 
 
 def istri(T):
@@ -60,8 +58,7 @@ def istri(T):
         True if topology is a triangle tensor, False otherwise
     """
 
-    return ispoly(T,3)
-
+    return ispoly(T, 3)
 
 
 def isquad(T):
@@ -79,8 +76,7 @@ def isquad(T):
         True if topology is a quad tensor, False otherwise
     """
 
-    return ispoly(T,4)
-
+    return ispoly(T, 4)
 
 
 def istet(T):
@@ -98,8 +94,7 @@ def istet(T):
         True if topology is a tetrahedral tensor, False otherwise
     """
 
-    return ispoly(T,4)
-
+    return ispoly(T, 4)
 
 
 def ishex(T):
@@ -117,4 +112,4 @@ def ishex(T):
         True if topology is a hexahedral tensor, False otherwise
     """
 
-    return ispoly(T,6)
+    return ispoly(T, 8)
