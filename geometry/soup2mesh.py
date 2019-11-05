@@ -18,5 +18,5 @@ def soup2mesh(P, T):
         the unique points, the new topology tensor, the indices of the unique points and the mapping of the old points
     """
 
-    I, J = uniquetol(P,tol=0.0001,ByRows=True)[1:]
+    I, J = uniquetol(P, tol=0.0001, ByRows=True)[1:]
     return P[I], J[T], I, J
