@@ -1,10 +1,8 @@
-import torch
-from ..utility.row       import *
-from ..utility.col       import *
-from ..utility.repmat    import *
-from ..utility.circshift import *
-from ..utility.indices   import *
-from .poly2unique        import *
+from ..utility.LongTensor import *
+from ..utility.repmat     import *
+from ..utility.circshift  import *
+from ..utility.indices    import *
+from .poly2unique         import *
 
 
 def poly2edge(T):
@@ -75,3 +73,15 @@ def edge2undirect(E):
 
 def poly2undirect(T):
     return edge2undirect(poly2edge(T)[0])
+
+
+def tet2edge(T):
+    e = LongTensor([[0, 0, 0, 1, 1, 2],
+                    [1, 2, 3, 2, 3, 3]]).t()
+    return torch.sort(T[e].permute(1, 0, 2).contiguous().view(2, -1), dim=0)[0]
+
+
+def hex2edge(T):
+    e = LongTensor([[0, 0, 0, 1, 1, 2, 2, 3, 4, 4, 5, 6],
+                    [1, 3, 4, 2, 5, 3, 6, 7, 5, 7, 6, 7]]).t()
+    return torch.sort(T[e].permute(1, 0, 2).contiguous().view(2, -1), dim=0)[0]
