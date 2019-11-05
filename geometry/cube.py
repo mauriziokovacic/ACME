@@ -26,4 +26,5 @@ def Cube(device='cuda:0'):
         LongTensor([[0, 1, 3, 2], [5, 4, 6, 7], [0, 4, 5, 1],
                     [2, 3, 7, 6], [0, 2, 6, 4], [7, 3, 1, 5]], device=device))
     N = normr(P.clone())
-    return P, T, N
+    H = torch.t(LongTensor([[0, 4, 5, 1, 2, 6, 7, 3]], device=device))
+    return P, T, N, H
