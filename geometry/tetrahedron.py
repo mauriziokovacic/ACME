@@ -27,4 +27,5 @@ def Tetrahedron(device='cuda:0'):
                      [           0,   0, 1/3*SQRT6]], device=device)
     T = polyflip(torch.add(torch.t(LongTensor([[1,2,3],[1,3,4],[1,4,2],[3,2,4]], device=device)), -1))
     N = vertex_normal(P, T)
-    return P, T, N
+    H = torch.t(LongTensor([[0, 1, 2, 3]], device=device))
+    return P, T, N, H
