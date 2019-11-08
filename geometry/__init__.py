@@ -1,5 +1,6 @@
 from .adjacency               import *
 from .area                    import *
+from .bary2data               import *
 from .barycenter              import *
 from .barycentric_coordinates import *
 from .BaryCoord               import *
