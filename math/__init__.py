@@ -53,5 +53,7 @@ from .sph2rotm           import *
 from .spzeros            import *
 from .tan                import *
 from .tra3               import *
+from .triharmonic_rbf    import *
 from .unitvec            import *
 from .unrooted_norm      import *
+from .wendland_rbf       import *
