@@ -21,3 +21,19 @@ def FalseTensor(*size, device='cuda:0'):
     return torch.zeros(*size, dtype=torch.uint8, device=device)
 
 
+def false_like(tensor):
+    """
+    Returns a tensor filled with False, shaped as the given tensor
+
+    Parameters
+    ----------
+    tensor : Tensor
+        the tensor to copy the shape from
+
+    Returns
+    -------
+    Tensor
+        the False filled tensor
+    """
+
+    return FalseTensor(*tensor.shape, device=tensor.device)

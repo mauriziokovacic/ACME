@@ -13,8 +13,8 @@ def ConstantTensor(value, *size, dtype=torch.float, device='cuda:0'):
         the shape of the tensor
     dtype : type (optional)
         the type of the Tensor (default is torch.float)
-    device : str
-        the device to store the tensor to
+    device : str or torch.device (optional)
+        the device to store the tensor to (default is 'cuda:0')
 
     Returns
     -------

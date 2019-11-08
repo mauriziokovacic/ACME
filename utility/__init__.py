@@ -30,6 +30,7 @@ from .hex2bi            import *
 from .hex2de            import *
 from .identity          import *
 from .indices           import *
+from .InfTensor         import *
 from .interleave        import *
 from .IntTensor         import *
 from .isbool            import *
@@ -61,11 +62,13 @@ from .lexsort           import *
 from .linspace          import *
 from .LongTensor        import *
 from .matmul            import *
+from .NaNTensor         import *
 from .ndim              import *
 from .nop               import *
 from .numel             import *
 from .numpy2torch       import *
 from .prod              import *
+from .profile           import *
 from .reindex           import *
 from .repelem           import *
 from .repmat            import *
@@ -76,6 +79,7 @@ from .size              import *
 from .SparseTensor      import *
 from .sparse_compact    import *
 from .sparse_select     import *
+from .spy               import *
 from .squeeze           import *
 from .static_vars       import *
 from .strcmp            import *

@@ -19,3 +19,21 @@ def TrueTensor(*size, device='cuda:0'):
     """
 
     return torch.ones(*size, dtype=torch.uint8, device=device)
+
+
+def true_like(tensor):
+    """
+    Returns a tensor filled with True, shaped as the given tensor
+
+    Parameters
+    ----------
+    tensor : Tensor
+        the tensor to copy the shape from
+
+    Returns
+    -------
+    Tensor
+        the True filled tensor
+    """
+
+    return TrueTensor(*tensor.shape, device=tensor.device)
