@@ -15,7 +15,7 @@ class Segment(object):
         self.B = B
 
 
-class SurfaceSegment(object):
+class SurfaceSegment(Segment):
     def __init__(self, T=None, **kwargs):
         super(SurfaceSegment, self).__init__(**kwargs)
         self.T = T
@@ -63,10 +63,9 @@ def meandering_triangle(T, F, iso_target=0.5):
         if not isempty(n):
             X  -= 1
             s   = (numel(n), 3)
-            c   = SurfaceSegment()
-            c.A = torch.zeros(s, dtype=torch.float, device=T.device)
-            c.B = torch.zeros(s, dtype=torch.float, device=T.device)
-            c.T = n
+            c   = SurfaceSegment(A=torch.zeros(s, dtype=torch.float, device=T.device),
+                                 B=torch.zeros(s, dtype=torch.float, device=T.device),
+                                 T=n)
             t   = torch.zeros((row(X), 2), dtype=torch.float, device=T.device)
             t[n, :] = torch.cat((((iso_target - Fi[n, X[n, 1]]) / (Fi[n, X[n, 0]] - Fi[n, X[n, 1]])).unsqueeze(1),
                                  ((iso_target - Fi[n, X[n, 2]]) / (Fi[n, X[n, 0]] - Fi[n, X[n, 2]])).unsqueeze(1)), dim=1)
@@ -87,4 +86,4 @@ def meandering_triangle(T, F, iso_target=0.5):
             c.B = c.B[i, :]
             c.T = c.T[i]
             C[f] = c
-    return C if len(C)>0 else C[0]
+    return C if len(C) > 0 else C[0]
