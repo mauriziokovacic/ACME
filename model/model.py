@@ -43,8 +43,8 @@ class Model(torch.nn.Module):
         """
 
         super(Model, self).__init__()
-        self.name   = name
-        self.device = device
+        self.name     = name
+        self.__device = device
 
     def freeze(self):
         """
@@ -165,11 +165,19 @@ class Model(torch.nn.Module):
         path, file = fileparts(filename)[:2]
         checkpoint = torch.load(path + file + '.tar')
         self.load_state_dict(checkpoint['model_state_dict'], map_location=self.device, strict=strict)
-        self.to(self.device)
+        self.to(device=self.device)
         self.train()
         return self
 
-    def __setattr__(self, key, value):
-        self.__dict__[key] = value
-        if key == 'device':
-            self.to(device=value)
+    @property
+    def device(self):
+        return self.__device
+
+    @device.setter
+    def device(self, value):
+        self.to(device=value)
+
+    def to(self, **kwargs):
+        if 'device' in kwargs:
+            self.__device = kwargs['device']
+        super(Model, self).to(**kwargs)
