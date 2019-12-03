@@ -43,7 +43,7 @@ def uniquetol(A, tol=10e-4, ByRows=False):
         i  = numpy.argsort(C)
         d  = numpy.append(1 + tol, numpy.diff(C[i]))
         tf = d > (tol * numpy.max(numpy.abs(C)))
-        n  = numpy.size(A)
+        n  = numpy.size(C)
     ia = i[tf]
     C  = C[ia]
     ic = numpy.zeros(n, dtype=int)
