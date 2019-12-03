@@ -49,7 +49,8 @@ def init(parameter, type, *args, **kwargs):
 
     Returns
     -------
-
+    torch.nn.Parameter
+        the initialized parameter
     """
     if not init.fun:
         init.fun = {
