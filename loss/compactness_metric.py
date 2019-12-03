@@ -2,7 +2,7 @@ import torch
 from ..geometry.compactness import *
 
 
-def compactness_metric(P):
+def compactness_metric(P, i=None):
     """
     Measures the compactness metric for the given points set
 
@@ -17,4 +17,6 @@ def compactness_metric(P):
         a (1,) compactness metric tensor
     """
 
-    return torch.sum(compactness(P))
+    if i is None:
+        return torch.sum(compactness(P))
+    return torch.sum(compactness(P[i]))
