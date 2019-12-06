@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-install_requires = ['numpy', 'torch', 'torch_scatter','torch_geometric', 'neural_renderer']
+install_requires = ['numpy', 'torch', 'torch_scatter','torch_geometric', 'neural_renderer_pytorch']
 
 setuptools.setup(
     name="ACME",
