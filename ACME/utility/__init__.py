@@ -103,3 +103,4 @@ from .Uint8Tensor       import *
 from .unique            import *
 from .uniquetol         import *
 from .unsqueeze         import *
+from .version           import *
