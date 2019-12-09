@@ -15,9 +15,6 @@ class TriangleDistortionMetric(TriangleMetric):
     def eval(self, P, T):
         L0, L1, L2 = self.edges(P, T)
         A          = self.area(P, T)
-        ######## How the fudge should I do this?
-        J = torch.cat((L2.unsqueeze(2), -L1.unsqueeze(2)), dim=2)
-        J = torch.matmul(J.permute(0, 2, 1), J)
-        J = torch.det(J).unsqueeze(1)
-        ########
+        n          = self.normal(P, T)
+        J = torch.cat((L2.unsqueeze(2), -L1.unsqueeze(2), n.unsqueeze(2)), dim=2).det().unsqueeze(1)
         return (J * SQRT3) / A
