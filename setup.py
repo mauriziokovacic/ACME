@@ -10,7 +10,7 @@ setuptools.setup(
     version="1.0.0",
     author="Maurizio Kovacic",
     author_email="maurizio.kovacic@gmail.com",
-    description="A Python Library that contains a bunch of useful algorithms and utilities for geometry processing and machine learning",
+    description="A Python Library containing several algorithms and utilities for Python, Pytorch, geometry processing, and machine learning",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/mauriziokovacic/ACME",
