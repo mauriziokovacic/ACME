@@ -26,9 +26,9 @@ class Range(object):
         """
         Parameters
         ----------
-        inf : int or float
+        min : int or float
             the inferior of the range
-        sup : int or float
+        max : int or float
             the superior of the range
         """
         self.data = [float(min), float(max)]
@@ -104,8 +104,7 @@ class Range(object):
         return out
 
     def __eq__(self, other):
-        self.data = other.data
-        return self
+        return self.data == other.data
 
     def __call__(self, value):
         return self.eval(value)
