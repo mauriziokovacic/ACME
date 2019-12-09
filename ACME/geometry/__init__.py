@@ -21,6 +21,7 @@ from .gradient                import *
 from .grid2mesh               import *
 from .hausdorff_metric        import *
 from .hexahedron              import *
+from .HoppeReconstruction     import *
 from .icosahedron             import *
 from .klein_figure8           import *
 from .laplacian               import *
@@ -41,6 +42,7 @@ from .poly_edges              import *
 from .poly_points             import *
 from .project_point_on_plane  import *
 from .quad                    import *
+from .RBFReconstruction       import *
 from .shape_scale             import *
 from .soup2mesh               import *
 from .specular_direction      import *

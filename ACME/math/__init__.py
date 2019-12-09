@@ -1,3 +1,4 @@
+from .AbstractImplicitSurface import *
 from .acos               import *
 from .affine2linear      import *
 from .affine2rotation    import *
