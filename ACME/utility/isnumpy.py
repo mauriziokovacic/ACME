@@ -1,4 +1,5 @@
 import numpy
+from .istype import *
 
 
 def isnumpy(*obj):
@@ -16,4 +17,4 @@ def isnumpy(*obj):
         True if the inputs are Numpy arrays, False otherwise
     """
 
-    return all([isinstance(o, numpy.ndarray) for o in obj])
+    return istype(numpy.ndarray, *obj)

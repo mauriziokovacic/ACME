@@ -1,7 +1,8 @@
+from ..utility.ACMEClass import *
 from ..utility.hasmethod import *
 
 
-class Transform(object):
+class Transform(ACMEClass):
     """
     A proper abstract interface for the torch_geometric transforms
 
@@ -18,7 +19,7 @@ class Transform(object):
     """
 
     def __init__(self):
-        pass
+        super(Transform, self).__init__()
 
     def eval(self, x, *args, **kwargs):
         """
@@ -72,20 +73,6 @@ class Transform(object):
         """
 
         raise NotImplementedError
-
-    def __repr__(self):
-        """
-        Returns the string representation of the Transform class.
-
-        If the derived class has an 'extra_repr(self)' method, its returned string will be added within the parenthesis
-
-        Returns
-        -------
-        str
-            the string representation of the class
-        """
-
-        return '{}({})'.format(self.__class__.__name__, self.extra_repr() if hasmethod(self, 'extra_repr') else '')
 
     def __call__(self, *args, **kwargs):
         return self.eval(*args, **kwargs)

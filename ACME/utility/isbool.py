@@ -1,3 +1,6 @@
+from .istype import *
+
+
 def isbool(*obj):
     """
     Returns whether or not the input is a bool
@@ -13,4 +16,5 @@ def isbool(*obj):
         True if the inputs are bool, False otherwise
     """
 
-    return all([isinstance(o, bool) for o in obj])
+    return istype(bool, *obj)
+

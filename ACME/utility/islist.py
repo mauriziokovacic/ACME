@@ -1,3 +1,6 @@
+from .istype import *
+
+
 def islist(*obj):
     """
     Returns whether or not the input is a list
@@ -13,4 +16,4 @@ def islist(*obj):
         True if the inputs are lists, False otherwise
     """
 
-    return all([isinstance(o, list) for o in obj])
+    return istype(list, *obj)

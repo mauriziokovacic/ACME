@@ -1,4 +1,6 @@
 import torch
+from .istype import *
+
 
 def istorch(*obj):
     """
@@ -15,4 +17,4 @@ def istorch(*obj):
         True if the inputs are PyTorch Tensors, False otherwise
     """
 
-    return all([isinstance(o, torch.Tensor) for o in obj])
+    return istype(torch.Tensor, *obj)

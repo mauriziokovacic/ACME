@@ -1,3 +1,6 @@
+from .istype import *
+
+
 def isfloat(*obj):
     """
     Returns whether or not the input is a float
@@ -13,4 +16,4 @@ def isfloat(*obj):
         True if the inputs are float, False otherwise
     """
 
-    return all([isinstance(o, float) for o in obj])
+    return istype(float, *obj)

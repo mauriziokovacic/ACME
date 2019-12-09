@@ -1,3 +1,4 @@
+from .ACMEClass         import *
 from .accumarray        import *
 from .assertion         import *
 from .bi2de             import *
@@ -17,7 +18,6 @@ from .dense2sparse      import *
 from .depth             import *
 from .diff              import *
 from .duplicated        import *
-from .emplace_directory import *
 from .FalseTensor       import *
 from .find              import *
 from .flatten           import *
@@ -57,6 +57,7 @@ from .isstring          import *
 from .istensor          import *
 from .istorch           import *
 from .istuple           import *
+from .istype            import *
 from .isvector          import *
 from .lexsort           import *
 from .linspace          import *

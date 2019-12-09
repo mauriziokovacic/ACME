@@ -1,3 +1,6 @@
+from .istype import *
+
+
 def isdict(*obj):
     """
     Returns whether or not the input is a dict
@@ -13,4 +16,4 @@ def isdict(*obj):
         True if the inputs are dicts, False otherwise
     """
 
-    return all([isinstance(o, dict) for o in obj])
+    return istype(dict, *obj)

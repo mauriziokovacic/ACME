@@ -1,4 +1,5 @@
 import torch
+from .istype import *
 
 
 def isdense(*obj):
@@ -16,4 +17,4 @@ def isdense(*obj):
         True if the inputs are PyTorch dense Tensors, False otherwise
     """
 
-    return all([isinstance(o, torch.FloatTensor) for o in obj])
+    return istype(torch.FloatTensor, *obj)

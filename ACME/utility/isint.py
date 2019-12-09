@@ -1,3 +1,6 @@
+from .istype import *
+
+
 def isint(*obj):
     """
     Returns whether or not the input is an int
@@ -13,4 +16,4 @@ def isint(*obj):
         True if the inputs are int, False otherwise
     """
 
-    return all([isinstance(o, int) for o in obj])
+    return istype(int, *obj)

@@ -1,3 +1,6 @@
+from .istype import *
+
+
 def istuple(*obj):
     """
     Returns whether or not the input is a tuple
@@ -13,4 +16,4 @@ def istuple(*obj):
         True if the inputs are tuple, False otherwise
     """
 
-    return all([isinstance(o, tuple) for o in obj])
+    return istype(tuple, *obj)

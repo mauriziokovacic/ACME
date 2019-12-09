@@ -14,9 +14,11 @@ def emplace_directory(path, name):
 
     Returns
     -------
-    None
+    str
+        the emplaced directory string
     """
 
     dir = os.path.join(path, name)
     if not os.path.exists(dir):
         os.makedirs(dir)
+    return dir

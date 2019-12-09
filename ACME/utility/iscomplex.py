@@ -1,3 +1,6 @@
+from .istype import *
+
+
 def iscomplex(*obj):
     """
     Returns whether or not the input is a complex
@@ -13,4 +16,4 @@ def iscomplex(*obj):
         True if the inputs are complex, False otherwise
     """
 
-    return all([isinstance(o, complex) for o in obj])
+    return istype(complex, *obj)
