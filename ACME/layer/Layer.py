@@ -14,10 +14,6 @@ class Layer(torch.nn.Module):
     -------
     forward(*args, **kwargs)
         returns the layer output
-    freeze()
-        freezes all the parameters in the layer
-    unfreeze()
-        unfreezes all the parameters in the layer
     """
 
     def __init__(self, layer, activation=None, batch_norm=None, pooling=None, dropout=None):
@@ -63,33 +59,3 @@ class Layer(torch.nn.Module):
         """
 
         return self.layer(*args, **kwargs)
-
-    def freeze(self):
-        """
-        Freezes all the parameters in the layer
-
-        Returns
-        -------
-        Model
-            the layer itself
-        """
-
-        for param in self.parameters():
-            param.requires_grad = False
-        self.training = False
-        return self
-
-    def unfreeze(self):
-        """
-        Unfreezes all the parameters in the layer
-
-        Returns
-        -------
-        Model
-            the layer itself
-        """
-
-        for param in self.parameters():
-            param.requires_grad = True
-        self.training = True
-        return self
