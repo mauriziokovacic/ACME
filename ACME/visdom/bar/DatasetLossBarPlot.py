@@ -4,7 +4,7 @@ from ..VisdomFigure     import *
 
 class DatasetLossBarPlot(PlotlyFigure):
     """
-    A class representing a gradient flow plot
+    A class representing the dataset entries loss plot
     """
 
     def __init__(self, session, win='DatasetLossBarPlot'):
