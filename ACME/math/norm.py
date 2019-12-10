@@ -4,7 +4,7 @@ from .knn            import *
 from .unrooted_norm  import *
 
 
-def pnorm(V, p=2, dim=1):
+def pnorm(V, p=2, dim=-1):
     """
     Computes the norm of the input tensor along the given dimension.
 
@@ -29,7 +29,7 @@ def pnorm(V, p=2, dim=1):
     return torch.sqrt(n)
 
 
-def norm(tensor, dim=1):
+def norm(tensor, dim=-1):
     """
     Computes the euclidean norm of the input tensor along the given dimension.
 
@@ -49,7 +49,7 @@ def norm(tensor, dim=1):
     return pnorm(tensor, p=2, dim=dim)
 
 
-def hypot(x, y, dim=1):
+def hypot(x, y, dim=-1):
     """
     Computes the euclidean norm of the input tensor [x,y] along the given dimension.
 
@@ -74,7 +74,7 @@ def hypot(x, y, dim=1):
     return pnorm(torch.cat((x, y), dim=dim), p=2, dim=dim)
 
 
-def distance(A, B, p=2, dim=1):
+def distance(A, B, p=2, dim=-1):
     """
     Computes the distance between the given tensors, using the specified norm along the specified dimension
 
