@@ -19,6 +19,8 @@ from .cross              import *
 from .deg2rad            import *
 from .diag               import *
 from .dot                import *
+from .dualquat_imag      import *
+from .dualquat_real      import *
 from .eul2rotm           import *
 from .eye                import *
 from .fibonacci          import *
@@ -33,6 +35,15 @@ from .normvec            import *
 from .pol2cart           import *
 from .prepare_broadcast  import *
 from .quantize           import *
+from .quat2rotm          import *
+from .quat_conj          import *
+from .quat_eye           import *
+from .quat_inv           import *
+from .quat_multiply      import *
+from .quat_norm          import *
+from .quat_rotate        import *
+from .quat_scalar        import *
+from .quat_vector        import *
 from .rad2deg            import *
 from .randrotm           import *
 from .Range              import *
@@ -56,5 +67,6 @@ from .tan                import *
 from .tra3               import *
 from .triharmonic_rbf    import *
 from .unitvec            import *
+from .vec2quat           import *
 from .unrooted_norm      import *
 from .wendland_rbf       import *
