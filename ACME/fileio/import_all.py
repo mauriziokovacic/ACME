@@ -24,7 +24,7 @@ def import_all(path, error=False):
     """
 
     for module in os.listdir(path):
-        if not module.startswith('__') and module.endswith('.py'):
+        if not (module.startswith('__') or module.startswith('.')) and module.endswith('.py'):
             module = module[:-3]
             if error:
                 exec('from .{} import *'.format(module))
