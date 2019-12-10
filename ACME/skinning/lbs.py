@@ -1,6 +1,6 @@
-from ..math.normvec     import *
+from ..math.normvec   import *
 from ..math.cart2homo import *
-from ..utility.matmul   import *
+from ..utility.matmul import *
 
 
 def blend_transform(W, T):
