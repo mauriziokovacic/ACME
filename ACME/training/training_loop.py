@@ -1,13 +1,15 @@
-from ..utility.islist import *
-from .stop_criterion  import *
+from ..utility.ACMEClass import *
+from ..utility.islist    import *
+from .stop_criterion     import *
 
 
-class TrainingLoop(object):
+class TrainingLoop(ACMEClass):
     """
     A class representing the training loop
     """
 
     def __init__(self, trainers, criteria=[FrozenModelCriterion(), NaNLossCriterion()]):
+        super(TrainingLoop, self).__init__()
         self.trainers = trainers
         self.criteria = criteria
 

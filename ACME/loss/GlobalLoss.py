@@ -83,7 +83,7 @@ class GlobalLoss(LossList):
                 value += loss.eval(input, output)
         return value
 
-    def to_dict(self, *args, **kwargs):
+    def __dict__(self, *args, **kwargs):
         """
         Convert the loss into a dictionary
 

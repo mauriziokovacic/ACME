@@ -1,5 +1,4 @@
 from ..utility.ACMEClass import *
-from ..utility.hasmethod import *
 
 
 class Transform(ACMEClass):

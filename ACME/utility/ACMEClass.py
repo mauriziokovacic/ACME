@@ -23,7 +23,7 @@ class ACMEClass(object):
 
         return '{}({})'.format(self.__class__.__name__, self.__extra_repr__() if hasmethod(self, '__extra_repr__') else '')
 
-    def cast(self, dtype):
+    def cast(self, dtype, *args, **kwargs):
         """
         Converts the object to the given type. If the conversion is not defined then an error is raised.
 
@@ -45,6 +45,6 @@ class ACMEClass(object):
 
         method = '__{}__'.format(dtype if isinstance(dtype, str) else dtype.__class__.__name__)
         if hasmethod(self, method):
-            return eval('self.{}()'.format(method))
+            return eval('self.{}(*args, **kwargs)'.format(method))
         else:
             raise RuntimeError('Unknown type conversion')

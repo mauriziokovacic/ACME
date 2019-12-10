@@ -1,7 +1,8 @@
-from .create_session import *
+from ..utility.ACMEClass import *
+from .create_session     import *
 
 
-class VisdomScene(object):
+class VisdomScene(ACMEClass):
     """
     A class defining a visdom environment scene
 
@@ -34,6 +35,7 @@ class VisdomScene(object):
             the environment name (default is 'main')
         """
 
+        super(VisdomScene, self).__init__()
         self.__session = create_session(env=env)
         self.__plot  = {}
 

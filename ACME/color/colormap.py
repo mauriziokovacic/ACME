@@ -1,13 +1,14 @@
-from ..utility.clamp    import *
-from ..utility.isstring import *
-from ..utility.linspace import *
-from ..math.normalize   import *
-from ..math.quantize    import *
-from .fetch_texture     import *
-from .palette           import *
+from ..utility.ACMEClass import *
+from ..utility.clamp     import *
+from ..utility.isstring  import *
+from ..utility.linspace  import *
+from ..math.normalize    import *
+from ..math.quantize     import *
+from .fetch_texture      import *
+from .palette            import *
 
 
-class ColorMap(object):
+class ColorMap(ACMEClass):
     """
     A class representing a color map
 
@@ -47,6 +48,7 @@ class ColorMap(object):
             the device the tensors are stored to (default is 'cuda:0')
         """
 
+        super(ColorMap, self).__init__()
         if isstring(cdata):
             self.cdata = palette(cdata, device=device)
         else:
@@ -115,8 +117,8 @@ class ColorMap(object):
     def __call__(self, *args, **kwargs):
         return self.fetch(*args, **kwargs)
 
-    def __repr__(self):
-        return self.name
+    def __extra_repr__(self):
+        return 'name=\'{}\''.format(self.name)
 
 
 def heat_diffusion_map(**kwargs):

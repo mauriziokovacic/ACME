@@ -1,10 +1,11 @@
 import warnings
+from ..utility.ACMEClass import *
 from ..utility.hasmethod import *
 from ..utility.isnan     import *
 from ..model.is_frozen   import *
 
 
-class StopCriterion(object):
+class StopCriterion(ACMEClass):
     """
     A class representing a stop criterion for the training
 
@@ -27,6 +28,7 @@ class StopCriterion(object):
             the name of the attribute to check
         """
 
+        super(StopCriterion, self).__init__()
         if not hasmethod(self, '__eval__'):
             raise NotImplementedError('The derived class should implement the method:\n'
                                       ' __eval__(self, x: object) -> bool ')
@@ -72,7 +74,7 @@ class StopCriterion(object):
 
         return '{}(attr={}{})'.format(self.__class__.__name__,
                                       self.attr,
-                                      self.extra_repr() if hasmethod(self, 'extra_repr') else '')
+                                      self.__extra_repr__() if hasmethod(self, '__extra_repr__') else '')
 
     def __call__(self, **kwargs):
         return self.eval(**kwargs)
@@ -117,7 +119,7 @@ class VanishingGradientCriterion(StopCriterion):
         """
         return x < self.tol
 
-    def extra_repr(self):
+    def __extra_repr__(self):
         return ', tol={}'.format(self.tol)
 
 

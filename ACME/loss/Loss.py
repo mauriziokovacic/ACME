@@ -1,8 +1,9 @@
 import torch
-from ..utility.identity import *
+from ..utility.ACMEClass import *
+from ..utility.identity  import *
 
 
-class Loss(object):
+class Loss(ACMEClass):
     """
     A class representing the base for any loss function.
 
@@ -148,6 +149,9 @@ class Loss(object):
             A single entry dictionary in the form {name : value}
         """
 
+        return self.cast(dict)
+
+    def __dict__(self):
         return {self.name: self.value}
 
     def to(self, device):

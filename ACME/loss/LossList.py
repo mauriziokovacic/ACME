@@ -198,12 +198,21 @@ class LossList(Loss):
             A dictionary in the form {name : value}
         """
 
+        return self.cast(self, dict, compact=True)
+
+    def __dict__(self, compact=True):
         d = Loss.to_dict(self)
         if not compact:
             if not self.is_empty():
                 for l in self.loss:
                     d.update(l.to_dict())
         return d
+
+    def to_list(self):
+        return self.cast(list)
+
+    def __list__(self):
+        return self.loss
 
     def to(self, device):
         """

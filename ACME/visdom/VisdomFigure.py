@@ -1,7 +1,8 @@
 import plotly.graph_objs as go
+from ..utility.ACMEClass import *
 
 
-class VisdomFigure(object):
+class VisdomFigure(ACMEClass):
     """
     A class representing a Visdom generic figure
 
@@ -19,6 +20,7 @@ class VisdomFigure(object):
     """
 
     def __init__(self, session, win='Figure'):
+        super(VisdomFigure, self).__init__()
         self.session = session
         self.__win__ = win
 

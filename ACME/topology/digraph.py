@@ -1,11 +1,12 @@
 import torch
-from ..utility.row  import *
-from ..utility.col  import *
-from ..utility.find import *
-from .adjacency     import *
+from ..utility.ACMEClass import *
+from ..utility.row       import *
+from ..utility.col       import *
+from ..utility.find      import *
+from .adjacency          import *
 
 
-class Digraph(object):
+class Digraph(ACMEClass):
     """
     A class representing a directed graph
 
@@ -51,6 +52,7 @@ class Digraph(object):
     """
 
     def __init__(self):
+        super(Digraph, self).__init__()
         self.__adj__ = None
 
     def from_edges(self, E, W=None, num_nodes=None):

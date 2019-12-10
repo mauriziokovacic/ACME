@@ -15,5 +15,5 @@ class RandomRotation(Transform):
                 if d:
                     setattr(x, attr, torch.matmul(d, T))
 
-    def extra_repr(self):
+    def __extra_repr__(self):
         return 'attr={}'.format(self.attr if len(self.attr) > 1 else self.attr[0])

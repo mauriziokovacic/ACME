@@ -1,7 +1,8 @@
-from ..utility.islist import *
+from ..utility.ACMEClass import *
+from ..utility.islist    import *
 
 
-class TrainerObserver(object):
+class TrainerObserver(ACMEClass):
     """
     A class representing an object to observe the state of a trainer while training.
 
@@ -29,6 +30,7 @@ class TrainerObserver(object):
             If not None, binds the Training State Manager to the given trainer(s) (default is None)
         """
 
+        super(TrainerObserver, self).__init__()
         if trainers is not None:
             self.bind(trainers)
 

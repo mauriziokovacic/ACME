@@ -1,4 +1,5 @@
 import torch
+from ..utility.ACMEClass   import *
 from ..utility.row         import *
 from ..utility.col         import *
 from ..utility.isempty     import *
@@ -14,7 +15,7 @@ from .genus                import *
 from .mesh2data            import *
 
 
-class Mesh(object):
+class Mesh(ACMEClass):
     """
     A class representing a generic mesh.
 
@@ -111,6 +112,7 @@ class Mesh(object):
             the mesh name (default is '')
         """
 
+        super(Mesh, self).__init__()
         self.Vertex = Vertex
         self.Normal = Normal
         self.UV     = UV
@@ -360,3 +362,10 @@ class Mesh(object):
             return
         J, I = poly2ind(self.Hedra)
         self.ExternalHedra = (accumarray(I, self.ExternalFace[J]) >= 1).suqeeze()
+
+    def __extra_repr__(self):
+        return 'vert={}, edge={}, face={}, hedra={}'.format(
+            self.num_vertices(),
+            self.num_edges(),
+            self.num_faces(),
+            self.num_hedras())

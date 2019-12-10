@@ -2,11 +2,12 @@ import os
 import time
 import torch
 import warnings
-from ..utility.identity import *
-from ..model.mean_grad  import *
+from ..utility.ACMEClass import *
+from ..utility.identity  import *
+from ..model.mean_grad   import *
 
 
-class Trainer(object):
+class Trainer(ACMEClass):
     """
     A class representing a trainer object for an input architecture.
 
@@ -84,6 +85,7 @@ class Trainer(object):
             the trainer name (default is 'Trainer')
         """
 
+        super(Trainer, self).__init__()
         self.model     = model
         self.optimizer = optimizer
         self.scheduler = scheduler
@@ -338,3 +340,6 @@ class Trainer(object):
 
     def __call__(self, *args, **kwargs):
         return self.train(*args, **kwargs)
+
+    def __extra_repr__(self):
+        return 'name=\'{}\''.format(self.name)
