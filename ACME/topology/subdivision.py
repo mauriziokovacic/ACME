@@ -52,6 +52,37 @@ def _xmesh(T, scheme, iter=None):
            numpy2torch(t, dtype=torch.long, device=T.device)
 
 
+def xedge(T, iter=None):
+    """
+    Creates the naive subdivision matrix for a triangle topology.
+
+    Parameters
+    ----------
+    T : LongTensor
+        the (2,N,) topology tensor
+    iter : int (optional)
+        the number of iteration to perform. No iteration if None (default is None)
+
+    Returns
+    -------
+    (Tensor,LongTensor)
+        the subdivision matrix and the new (2,M,) topology tensor
+
+    Raises
+    ------
+    AssertionError
+        if topology is not a valid edge topology
+    """
+
+    assert isedge(T), 'Input topology must be an edge topology'
+
+    i = 0
+    j = 1
+    scheme = (numpy.array([[i, i], [i, j],
+                           [j, i], [j, j],]), 2)
+    return _xmesh(T, scheme, iter=iter)
+
+
 def xtri(T, iter=None):
     """
     Creates the naive subdivision matrix for a triangle topology.
