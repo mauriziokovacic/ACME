@@ -30,6 +30,7 @@ from .hex2bi            import *
 from .hex2de            import *
 from .identity          import *
 from .indices           import *
+from .inf               import *
 from .InfTensor         import *
 from .interleave        import *
 from .IntTensor         import *
@@ -63,6 +64,7 @@ from .lexsort           import *
 from .linspace          import *
 from .LongTensor        import *
 from .matmul            import *
+from .nan               import *
 from .NaNTensor         import *
 from .ndim              import *
 from .nop               import *
