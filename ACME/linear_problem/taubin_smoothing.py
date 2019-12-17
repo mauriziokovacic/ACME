@@ -1,5 +1,5 @@
 from ..utility.matmul import *
-from .poisson_equation import *
+from .linear_problem import *
 
 
 def taubin_smoothing(K, P, alpha=0.5, mu=0.5):
@@ -8,8 +8,8 @@ def taubin_smoothing(K, P, alpha=0.5, mu=0.5):
 
     Parameters
     ----------
-    L : Tensor or SparseTensor
-        the (N,N,) Laplacian matrix
+    K : Tensor or SparseTensor
+        the (N,N,) weight matrix
     P : Tensor
         the (N,D,) data tensor
     alpha : float (optional)
@@ -24,4 +24,4 @@ def taubin_smoothing(K, P, alpha=0.5, mu=0.5):
     """
 
     I = speye_like(K)
-    return poisson_equation(matmul(I-alpha*K, I-mu*K), P, eps=0)
+    return linear_problem(matmul(I-alpha*K, I-mu*K), P, eps=0)
