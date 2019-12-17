@@ -1,4 +1,3 @@
-import torch
 from ..utility.Uint8Tensor import *
 from .color2float          import *
 
@@ -32,7 +31,7 @@ def magenta():
 
 
 def yellow():
-    return torch.add(torch.neg(blue()), 1)
+    return color2float(Uint8Tensor([255, 242, 0]))
 
 
 def brown():
@@ -43,7 +42,7 @@ def dark_teal():
     return color2float(Uint8Tensor([98, 140, 178]))
 
 
-def grey():
+def gray():
     return torch.mul(torch.ones(1, 3), 0.5)
 
 
