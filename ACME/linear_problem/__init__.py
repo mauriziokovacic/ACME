@@ -9,4 +9,3 @@ from .laplacian_smoothing           import *
 from .least_squares                 import *
 from .linear_problem                import *
 from .poisson_equation              import *
-from .taubin_smoothing              import *

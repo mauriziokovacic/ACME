@@ -50,6 +50,7 @@ from .sphere                  import *
 from .sphere_coverage         import *
 from .spherical_helix         import *
 from .subdivide               import *
+from .taubin_smoothing        import *
 from .tetrahedron             import *
 from .torus                   import *
 from .triangle                import *
