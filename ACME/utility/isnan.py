@@ -1,6 +1,7 @@
 from .istensor import *
 from .flatten  import *
 
+
 def isnan(*obj):
     """
     Returns whether or not the input is nan

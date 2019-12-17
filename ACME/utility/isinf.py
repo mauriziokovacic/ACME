@@ -1,6 +1,7 @@
-import math
+from .inf      import *
 from .istensor import *
 from .flatten  import *
+
 
 def isinf(*obj):
     """
@@ -18,4 +19,4 @@ def isinf(*obj):
     """
 
     out = [flatten(o) if istensor(o) else o for o in obj]
-    return any([any(o == math.inf) if istensor(o) else o == math.inf for o in out])
+    return any([any(o == Inf) if istensor(o) else o == Inf for o in out])
