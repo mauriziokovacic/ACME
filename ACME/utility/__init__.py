@@ -64,6 +64,7 @@ from .lexsort           import *
 from .linspace          import *
 from .LongTensor        import *
 from .matmul            import *
+from .matpow            import *
 from .nan               import *
 from .NaNTensor         import *
 from .ndim              import *
