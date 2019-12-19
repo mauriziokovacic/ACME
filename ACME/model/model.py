@@ -180,4 +180,5 @@ class Model(torch.nn.Module):
     def to(self, **kwargs):
         if 'device' in kwargs:
             self.__device = kwargs['device']
-        super(Model, self).to(**kwargs)
+        self = super(Model, self).to(**kwargs)
+        return self
