@@ -38,14 +38,9 @@ class ConstantLayer(torch.nn.Module):
         self.dim    = dim
         self.device = device
 
-    def forward(self, input):
+    def forward(self, *args, **kwargs):
         """
         Returns a constant tensor
-
-        Parameters
-        ----------
-        input : Tensor
-            the batch tensor
 
         Returns
         -------
@@ -53,7 +48,7 @@ class ConstantLayer(torch.nn.Module):
             the constant tensor
         """
 
-        return ConstantTensor(self.value, self.dim, device=self.device)
+        return ConstantTensor(self.value, self.dim, dtype=torch.float, device=self.device)
 
 
 class ZerosLayer(ConstantLayer):
