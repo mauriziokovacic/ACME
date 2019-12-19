@@ -191,7 +191,7 @@ class U_Net(AutoEncoder):
         returns the U-Net output
     """
 
-    def __init__(self, encoder, decoder, connection, name='U-Net', **kwargs):
+    def __init__(self, encoder, decoder, connection=None, name='U-Net', **kwargs):
         """
         Parameters
         ----------
@@ -199,13 +199,17 @@ class U_Net(AutoEncoder):
             the encoder architecture
         decoder : torch.nn.Module
             the decoder architecture. Must contains HookLayers and the specified connection indices
-        connection : LongTensor
-            the (N,2,) indices tensor of the connected layers in encoders and decoders
+        connection : LongTensor (optional)
+            the (N,2,) indices tensor of the connected layers in encoders and decoders. If None if will be
+            automatically computed (default is None)
         name : str (optional)
             the name of the U-Net (default is 'U-Net')
         """
 
         super(U_Net, self).__init__(encoder=encoder, decoder=decoder, name=name, **kwargs)
+        if connection is None:
+            connection = torch.cat((torch.arange(             0, len(encoder),  1).unsqueeze(1),
+                                    torch.arange(len(decoder)-1,           -1, -1).unsqueeze(1),), dim=1)
         for i, j in connection:
             self.decoder[j].bind(self.encoder[i])
 
