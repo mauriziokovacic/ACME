@@ -144,7 +144,7 @@ class Hook(object):
 
 class DeferredHook(Hook):
     """
-    A class representing a deferred hook. It will store both the input and the output of the hooked layer to be
+    A class representing a deferred hook. It will store the output of the hooked layer to be
     processed at a different time. The standard behaviours of the base Hook are preserved
 
     Attributes
