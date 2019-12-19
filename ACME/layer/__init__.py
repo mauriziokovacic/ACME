@@ -18,6 +18,7 @@ from .MeshPooling     import *
 from .MeshUnpooling   import *
 from .MLPLayer        import *
 from .MoveLayer       import *
+from .NoiseLayer      import *
 from .RenderLayer     import *
 from .Reshape         import *
 from .Sampler         import *
@@ -29,4 +30,4 @@ from .VGGPerceptron   import *
 try:
     from .G_ResNet import *
 except ImportError:
-    print('torch_geometric failed to be imported.\nAll dependent imports are ignored.')
+    print('torch_geometric failed to be imported. All dependent imports are ignored.')
