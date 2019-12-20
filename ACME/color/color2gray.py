@@ -26,7 +26,7 @@ def color2gray(C, dim=-1, method='linear'):
         if method is not among the accepted ones
     """
 
-    size      = C.shape
+    size      = list(C.shape)
     size[dim] = -1
     alpha     = torch.zeros(3, dtype=torch.float, device=C.device)
     if strcmpi(method, 'linear'):
@@ -47,4 +47,4 @@ def color2gray(C, dim=-1, method='linear'):
         alpha[2] = 0.0593
     else:
         raise RuntimeError('Unknown method.')
-    return torch.sum(color2float(C) * alpha.view(*size), dim=dim)
+    return torch.sum(color2float(C) * alpha.expand(*size), dim=dim)
