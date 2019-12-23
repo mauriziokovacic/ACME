@@ -17,6 +17,7 @@ from .cos                import *
 from .cot                import *
 from .cross              import *
 from .deg2rad            import *
+from .demean             import *
 from .diag               import *
 from .dot                import *
 from .dualquat_imag      import *
@@ -63,6 +64,7 @@ from .speye              import *
 from .sph2cart           import *
 from .sph2rotm           import *
 from .spzeros            import *
+from .standardize        import *
 from .tan                import *
 from .tra3               import *
 from .triharmonic_rbf    import *
