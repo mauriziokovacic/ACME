@@ -33,6 +33,7 @@ from .linint             import *
 from .norm               import *
 from .normalize          import *
 from .normvec            import *
+from .perturb            import *
 from .pol2cart           import *
 from .prepare_broadcast  import *
 from .quantize           import *
