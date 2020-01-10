@@ -1,7 +1,7 @@
 import os
 
 
-def is_package(path):
+def ispackage(path):
     """
     Returns True if the given path is a Python package, False otherwise
 
