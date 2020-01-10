@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="171.61mm" height="103.62mm" version="1.1" viewBox="0 0 171.61157 103.62416" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient11307" x1="89.137" x2="147.78" y1="111.92" y2="168.1" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#ffe052" offset="0"/>
+   <stop stop-color="#ffc331" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient9521" x1="55.549" x2="110.15" y1="77.07" y2="131.85" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#387eb8" offset="0"/>
+   <stop stop-color="#366994" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(-5.1177 -84.472)">
+  <g>
+   <path transform="matrix(1.2894 0 0 .77855 319.05 66.527)" d="m-110.65 88.53c0.0736 4.5658-15.481 43.902-18.658 47.182-3.1764 3.2806-41.99 20.096-46.556 20.17-4.5658 0.0736-43.902-15.481-47.182-18.658s-20.096-41.99-20.17-46.556c-0.0736-4.5658 15.481-43.902 18.658-47.182 3.1764-3.2806 41.99-20.096 46.556-20.17 4.5658-0.07364 43.902 15.481 47.182 18.658 3.2806 3.1764 20.096 41.99 20.17 46.556z" fill="#d7e7f2" stroke="#000" stroke-width=".53224"/>
+   <g transform="matrix(.14109 0 0 .14109 16.347 57.773)" stroke="#000" stroke-width="1.8898">
+    <g transform="translate(428.42 184.26)" stroke="#000" stroke-width="1.8898">
+     <path d="m99.75 67.469c-28.032 2e-6 -26.281 12.156-26.281 12.156l0.03125 12.594h26.75v3.7812h-37.375s-17.938-2.0343-17.938 26.25c-2e-6 28.284 15.656 27.281 15.656 27.281h9.3438v-13.125s-0.50365-15.656 15.406-15.656h26.531s14.906 0.24096 14.906-14.406v-24.219c0-2e-6 2.2632-14.656-27.031-14.656zm-14.75 8.4688c2.6614-2e-6 4.8125 2.1511 4.8125 4.8125 2e-6 2.6614-2.1511 4.8125-4.8125 4.8125-2.6614 2e-6 -4.8125-2.1511-4.8125-4.8125-2e-6 -2.6614 2.1511-4.8125 4.8125-4.8125z" color="#000000" fill="url(#linearGradient9521)"/>
+     <path d="m100.55 177.31c28.032 0 26.281-12.156 26.281-12.156l-0.0312-12.594h-26.75v-3.7812h37.375s17.938 2.0343 17.938-26.25c1e-5 -28.284-15.656-27.281-15.656-27.281h-9.3438v13.125s0.50366 15.656-15.406 15.656h-26.531s-14.906-0.24096-14.906 14.406v24.219s-2.2632 14.656 27.031 14.656zm14.75-8.4688c-2.6614 0-4.8125-2.1511-4.8125-4.8125s2.1511-4.8125 4.8125-4.8125 4.8125 2.1511 4.8125 4.8125c1e-5 2.6614-2.1511 4.8125-4.8125 4.8125z" color="#000000" fill="url(#linearGradient11307)"/>
+    </g>
+   </g>
+   <text x="26.562344" y="147.46234" fill="#f9c400" font-family="sans-serif" font-size="5.6436px" letter-spacing="0px" stroke="#000000" stroke-width=".53326" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><tspan x="26.562344" y="147.46234" stroke-width=".53326"><tspan x="26.562344" y="147.46234" fill="#f9c400" font-family="Aharoni" font-size="48.159px" font-weight="bold" stroke="#000000" stroke-width=".53326">ACME</tspan></tspan></text>
+  </g>
+  <text x="90.495773" y="158.15257" fill="#000000" font-family="sans-serif" font-size="9.0298px" letter-spacing="14.109px" stroke-width=".14109" text-align="center" text-anchor="middle" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><tspan x="97.550331" y="158.15257" stroke-width=".14109"><tspan x="90.495773" y="158.15257" stroke-width=".14109">LIBRARY</tspan></tspan></text>
+  <path d="m28.613 164.36h125.14" fill="none" stroke="#000" stroke-width=".53326"/>
+  <g transform="matrix(.53326 0 0 .53326 82.487 87.792)" fill="none" stroke="#000">
+   <path d="m-82.319 37.749h67.352"/>
+   <path d="m-70.025 28.127h55.058"/>
+   <path d="m-54.523 19.04h39.556"/>
+  </g>
+  <g transform="matrix(-.53326 0 0 .53326 98.735 87.382)" fill="none" stroke="#000">
+   <path d="m-82.319 37.749h67.352"/>
+   <path d="m-70.025 28.127h55.058"/>
+   <path d="m-54.523 19.04h39.556"/>
+  </g>
+  <text x="56.644161" y="177.91121" fill="#f9c400" font-family="sans-serif" font-size="12.04px" letter-spacing="0px" stroke="#b08a00" stroke-width=".26663" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><tspan x="56.644161" y="177.91121" stroke-width=".26663"><tspan x="56.644161" y="177.91121" fill="#f9c400" font-family="Mistral" font-size="12.04px" stroke="#b08a00" stroke-width=".26663">"Quality First!"</tspan></tspan></text>
+ </g>
+</svg>
