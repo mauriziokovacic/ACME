@@ -11,7 +11,7 @@ install_requires = [
     'torch',
     'torch_scatter',
     'torch_geometric',
-    #'neural_renderer_pytorch',
+    'neural_renderer_pytorch',
 ]
 
 setuptools.setup(
